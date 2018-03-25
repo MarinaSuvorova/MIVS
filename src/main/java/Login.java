@@ -5,7 +5,6 @@ import java.util.Properties;
 import java.util.Scanner;
 
 public class Login {
-    public class LogIn {
         private boolean foundUser;
         private boolean loginDataValid;
 
@@ -79,7 +78,6 @@ public class Login {
                 System.out.println(e);
             }
         }
-    }
 // GAL PRIE USERIO KŪRIMO
     public void updateMIVSPropertiesID() {
         String id = "1000";
