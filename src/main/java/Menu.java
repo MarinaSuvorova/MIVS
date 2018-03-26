@@ -31,8 +31,8 @@ public class Menu {
             }
         }
     }
-    public void runAppMenu(){
-        System.out.println("1. Sign in");
+    public void runAdminMenu(){
+        System.out.println("Add new user");
         System.out.println("2. Exit");
 
     }

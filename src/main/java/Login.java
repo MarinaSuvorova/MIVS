@@ -1,3 +1,4 @@
+import javax.jws.soap.SOAPBinding;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -33,7 +34,7 @@ public class Login {
             String login = sc.next();
             //     UserInfo userInfo = new UserInfo();
 
-            try (FileReader fileReader = new FileReader("Users.txt");
+            try (FileReader fileReader = new FileReader("LoginInfo.txt");
                  BufferedReader bufferedReader = new BufferedReader(fileReader)) {
                 String line = bufferedReader.readLine();
                 while ((line = bufferedReader.readLine()) != null) {
@@ -46,6 +47,7 @@ public class Login {
                             String password = sc.next();
                             if (info[1].equals(password)) {
                                 setLoginDataValid(true);
+                                userSignedIn(info[2],info[0]);
                                 break;
                             } else {
                                 int wrongInput = 1;
@@ -54,6 +56,7 @@ public class Login {
                                     System.out.println("\nIncorrect password. \nPlease try again.");
                                     if (info[1].equals(sc.next())) {
                                         setLoginDataValid(true);
+                                        userSignedIn(info[2],info[0]);
                                         break;
                                     } else {
                                         wrongInput++;
@@ -65,6 +68,7 @@ public class Login {
                                     sleep.sleep(10000);
                                     break;}
                                 else {
+
                                     break;
                                 }
                             }
@@ -78,6 +82,24 @@ public class Login {
                 System.out.println(e);
             }
         }
+        public void userSignedIn(String fullID, String userName){
+            String[] userRole = fullID.split("-");
+            User user=new User();
+
+            switch (userRole[0]) {
+                case "ADM":
+                    user = new Admin();
+                    break;
+                    case "LEC":
+
+                    break;
+            }
+            user.setUserName(userName);
+                System.out.println("hello, " + user.getUserName());
+
+            }
+
+
 // GAL PRIE USERIO KŪRIMO
     public void updateMIVSPropertiesID() {
         String id = "1000";
