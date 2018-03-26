@@ -39,8 +39,8 @@ public class Course {
 
     public void setStartDate(String startDate) {
         try {
-        this.startDate =LocalDate.parse(startDate, DateTimeFormatter.ofPattern("yyyy-MM-dd"));}
-        catch (Exception e){
+            this.startDate = LocalDate.parse(startDate, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        } catch (Exception e) {
             System.out.println("Wrong date format");
             this.startDate = LocalDate.now();
         }

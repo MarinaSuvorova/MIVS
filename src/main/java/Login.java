@@ -91,11 +91,11 @@ public class Login {
 
     public void userSignedIn(String fullID, String userName) {
         String[] userRole = fullID.split("-");
-        User user = new User();
-
+        User user=null;
         switch (userRole[0]) {
             case "ADM":
                 user = new Admin();
+
                 break;
             case "LEC":
                 user = new Lecturer();
@@ -104,24 +104,28 @@ public class Login {
                 user = new Student();
                 break;
             default:
-                break;
-        }
-        user.setUserName(userName);
-        System.out.println("hello, " + user.getUserName());
 
+                return;
+
+        }
+//        //
+//        user.
+//        user.setUserName(userName);
+//        System.out.println("hello, " + user.getUserName());
     }
 
 
     // GAL PRIE USERIO KŪRIMO
     public void updateMIVSPropertiesID() {
-        String id = "1000";
+        String lastID = null;
+        //update LoginInfo.txt file!!
         try (FileReader fileReader = new FileReader("LoginInfo.txt");
              BufferedReader bufferedReader = new BufferedReader(fileReader)) {
             String line = bufferedReader.readLine();
             while ((line = bufferedReader.readLine()) != null) {
                 String[] info = line.split(";");
                 String[] fullID = info[2].split("-");
-                id = fullID[1];
+                lastID = fullID[1];
             }
         } catch (Exception e) {
             System.out.println(e);
@@ -129,7 +133,7 @@ public class Login {
         try (FileWriter fileWriter = new FileWriter("mivs.properties")) {
 
             Properties p = new Properties();
-            p.setProperty("id", id);
+            p.setProperty("lastID", lastID);
             p.store(fileWriter, null);
         } catch (Exception e) {
             System.out.println(e);

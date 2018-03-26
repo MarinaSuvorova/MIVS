@@ -12,7 +12,8 @@ public class Student extends User {
     public int getTotalNumberOfCredits() {
         return TotalNumberOfCredits;
     }
-// change
+
+    // change
     public void setTotalNumberOfCredits(int totalNumberOfCredits) {
         TotalNumberOfCredits = totalNumberOfCredits;
     }

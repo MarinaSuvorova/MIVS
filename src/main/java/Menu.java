@@ -16,7 +16,6 @@ public class Menu {
                     case 1:
                         if (!app.isLoginDataValid()) {
                             app.login();
-
                         }
                         break;
                     case 2:
@@ -31,31 +30,38 @@ public class Menu {
             }
         }
     }
-    public void runAdminMenu(){
+
+    public void runAdminMenu() {
+        //
         System.out.println("Edit profile");
         System.out.println("View all Courses");
-        //Edit / Delete / Add
-        System.out.println("View all Lecturers");
-        System.out.println("View all Students");
-        System.out.println("Add new user");
-        System.out.println("Add new Course");
-        System.out.println("Exit");
-
-
-    }
-    public void runLecturerMenu(){
-        System.out.println("Edit profile");
-        System.out.println("My Courses");
+        // View info / Edit / Delete
+        System.out.println("View all Users");
+        // [firstName, lastName], [email], [role]
+        System.out.println("Add new User");
         System.out.println("Add new Course");
         System.out.println("Exit");
 
 
     }
 
-    public void runStudentMenu(){
+    public void runLecturerMenu() {
         System.out.println("Edit profile");
         System.out.println("My Courses");
-        System.out.println("Explore new Courses");
+        // View info / Edit / Delete
+        System.out.println("Add new Course");
+        System.out.println("Exit");
+
+
+    }
+
+    public void runStudentMenu() {
+        System.out.println("Edit profile");
+        System.out.println("My Courses");
+        System.out.println("View all Courses");
+        System.out.println("Enroll in a New Course");
+        //Check TotalNumberOfCredits
+        //Print only those Courses with right StartDate
         System.out.println("Exit");
 
 
