@@ -32,9 +32,30 @@ public class Menu {
         }
     }
     public void runAdminMenu(){
+        System.out.println("Edit profile");
         System.out.println("Add new user");
-        System.out.println("2. Exit");
+        System.out.println("Exit");
+
+        // gali turėti ir keisti, pridėti informaciją apie save
+        //
 
     }
+    public void runLecturerMenu(){
+        System.out.println("Edit profile");
+        System.out.println("");
+        System.out.println("Exit");
+        // gali turėti ir keisti, pridėti informaciją apie save
+        //
+
+    }
+
+    public void runStudentMenu(){
+        System.out.println("Edit profile");
+        System.out.println("");
+        System.out.println("Exit");
+        // gali turėti ir keisti, pridėti informaciją apie save
+
+    }
+
 }
 
