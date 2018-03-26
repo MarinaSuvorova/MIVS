@@ -33,27 +33,31 @@ public class Menu {
     }
     public void runAdminMenu(){
         System.out.println("Edit profile");
+        System.out.println("View all Courses");
+        //Edit / Delete / Add
+        System.out.println("View all Lecturers");
+        System.out.println("View all Students");
         System.out.println("Add new user");
+        System.out.println("Add new Course");
         System.out.println("Exit");
 
-        // gali turėti ir keisti, pridėti informaciją apie save
-        //
 
     }
     public void runLecturerMenu(){
         System.out.println("Edit profile");
-        System.out.println("");
+        System.out.println("My Courses");
+        System.out.println("Add new Course");
         System.out.println("Exit");
-        // gali turėti ir keisti, pridėti informaciją apie save
-        //
+
 
     }
 
     public void runStudentMenu(){
         System.out.println("Edit profile");
-        System.out.println("");
+        System.out.println("My Courses");
+        System.out.println("Explore new Courses");
         System.out.println("Exit");
-        // gali turėti ir keisti, pridėti informaciją apie save
+
 
     }
 
