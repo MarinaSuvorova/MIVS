@@ -48,6 +48,7 @@ public class Menu {
     public void runLecturerMenu() {
         System.out.println("Edit profile");
         System.out.println("My Courses");
+        System.out.println("My Students");
         // View info / Edit / Delete
         System.out.println("Add new Course");
         System.out.println("Exit");

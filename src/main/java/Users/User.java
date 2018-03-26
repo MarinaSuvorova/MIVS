@@ -11,6 +11,7 @@ public abstract class User {
     private String mobileNumber;
     private String gender;
     private String address;
+    private enum role { ADMIN, LECTURER, STUDENT }
 
     public String getUserName() {
         return userName;
