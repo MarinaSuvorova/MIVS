@@ -1,0 +1,4 @@
+ID;firstName;lastName;dateOfBirth;email;mobileNumber;gender;address;
+ADM-1000;Adminas;Adminaitis;1986-04-30;admin@mivs.com;+44 48 345;male;Mokyklos 38A, Kaunas;
+LEC-1001;Marina;Suvorova;1994-03-11;32.marina.suvorova@gmail.com;+370 600 51416;female;Architektu 67-34,Vilnius;
+STU-1002;Mykolas;Klepaitis;2000-03-28;mykkle@mivs.com;+371 200 34687;male;Inzinieuru 4-40,Daugavpils;

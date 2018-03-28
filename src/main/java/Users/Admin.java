@@ -1,9 +1,9 @@
 package Users;
 
 public class Admin extends User {
-    private final String ROLE = "Admin";
+    UserType userType = UserType.ADMIN;
 
-    public String getROLE() {
-        return ROLE;
+    public UserType getUserType() {
+        return userType;
     }
 }

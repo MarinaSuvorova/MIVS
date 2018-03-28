@@ -95,7 +95,6 @@ public class Login {
         switch (userRole[0]) {
             case "ADM":
                 user = new Admin();
-
                 break;
             case "LEC":
                 user = new Lecturer();
@@ -104,14 +103,12 @@ public class Login {
                 user = new Student();
                 break;
             default:
-
                 return;
-
         }
-//        //
-//        user.
-//        user.setUserName(userName);
-//        System.out.println("hello, " + user.getUserName());
+      user.setUserName(userName);
+        System.out.println("hello, " + user.getUserName());
+        Menu menu = new Menu();
+        menu.runUserMenu(user);
     }
 
 

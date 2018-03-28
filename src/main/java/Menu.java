@@ -1,3 +1,8 @@
+import Users.Admin;
+import Users.Lecturer;
+import Users.Student;
+import Users.User;
+
 import java.util.Scanner;
 
 public class Menu {
@@ -31,42 +36,49 @@ public class Menu {
         }
     }
 
-    public void runAdminMenu() {
-        //
-        System.out.println("Edit profile");
-        System.out.println("View all Courses");
+    public void runUserMenu(User user) {
+
+        if (user instanceof Admin) {
+            runAdminMenu();
+        } else if (user instanceof Lecturer) {
+            runLecturerMenu();
+        } else if (user instanceof Student) {
+            runStudentMenu();
+        } else {
+            return;
+        }
+
+    }
+
+
+    private void runAdminMenu() {
+        System.out.println("1. Edit profile");
+        System.out.println("2. View all Courses");
         // View info / Edit / Delete
-        System.out.println("View all Users");
+        System.out.println("3. View all Users");
         // [firstName, lastName], [email], [role]
-        System.out.println("Add new User");
-        System.out.println("Add new Course");
-        System.out.println("Exit");
-
-
+        System.out.println("4. Add new User");
+        System.out.println("5. Add new Course");
+        System.out.println("6. Exit");
     }
 
-    public void runLecturerMenu() {
-        System.out.println("Edit profile");
-        System.out.println("My Courses");
-        System.out.println("My Students");
+    private void runLecturerMenu() {
+        System.out.println("1. Edit profile");
+        System.out.println("2. My Courses");
+        System.out.println("3. My Students");
         // View info / Edit / Delete
-        System.out.println("Add new Course");
-        System.out.println("Exit");
-
-
+        System.out.println("4. Add new Course");
+        System.out.println("5. Exit");
     }
 
-    public void runStudentMenu() {
-        System.out.println("Edit profile");
-        System.out.println("My Courses");
-        System.out.println("View all Courses");
-        System.out.println("Enroll in a New Course");
+    private void runStudentMenu() {
+        System.out.println("1. Edit profile");
+        System.out.println("2. My Courses");
+        System.out.println("3. View all Courses");
+        System.out.println("4. Enroll in a New Course");
         //Check TotalNumberOfCredits
         //Print only those Courses with right StartDate
-        System.out.println("Exit");
-
-
+        System.out.println("5. Exit");
     }
-
 }
 

@@ -1,9 +1,11 @@
 package Users;
 
-public class Lecturer extends User{
-    private final String ROLE = "Lecturer";
+public class Lecturer extends User {
+    UserType userType = UserType.LECTURER;
 
-    public String getROLE() {
-        return ROLE;
+
+    public UserType getUserType() {
+        return userType;
     }
+
 }

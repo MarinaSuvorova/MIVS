@@ -1,12 +1,12 @@
 package Users;
 
 public class Student extends User {
-    private final String ROLE = "Student";
+    UserType userType = UserType.STUDENT;
     private int TotalNumberOfCredits;
 
 
-    public String getROLE() {
-        return ROLE;
+    public UserType getUserType() {
+        return userType;
     }
 
     public int getTotalNumberOfCredits() {
