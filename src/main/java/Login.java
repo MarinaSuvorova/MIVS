@@ -3,6 +3,7 @@ import Users.Lecturer;
 import Users.Student;
 import Users.User;
 
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -12,6 +13,7 @@ import java.util.Scanner;
 public class Login {
     private boolean foundUser;
     private boolean loginDataValid;
+
 
     public boolean isFoundUser() {
         return foundUser;
@@ -37,7 +39,6 @@ public class Login {
         Scanner sc = new Scanner(System.in);
         System.out.println("Enter login");
         String login = sc.next();
-        //     UserInfo userInfo = new UserInfo();
 
         try (FileReader fileReader = new FileReader("LoginInfo.txt");
              BufferedReader bufferedReader = new BufferedReader(fileReader)) {
@@ -52,7 +53,7 @@ public class Login {
                         String password = sc.next();
                         if (info[1].equals(password)) {
                             setLoginDataValid(true);
-                            userSignedIn(info[2], info[0]);
+                            userSignedIn(info);
                             break;
                         } else {
                             int wrongInput = 1;
@@ -61,7 +62,7 @@ public class Login {
                                 System.out.println("\nIncorrect password. \nPlease try again.");
                                 if (info[1].equals(sc.next())) {
                                     setLoginDataValid(true);
-                                    userSignedIn(info[2], info[0]);
+                                    userSignedIn(info);
                                     break;
                                 } else {
                                     wrongInput++;
@@ -89,9 +90,11 @@ public class Login {
         }
     }
 
-    public void userSignedIn(String fullID, String userName) {
-        String[] userRole = fullID.split("-");
-        User user=null;
+    public void userSignedIn(String[] loginInfo) throws Exception {
+        UserPropertiesReader userPropertiesReader = new UserPropertiesReader();
+        Menu menu = new Menu();
+        String[] userRole = loginInfo[2].split("-");
+        User user = null;
         switch (userRole[0]) {
             case "ADM":
                 user = new Admin();
@@ -105,9 +108,10 @@ public class Login {
             default:
                 return;
         }
-      user.setUserName(userName);
+        user.setUserNameAndPassword(loginInfo);
         System.out.println("hello, " + user.getUserName());
-        Menu menu = new Menu();
+        user.setUserProperties(userPropertiesReader.fillUserProperties(loginInfo[2]));
+        System.out.println(user.toString());
         menu.runUserMenu(user);
     }
 

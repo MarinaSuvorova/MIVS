@@ -3,6 +3,7 @@ import Users.Lecturer;
 import Users.Student;
 import Users.User;
 
+import javax.jws.soap.SOAPBinding;
 import java.util.Scanner;
 
 public class Menu {
@@ -39,7 +40,7 @@ public class Menu {
     public void runUserMenu(User user) {
 
         if (user instanceof Admin) {
-            runAdminMenu();
+            runAdminMenu(user);
         } else if (user instanceof Lecturer) {
             runLecturerMenu();
         } else if (user instanceof Student) {
@@ -51,7 +52,7 @@ public class Menu {
     }
 
 
-    private void runAdminMenu() {
+    private void runAdminMenu(User user) {
         System.out.println("1. Edit profile");
         System.out.println("2. View all Courses");
         // View info / Edit / Delete
@@ -60,6 +61,22 @@ public class Menu {
         System.out.println("4. Add new User");
         System.out.println("5. Add new Course");
         System.out.println("6. Exit");
+        try {
+            String userInput = sc.next();
+            switch (Integer.parseInt(userInput)) {
+                case 1:
+                    //Edit profile menu
+                    break;
+                case 2:
+                    app.close();
+                    runApp = false;
+                    break;
+                default:
+                    System.out.println("Wrong input");
+            }
+        } catch (Exception e) {
+            System.out.println("\nWrong number format\n");
+        }
     }
 
     private void runLecturerMenu() {
