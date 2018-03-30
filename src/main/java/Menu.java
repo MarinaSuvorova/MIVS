@@ -9,6 +9,7 @@ import java.util.Scanner;
 public class Menu {
     boolean runApp = true;
     Login app = new Login();
+   DataWriter dataWriter = new DataWriter();
     Scanner sc = new Scanner(System.in);
 
     public void runWelcomeMenu() throws Exception {
@@ -67,7 +68,7 @@ public class Menu {
                 case 1:
                     //Edit profile menu
                     break;
-                case 2:
+                case 6:
                     app.close();
                     runApp = false;
                     break;

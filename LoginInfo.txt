@@ -1,4 +1,4 @@
-Username;Password;ID
-admin;admin;ADM-1000
-maru;12345;LEC-1001
-nice;qwer;STU-1002
+ID;Username;Password;
+ADM-1000;admin;admin;
+LEC-1001;maru;12345;
+STU-1002;nice;qwer;

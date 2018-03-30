@@ -84,7 +84,8 @@ public abstract class User {
         this.password = password;
     }
 
-    public void setUserNameAndPassword(String[] loginInfo) {
+    public void setLoginData(String ID,String[] loginInfo) {
+        this.ID=ID;
         this.userName = loginInfo[0];
         this.password = loginInfo[1];
     }
