@@ -1,0 +1,6 @@
+CourseCode;LEC-ID;Credit;Title;Description;StartDate;
+MAT-800;LEC-1001;3;Mathematics;Basics;2018-04-20;
+HIS-801;LEC-1001;2;History;Europe after WWII;2018-05-08;
+CUL-802;4;LEC-1001;Culture;Modern Culture;2018-04-10;
+POL-802;LEC-1001;3;Politics;Substainable politics;2018-05-02;
+

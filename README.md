@@ -41,7 +41,7 @@ Naujam vartotojui automatiškai priskiriamas unikalus numeris ID (galima generuo
     Vartotojai turintys rolę admin gali
         pridėti/ištrinti/pakeisti course
 
-      code
+      courseCode
       tittle
       desciption
       startDate
@@ -62,7 +62,7 @@ Naujam vartotojui automatiškai priskiriamas unikalus numeris ID (galima generuo
         pridėti course (automatiškai priskiriamas jam)/
         ištrinti/pakeisti jam priklausančius kursus
 
-      code
+      courseCode
       tittle
       desciption
       startDate

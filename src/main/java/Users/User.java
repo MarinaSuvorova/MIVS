@@ -3,14 +3,13 @@ package Users;
 
 import de.vandermeer.asciitable.AsciiTable;
 
+import javax.sql.DataSource;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 public abstract class User {
     private String ID, userName, password, firstName, lastName, email, mobileNumber, gender, address;
     private LocalDate dateOfBirth;
-
-
     enum UserType {ADMIN, LECTURER, STUDENT}
 
 
@@ -51,19 +50,19 @@ public abstract class User {
     }
 
 
-    public void setUserProperties(String[] userProperties) {
-        this.ID = userProperties[0];
-        this.firstName = userProperties[1];
-        this.lastName = userProperties[2];
+    public void setUserProperties(String ID, String[] userProperties) {
+        this.ID = ID;
+        this.firstName = userProperties[0];
+        this.lastName = userProperties[1];
         try {
-            this.dateOfBirth = LocalDate.parse(userProperties[3], DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+            this.dateOfBirth = LocalDate.parse(userProperties[2], DateTimeFormatter.ofPattern("yyyy-MM-dd"));
         } catch (Exception e) {
             System.out.println("Wrong date format");
         }
-        this.email = userProperties[4];
-        this.mobileNumber = userProperties[5];
-        this.gender = userProperties[6];
-        this.address = userProperties[7];
+        this.email = userProperties[3];
+        this.mobileNumber =userProperties[4];
+        this.gender = userProperties[5];
+        this.address = userProperties[6];
     }
 
     public String getUserName() {
@@ -126,12 +125,12 @@ public abstract class User {
         this.email = email;
     }
 
-    public String getMobileNumber() {
+    public String  getMobileNumber() {
         return mobileNumber;
     }
 
     public void setMobileNumber(String mobileNumber) {
-        this.mobileNumber = mobileNumber;
+            this.mobileNumber=mobileNumber;
     }
 
     public String getGender() {
@@ -157,7 +156,10 @@ public abstract class User {
                 mobileNumber+";"+
                 gender+";"+
                 address+";";
-
+    }
+    public String userLoginInfoToFile(){
+        return  userName+";"+
+                password+";";
     }
 
     @Override

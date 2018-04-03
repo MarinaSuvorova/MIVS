@@ -1,13 +1,22 @@
+import Users.User;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.util.HashMap;
+import java.util.Properties;
 
 public class DataStorage {
+    boolean uniqueUsername;
 
-    DataStorage(){
+    DataStorage() {
     }
+
     private static HashMap<String, String> loginInfo = new HashMap<String, String>();
     private static HashMap<String, String> userProperties = new HashMap<String, String>();
+    private static HashMap<String, String> coursesInfo = new HashMap<String, String>();
+    private static HashMap<String, String> studentCourses = new HashMap<String, String>();
+
 
     public void storeData(String fileName, HashMap mapName) {
 
@@ -25,8 +34,12 @@ public class DataStorage {
 
             }
         } catch (Exception e) {
-            System.out.println("storeData failed: "+fileName);
+            System.out.println("storeData failed: " + fileName);
         }
+    }
+
+    public void storeLoginInfo() {
+        storeData("LoginInfo.txt", loginInfo);
     }
 
     public HashMap<String, String> getLoginInfo() {
@@ -35,25 +48,43 @@ public class DataStorage {
 //        }
         return loginInfo;
     }
+    public void storeStudentCourses() {
+        storeData("StudentCourses.txt", studentCourses);
+    }
+
+    public HashMap<String, String> getStudentCourses() {
+//        for (String p : studentCourses.keySet()) {
+//            System.out.println(p + ";" + loginInfo.get(p));
+//        }
+        return studentCourses;
+    }
+    public void storeCoursesInfo() {
+        storeData("Courses.txt", coursesInfo);
+    }
+
+    public HashMap<String, String> getCoursesInfo() {
+//        for (String p : coursesInfo.keySet()) {
+//            System.out.println(p + ";" + loginInfo.get(p));
+//        }
+        return coursesInfo;
+    }
+
+    public boolean isUsernameUnique(String username) {
+        for (String ID : loginInfo.keySet()) {
+            String[] loginData = loginInfo.get(ID).split(";");
+            if (!loginData[0].equals(username)) {
+                this.uniqueUsername = true;
+            } else {
+                this.uniqueUsername = false;
+                break;
+            }
+        }
+        return uniqueUsername;
+    }
+
 
     public void storeUserProperties() {
-
-        try (FileReader fileReader = new FileReader("UserProperties.txt");
-             BufferedReader bufferedReader = new BufferedReader(fileReader)) {
-            String userLine = bufferedReader.readLine();
-            while ((userLine = bufferedReader.readLine()) != null) {
-                String[] userProperty = userLine.split("[;]");
-                String key = userProperty[0];
-                String data = "";
-                for (int i = 1; i < userProperty.length; i++) {
-                    data = data + userProperty[i] + ";";
-                }
-                userProperties.put(key, data);
-
-            }
-        } catch (Exception e) {
-            System.out.println("storeUserProperties failed");
-        }
+        storeData("UserProperties.txt", userProperties);
     }
 
     public HashMap<String, String> getUserProperties() {
@@ -61,6 +92,62 @@ public class DataStorage {
 //            System.out.println(p + ";" + loginInfo.get(p));
 //        }
         return userProperties;
+    }
+
+    public String[] getUserPropertiesByID(String ID) {
+        storeUserProperties();
+        String[] currentUserProperties = userProperties.get(ID).split(";");
+        return currentUserProperties;
 
     }
+
+    public void updateUserPropertiesHashMap(User user) {
+        String key = user.getID();
+        for (String hashKey : userProperties.keySet()) {
+            if (hashKey.equals(key)) {
+                userProperties.put(key, user.userPropertiesToFile());
+            }
+        }
+    }
+
+    public void updateLoginInfoHashMap(User user) {
+        String key = user.getID();
+        for (String hashKey : loginInfo.keySet()) {
+            if (hashKey.equals(key)) {
+                loginInfo.put(key, user.userLoginInfoToFile());
+            }
+        }
+    }
+
+    public void updateMIVSPropertiesID() {
+        String lastID = null;
+        for (String key : loginInfo.keySet()) {
+            String[] splitID = key.split("-");
+            lastID = splitID[1];
+
+        }
+//        String lastID = null;
+//        //update LoginInfo.txt file!!
+//        try (FileReader fileReader = new FileReader("LoginInfo.txt");
+//             BufferedReader bufferedReader = new BufferedReader(fileReader)) {
+//            String line = bufferedReader.readLine();
+//            while ((line = bufferedReader.readLine()) != null) {
+//                String[] info = line.split(";");
+//                String[] fullID = info[2].split("-");
+//                lastID = fullID[1];
+//            }
+//        } catch (Exception e) {
+//            System.out.println(e);
+//        }
+        try (FileWriter fileWriter = new FileWriter("mivs.properties")) {
+
+            Properties p = new Properties();
+            p.setProperty("lastID", lastID);
+            p.store(fileWriter, null);
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+
+
 }

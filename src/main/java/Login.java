@@ -36,65 +36,123 @@ public class Login {
         this.loginDataValid = false;
     }
 
-    public void login() {
-        Scanner sc = new Scanner(System.in);
-        System.out.println("Enter username");
-        String username = sc.next();
-        DataStorage dataStorage = new DataStorage();
-        HashMap<String, String> loginData = new HashMap<String, String>();
-        dataStorage.storeData("LoginInfo.txt",loginData);
-        for (String ID : loginData.keySet()) {
-            String userLogin = loginData.get(ID);
-            String[] loginInfo = userLogin.split(";");
-            if (loginInfo[0].equals(username)) {
-                foundUser = true;
-                System.out.println("Enter password");
-                String password = sc.next();
-                if (loginInfo[1].equals(password)) {
-                    setLoginDataValid(true);
-                    try {
-                        userSignedIn(ID, loginInfo);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    break;
-                } else {
-                    int wrongInput = 1;
+//    public void login() {
+//        Scanner sc = new Scanner(System.in);
+//        System.out.println("Enter username");
+//        String username = sc.next();
+//        DataStorage dataStorage = new DataStorage();
+//        dataStorage.storeLoginInfo();
+//        HashMap<String, String> loginData = dataStorage.getLoginInfo();
+//
+//       for(int i =0;i<loginData.size();i++) {
+//           for (String ID : loginData.keySet()) {
+//               String userLogin = loginData.get(ID);
+//               String[] loginInfo = userLogin.split(";");
+//               if (loginInfo[0].equals(username)) {
+//                   foundUser = true;
+//                   System.out.println("Enter password");
+//                   String password = sc.next();
+//                   if (loginInfo[1].equals(password)) {
+//                       setLoginDataValid(true);
+//                       try {
+//                           userSignedIn(ID, loginInfo);
+//                       } catch (Exception e) {
+//                           e.printStackTrace();
+//                       }
+//                       break;
+//                   } else {
+//                       int wrongInput = 1;
+//
+//                       while ((wrongInput < 3) || (loginDataValid)) {
+//                           System.out.println("\nIncorrect password. \nPlease try again.");
+//                           if (loginInfo[1].equals(sc.next())) {
+//                               setLoginDataValid(true);
+//                               try {
+//                                   userSignedIn(ID, loginInfo);
+//                               } catch (Exception e) {
+//                                   e.printStackTrace();
+//                               }
+//                               break;
+//                           } else {
+//                               wrongInput++;
+//                           }
+//                       }
+//                       if (!loginDataValid) {
+//                           System.out.println("Please try again after 10 sec.");
+//                           Thread sleep = new Thread();
+//                           try {
+//                               sleep.sleep(10000);
+//                           } catch (InterruptedException e) {
+//                               e.printStackTrace();
+//                           }
+//                           break;
+//                       } else {
+//                           break;
+//                       }
+//                   }
+//               }
+//           }
+//       }if (!foundUser) {
+//            System.out.println("\nWrong username. \nPlease try again.\n");
+//            login();
+//        }
+//    }
 
-                    while ((wrongInput < 3) || (loginDataValid)) {
-                        System.out.println("\nIncorrect password. \nPlease try again.");
-                        if (loginInfo[1].equals(sc.next())) {
+    public void login() throws Exception {
+        DataStorage dataStorage = new DataStorage();
+        dataStorage.storeLoginInfo();
+        HashMap<String,String>loginData = dataStorage.getLoginInfo();
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Enter login");
+        String login = sc.next();
+        for (String ID:loginData.keySet()) {
+                String[] loginInfo = loginData.get(ID).split(";");
+                for (int i = 0; i < loginInfo.length; i++) {
+                    if (loginInfo[0].equals(login)) {
+                        foundUser = true;
+                        System.out.println("Enter password");
+                        String password = sc.next();
+                        if (loginInfo[1].equals(password)) {
                             setLoginDataValid(true);
-                            try {
-                                userSignedIn(ID, loginInfo);
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
+                            userSignedIn(ID, loginInfo);
                             break;
                         } else {
-                            wrongInput++;
+                            int wrongInput = 1;
+
+                            while ((wrongInput < 3) || (loginDataValid)) {
+                                System.out.println("\nIncorrect password. \nPlease try again.");
+                                if (loginInfo[1].equals(sc.next())) {
+                                    setLoginDataValid(true);
+                                    userSignedIn(ID, loginInfo);
+                                    break;
+                                } else {
+                                    wrongInput++;
+                                }
+                            }
+                            if (!loginDataValid) {
+                                System.out.println("Please try again after 5 sec.");
+                                Thread sleep = new Thread();
+                                sleep.sleep(5000);
+                                break;
+                            } else {
+
+                                break;
+                            }
                         }
-                    }
-                    if (!loginDataValid) {
-                        System.out.println("Please try again after 10 sec.");
-                        Thread sleep = new Thread();
-                        try {
-                            sleep.sleep(10000);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                        break;
-                    } else {
-                        break;
                     }
                 }
             }
+            if (!foundUser) {
+                System.out.println("\nWrong username. \nPlease try again.\n");
+                login();
+            }
         }
-    }
 
 
     public void userSignedIn(String ID, String[] loginInfo) throws Exception {
         Menu menu = new Menu();
+        DataStorage dataStorage = new DataStorage();
+        String [] userProperties = dataStorage.getUserPropertiesByID(ID);
         String[] userRole = ID.split("-");
         User user = null;
         switch (userRole[0]) {
@@ -111,33 +169,10 @@ public class Login {
                 return;
         }
         user.setLoginData(ID, loginInfo);
+        user.setUserProperties(ID,userProperties);
+//        System.out.println(user.toString());
         System.out.println("hello, " + user.getUserName());
         menu.runUserMenu(user);
     }
 
-
-    // GAL PRIE USERIO KŪRIMO
-    public void updateMIVSPropertiesID() {
-        String lastID = null;
-        //update LoginInfo.txt file!!
-        try (FileReader fileReader = new FileReader("LoginInfo.txt");
-             BufferedReader bufferedReader = new BufferedReader(fileReader)) {
-            String line = bufferedReader.readLine();
-            while ((line = bufferedReader.readLine()) != null) {
-                String[] info = line.split(";");
-                String[] fullID = info[2].split("-");
-                lastID = fullID[1];
-            }
-        } catch (Exception e) {
-            System.out.println(e);
-        }
-        try (FileWriter fileWriter = new FileWriter("mivs.properties")) {
-
-            Properties p = new Properties();
-            p.setProperty("lastID", lastID);
-            p.store(fileWriter, null);
-        } catch (Exception e) {
-            System.out.println(e);
-        }
-    }
 }
