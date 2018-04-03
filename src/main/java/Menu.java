@@ -70,6 +70,10 @@ public class Menu {
                     editProfileMenu(user);
                     //Edit profile menu
                     break;
+                case 2:
+                    dataStorage.storeCoursesInfo();
+                 dataStorage.getCoursesInfo();
+                    break;
                 case 6:
                     app.close();
                     runApp = false;
@@ -141,7 +145,6 @@ public class Menu {
     }
 
     private void editProfileMenu(User user) {
-        //  DataStorage dataStorage = new DataStorage();
         while (runApp) {
             System.out.println(user.toString());
             System.out.println("Choose what you want to change:");
@@ -251,7 +254,5 @@ public class Menu {
             editProfileMenu(user);
         }
     }
-
-
 }
 

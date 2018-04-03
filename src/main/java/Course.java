@@ -95,4 +95,5 @@ public class Course {
     public void setLecturerId(String lecturerId) {
         this.lecturerId = lecturerId;
     }
+
 }

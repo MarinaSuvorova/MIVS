@@ -63,10 +63,10 @@ public class DataStorage {
     }
 
     public HashMap<String, String> getCoursesInfo() {
-//        for (String p : coursesInfo.keySet()) {
-//            System.out.println(p + ";" + loginInfo.get(p));
-//        }
-        return coursesInfo;
+        for (String p : coursesInfo.keySet()) {
+            System.out.println(p + ";" + coursesInfo.get(p));
+        }
+      return coursesInfo;
     }
 
     public boolean isUsernameUnique(String username) {
