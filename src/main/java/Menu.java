@@ -137,6 +137,9 @@ public class Menu {
                 case 1:
                     editProfileMenu(user);
                     break;
+                case 2:
+                    dataStorage.printLecturersCoursesTable(user.getID());
+                    break;
                 case 5:
                     app.close();
                     runApp = false;

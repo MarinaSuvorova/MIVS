@@ -7,7 +7,7 @@ import java.util.HashMap;
 public class DataStorage {
     boolean uniqueUsername;
 
-      private static HashMap<String, String> loginInfo = new HashMap<String, String>();
+    private static HashMap<String, String> loginInfo = new HashMap<String, String>();
     private static HashMap<String, String> userProperties = new HashMap<String, String>();
     private static HashMap<String, String> coursesInfo = new HashMap<String, String>();
     private static HashMap<String, String> studentCourses = new HashMap<String, String>();
@@ -92,7 +92,6 @@ public class DataStorage {
         storeUserProperties();
         String[] currentUserProperties = userProperties.get(ID).split(";");
         return currentUserProperties;
-
     }
 
     public void updateUserPropertiesHashMap(User user) {
@@ -148,16 +147,16 @@ public class DataStorage {
     }
 
     public void printUsersTable() {
-         String lineSeparator = new String(new char[218]).replace('\0', '-');
+        String lineSeparator = new String(new char[218]).replace('\0', '-');
         System.out.println(lineSeparator);
-        System.out.printf("| %-8s | %-9s | %-20s | %-10s | %-20s | %-20s | %-13s | %-30s| %-15s | %-6s | %-35s |", "USER ID", "USER ROLE","USERNAME","PASSWORD", "FIRST NAME", "LAST NAME", "DATE OF BIRTH", "EMAIL", "MOBILE NUMBER", "GENDER", "ADDRESS");
+        System.out.printf("| %-8s | %-9s | %-20s | %-10s | %-20s | %-20s | %-13s | %-30s| %-15s | %-6s | %-35s |", "USER ID", "USER ROLE", "USERNAME", "PASSWORD", "FIRST NAME", "LAST NAME", "DATE OF BIRTH", "EMAIL", "MOBILE NUMBER", "GENDER", "ADDRESS");
         System.out.println();
         System.out.println(lineSeparator);
         for (String ID : userProperties.keySet()) {
             String userRole = defineUserRole(ID);
             String username = (loginInfo.get(ID).split(";")[0]);
             int passwordLength = loginInfo.get(ID).split(";")[1].length();
-            String password =new String(new char[passwordLength]).replace('\0', '*');
+            String password = new String(new char[passwordLength]).replace('\0', '*');
             String firstName = (userProperties.get(ID).split(";")[0]);
             String lastName = (userProperties.get(ID).split(";")[1]);
             String dateOfBirth = (userProperties.get(ID).split(";")[2]);
@@ -165,10 +164,11 @@ public class DataStorage {
             String mobilenumber = (userProperties.get(ID).split(";")[4]);
             String gender = (userProperties.get(ID).split(";")[5]);
             String address = (userProperties.get(ID).split(";")[6]);
-            System.out.printf("| %-8s | %-9s | %-20s | %-10s | %-20s | %-20s | %-13s | %-30s| %-15s | %-6s | %-35s |\n", ID, userRole, username,password, firstName, lastName, dateOfBirth, email, mobilenumber, gender, address);
+            System.out.printf("| %-8s | %-9s | %-20s | %-10s | %-20s | %-20s | %-13s | %-30s| %-15s | %-6s | %-35s |\n", ID, userRole, username, password, firstName, lastName, dateOfBirth, email, mobilenumber, gender, address);
 
         }
     }
+
     private String defineUserRole(String ID) {
         String[] role = ID.split("-");
         String userRole;
@@ -179,13 +179,15 @@ public class DataStorage {
 
         } else {
             userRole = "student";
-        }return userRole;
+        }
+        return userRole;
     }
+
     public void printCoursesTable() {
         storeCoursesInfo();
         String lineSeparator = new String(new char[245]).replace('\0', '-');
         System.out.println(lineSeparator);
-        System.out.printf("| %-11s | %-11s | %-6s | %-40s | %-145s | %-13s |\n", "COURSE CODE", "LECTURER ID","CREDIT","TITLE", "DESCRIPTION", "START DATE");
+        System.out.printf("| %-11s | %-11s | %-6s | %-40s | %-145s | %-13s |\n", "COURSE CODE", "LECTURER ID", "CREDIT", "TITLE", "DESCRIPTION", "START DATE");
         System.out.println(lineSeparator);
         for (String courseCode : coursesInfo.keySet()) {
             String lecID = (coursesInfo.get(courseCode).split(";")[0]);
@@ -193,8 +195,46 @@ public class DataStorage {
             String title = (coursesInfo.get(courseCode).split(";")[2]);
             String description = (coursesInfo.get(courseCode).split(";")[3]);
             String startDate = (coursesInfo.get(courseCode).split(";")[4]);
-            System.out.printf("| %-11s | %-11s | %-6s | %-40s | %-145s | %-13s |\n", courseCode, lecID, credit ,title, description, startDate);
+            System.out.printf("| %-11s | %-11s | %-6s | %-40s | %-145s | %-13s |\n", courseCode, lecID, credit, title, description, startDate);
+        }
+        System.out.println(lineSeparator);
+    }
 
+    public void printLecturersCoursesTable(String ID) {
+        storeCoursesInfo();
+        String lineSeparator = new String(new char[245]).replace('\0', '-');
+        System.out.println(lineSeparator);
+        System.out.printf("| %-11s | %-6s | %-40s | %-145s | %-13s |\n", "COURSE CODE", "CREDIT", "TITLE", "DESCRIPTION", "START DATE");
+        System.out.println(lineSeparator);
+        for (String courseCode : coursesInfo.keySet()) {
+            String lecID = (coursesInfo.get(courseCode).split(";")[0]);
+            String credit = (coursesInfo.get(courseCode).split(";")[1]);
+            String title = (coursesInfo.get(courseCode).split(";")[2]);
+            String description = (coursesInfo.get(courseCode).split(";")[3]);
+            String startDate = (coursesInfo.get(courseCode).split(";")[4]);
+            if (lecID.equals(ID)) {
+                System.out.printf("| %-11s | %-6s | %-40s | %-145s | %-13s |\n", courseCode, credit, title, description, startDate);
+
+            }
+        }
+        System.out.println(lineSeparator);
+    }
+    public void printStudentsCoursesTable(String ID) {
+        storeCoursesInfo();
+        String lineSeparator = new String(new char[245]).replace('\0', '-');
+        System.out.println(lineSeparator);
+        System.out.printf("| %-11s | %-6s | %-40s | %-145s | %-13s |\n", "COURSE CODE", "CREDIT", "TITLE", "DESCRIPTION", "START DATE");
+        System.out.println(lineSeparator);
+        for (String courseCode : coursesInfo.keySet()) {
+            String lecID = (coursesInfo.get(courseCode).split(";")[0]);
+            String credit = (coursesInfo.get(courseCode).split(";")[1]);
+            String title = (coursesInfo.get(courseCode).split(";")[2]);
+            String description = (coursesInfo.get(courseCode).split(";")[3]);
+            String startDate = (coursesInfo.get(courseCode).split(";")[4]);
+            if (lecID.equals(ID)) {
+                System.out.printf("| %-11s | %-6s | %-40s | %-145s | %-13s |\n", courseCode, credit, title, description, startDate);
+
+            }
         }
         System.out.println(lineSeparator);
     }
