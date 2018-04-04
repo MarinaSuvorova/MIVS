@@ -74,6 +74,14 @@ public class Menu {
                     dataStorage.storeCoursesInfo();
                  dataStorage.getCoursesInfo();
                     break;
+                case 4:
+
+                    System.out.println("Enter username");
+                    System.out.println("Enter password");
+                    System.out.println("Enter first name");
+                    System.out.println("Enter last name");
+                    dataStorage.setLastID();
+                    System.out.println(dataStorage.getLastID()+1);
                 case 6:
                     app.close();
                     runApp = false;

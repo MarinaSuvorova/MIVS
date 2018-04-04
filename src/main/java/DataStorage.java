@@ -16,6 +16,7 @@ public class DataStorage {
     private static HashMap<String, String> userProperties = new HashMap<String, String>();
     private static HashMap<String, String> coursesInfo = new HashMap<String, String>();
     private static HashMap<String, String> studentCourses = new HashMap<String, String>();
+    private int lastID;
 
 
     public void storeData(String fileName, HashMap mapName) {
@@ -48,6 +49,7 @@ public class DataStorage {
 //        }
         return loginInfo;
     }
+
     public void storeStudentCourses() {
         storeData("StudentCourses.txt", studentCourses);
     }
@@ -58,6 +60,7 @@ public class DataStorage {
 //        }
         return studentCourses;
     }
+
     public void storeCoursesInfo() {
         storeData("Courses.txt", coursesInfo);
     }
@@ -66,7 +69,7 @@ public class DataStorage {
         for (String p : coursesInfo.keySet()) {
             System.out.println(p + ";" + coursesInfo.get(p));
         }
-      return coursesInfo;
+        return coursesInfo;
     }
 
     public boolean isUsernameUnique(String username) {
@@ -119,35 +122,19 @@ public class DataStorage {
         }
     }
 
-    public void updateMIVSPropertiesID() {
-        String lastID = null;
+    public void setLastID() {
         for (String key : loginInfo.keySet()) {
             String[] splitID = key.split("-");
-            lastID = splitID[1];
-
-        }
-//        String lastID = null;
-//        //update LoginInfo.txt file!!
-//        try (FileReader fileReader = new FileReader("LoginInfo.txt");
-//             BufferedReader bufferedReader = new BufferedReader(fileReader)) {
-//            String line = bufferedReader.readLine();
-//            while ((line = bufferedReader.readLine()) != null) {
-//                String[] info = line.split(";");
-//                String[] fullID = info[2].split("-");
-//                lastID = fullID[1];
-//            }
-//        } catch (Exception e) {
-//            System.out.println(e);
-//        }
-        try (FileWriter fileWriter = new FileWriter("mivs.properties")) {
-
-            Properties p = new Properties();
-            p.setProperty("lastID", lastID);
-            p.store(fileWriter, null);
-        } catch (Exception e) {
-            System.out.println(e);
+            try {
+                if(this.lastID<Integer.parseInt(splitID[1])){
+                this.lastID = Integer.parseInt(splitID[1]);
+            } }catch (Exception e) {
+                System.out.println(e);
+            }
         }
     }
 
-
+    public int getLastID() {
+        return lastID;
+    }
 }

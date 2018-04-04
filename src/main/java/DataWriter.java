@@ -4,6 +4,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.util.HashMap;
+import java.util.Properties;
 
 public class DataWriter {
     DataStorage dataStorage = new DataStorage();
@@ -41,10 +42,13 @@ public class DataWriter {
         }
     }
 
+
+
     public void updateFiles(User user) {
         dataStorage.updateUserPropertiesHashMap(user);
         dataStorage.updateLoginInfoHashMap(user);
         updateUserProperties();
         updateLoginInfo();
     }
+
 }
