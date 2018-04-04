@@ -80,7 +80,7 @@ public class Menu {
                     System.out.println("Enter first name");
                     System.out.println("Enter last name");
                     dataStorage.setLastID();
-                    System.out.println(dataStorage.getLastID()+1);
+                    System.out.println(dataStorage.getLastID() + 1);
                 case 6:
                     app.close();
                     runApp = false;
@@ -108,14 +108,17 @@ public class Menu {
                     case 1:
                         editCourseMenu(courseCode);
                         break;
-                    case 2: 
+                    case 2:
                         dataStorage.getCoursesInfo().remove(courseCode);
                         break;
-                        default:
-                            System.out.println("\nWrong input\n");
-                            break;}}catch (Exception e){
+                    default:
+                        System.out.println("\nWrong input\n");
+                        break;
+                }
+            } catch (Exception e) {
                 System.out.println("\nWrong number format\n");
-        }} else {
+            }
+        } else {
             System.out.println("Course ");
         }
         dataWriter.updateCoursesInfo();
@@ -187,16 +190,8 @@ public class Menu {
     private void editProfileMenu(User user) {
         while (runApp) {
             System.out.println(user.toString());
-            System.out.println("Choose what you want to change:");
-            System.out.println("1. username");
-            System.out.println("2. password");
-            System.out.println("3. first name");
-            System.out.println("4. last name");
-            System.out.println("5. date of birth");
-            System.out.println("6. email address");
-            System.out.println("7. mobile number");
-            System.out.println("8. gender");
-            System.out.println("9. address");
+            System.out.println("\nChoose what you want to change:");
+            System.out.println("1. username   2. password   3. first name   4. last name   5. date of birth   6. email address   7. mobile number   8. gender  9. address");
             System.out.println();
             System.out.println("10. Back to main menu");
             try {

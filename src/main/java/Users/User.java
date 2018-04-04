@@ -8,7 +8,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 public abstract class User {
-    private String ID, userName, password, firstName, lastName, email, mobileNumber, gender, address;
+    private String ID, userName, password, firstName, lastName, email, mobileNumber, gender, address, userRole;
     private LocalDate dateOfBirth;
 
     enum UserType {ADMIN, LECTURER, STUDENT}
@@ -50,6 +50,24 @@ public abstract class User {
         this.ID = ID;
     }
 
+    public String getUserRole() {
+        return userRole;
+    }
+
+    public void setUserRole(String userRole) {
+        String[] role = ID.split("-");
+        switch (role[0]) {
+            case "ADM":
+                this.userRole = "admin";
+                break;
+            case "LEC":
+                this.userRole = "lecturer";
+            case "STU":
+                this.userRole = "student";
+            default:
+                this.userRole = "student";
+        }
+    }
 
     public void setUserProperties(String ID, String[] userProperties) {
         this.ID = ID;
@@ -167,10 +185,14 @@ public abstract class User {
 
     @Override
     public String toString() {
-        System.out.format("|%10s|%10s%16s", userName, password, firstName);
-
-        System.out.println();
+        String lineSeparator = new String(new char[218]).replace('\0', '-');
+        System.out.println(lineSeparator);
+        System.out.printf("| %-8s | %-9s | %-20s | %-10s | %-20s | %-20s | %-13s | %-30s| %-15s | %-6s | %-35s |\n", "USER ID", "USER ROLE", "USERNAME", "PASSWORD", "FIRST NAME", "LAST NAME", "DATE OF BIRTH", "EMAIL", "MOBILE NUMBER", "GENDER", "ADDRESS");
+        System.out.println(lineSeparator);
+        System.out.printf("| %-8s | %-9s | %-20s | %-10s | %-20s | %-20s | %-13s | %-30s| %-15s | %-6s | %-35s |\n", ID,userRole, userName, password, firstName, lastName, dateOfBirth, email, mobileNumber, gender, address);
+        System.out.println(lineSeparator);
         return
+
                 "User{" +
                         "ID: " + ID +
                         ", userName: " + userName +
