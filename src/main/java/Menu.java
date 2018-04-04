@@ -71,11 +71,10 @@ public class Menu {
                     //Edit profile menu
                     break;
                 case 2:
-                    dataStorage.storeCoursesInfo();
-                 dataStorage.getCoursesInfo();
+                    dataStorage.printCoursesTable();
+                    coursesMenu();
                     break;
                 case 4:
-
                     System.out.println("Enter username");
                     System.out.println("Enter password");
                     System.out.println("Enter first name");
@@ -94,6 +93,35 @@ public class Menu {
         } catch (Exception e) {
             System.out.println("\nWrong number format\n");
         }
+    }
+
+    private void coursesMenu() {
+        System.out.println("Choose course (enter COURSE CODE)");
+        String courseCode = sc.next();
+        courseCode = courseCode.toUpperCase();
+        if (dataStorage.getCoursesInfo().containsKey(courseCode)) {
+            System.out.println("Chosen Course: " + dataStorage.getCoursesInfo().get(courseCode).split(";")[2]);
+            System.out.println("1. Edit Course \n2. Delete Course");
+            try {
+                String userInput = sc.next();
+                switch (Integer.parseInt(userInput)) {
+                    case 1:
+                        editCourseMenu(courseCode);
+                        break;
+                    case 2: 
+                        dataStorage.getCoursesInfo().remove(courseCode);
+                        break;
+                        default:
+                            System.out.println("\nWrong input\n");
+                            break;}}catch (Exception e){
+                System.out.println("\nWrong number format\n");
+        }} else {
+            System.out.println("Course ");
+        }
+        dataWriter.updateCoursesInfo();
+    }
+
+    private void editCourseMenu(String courseCode) {
     }
 
     private void runLecturerMenu(User user) {
@@ -151,6 +179,7 @@ public class Menu {
             System.out.println("\nWrong number format\n");
         }
     }
+
 
     private void editProfileMenu(User user) {
         while (runApp) {

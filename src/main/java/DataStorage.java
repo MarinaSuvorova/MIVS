@@ -2,21 +2,17 @@ import Users.User;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.util.HashMap;
-import java.util.Properties;
 
 public class DataStorage {
     boolean uniqueUsername;
 
-    DataStorage() {
-    }
-
-    private static HashMap<String, String> loginInfo = new HashMap<String, String>();
+      private static HashMap<String, String> loginInfo = new HashMap<String, String>();
     private static HashMap<String, String> userProperties = new HashMap<String, String>();
     private static HashMap<String, String> coursesInfo = new HashMap<String, String>();
     private static HashMap<String, String> studentCourses = new HashMap<String, String>();
     private int lastID;
+    private int lastCourseCode;
 
 
     public void storeData(String fileName, HashMap mapName) {
@@ -66,9 +62,6 @@ public class DataStorage {
     }
 
     public HashMap<String, String> getCoursesInfo() {
-        for (String p : coursesInfo.keySet()) {
-            System.out.println(p + ";" + coursesInfo.get(p));
-        }
         return coursesInfo;
     }
 
@@ -91,9 +84,7 @@ public class DataStorage {
     }
 
     public HashMap<String, String> getUserProperties() {
-//        for (String p : loginInfo.keySet()) {
-//            System.out.println(p + ";" + loginInfo.get(p));
-//        }
+
         return userProperties;
     }
 
@@ -126,9 +117,10 @@ public class DataStorage {
         for (String key : loginInfo.keySet()) {
             String[] splitID = key.split("-");
             try {
-                if(this.lastID<Integer.parseInt(splitID[1])){
-                this.lastID = Integer.parseInt(splitID[1]);
-            } }catch (Exception e) {
+                if (this.lastID < Integer.parseInt(splitID[1])) {
+                    this.lastID = Integer.parseInt(splitID[1]);
+                }
+            } catch (Exception e) {
                 System.out.println(e);
             }
         }
@@ -136,5 +128,74 @@ public class DataStorage {
 
     public int getLastID() {
         return lastID;
+    }
+
+    public void setLastCourseCode() {
+        for (String key : coursesInfo.keySet()) {
+            String[] splitCourseCode = key.split("-");
+            try {
+                if (this.lastCourseCode < Integer.parseInt(splitCourseCode[1])) {
+                    this.lastCourseCode = Integer.parseInt(splitCourseCode[1]);
+                }
+            } catch (Exception e) {
+                System.out.println(e);
+            }
+        }
+    }
+
+    public int getLastCourseCode() {
+        return lastCourseCode;
+    }
+
+    public void printUsersTable() {
+         String lineSeparator = new String(new char[218]).replace('\0', '-');
+        System.out.println(lineSeparator);
+        System.out.printf("| %-8s | %-9s | %-20s | %-10s | %-20s | %-20s | %-13s | %-30s| %-15s | %-6s | %-35s |", "USER ID", "USER ROLE","USERNAME","PASSWORD", "FIRST NAME", "LAST NAME", "DATE OF BIRTH", "EMAIL", "MOBILE NUMBER", "GENDER", "ADDRESS");
+        System.out.println();
+        System.out.println(lineSeparator);
+        for (String ID : userProperties.keySet()) {
+            String userRole = defineUserRole(ID);
+            String username = (loginInfo.get(ID).split(";")[0]);
+            int passwordLength = loginInfo.get(ID).split(";")[1].length();
+            String password =new String(new char[passwordLength]).replace('\0', '*');
+            String firstName = (userProperties.get(ID).split(";")[0]);
+            String lastName = (userProperties.get(ID).split(";")[1]);
+            String dateOfBirth = (userProperties.get(ID).split(";")[2]);
+            String email = (userProperties.get(ID).split(";")[3]);
+            String mobilenumber = (userProperties.get(ID).split(";")[4]);
+            String gender = (userProperties.get(ID).split(";")[5]);
+            String address = (userProperties.get(ID).split(";")[6]);
+            System.out.printf("| %-8s | %-9s | %-20s | %-10s | %-20s | %-20s | %-13s | %-30s| %-15s | %-6s | %-35s |\n", ID, userRole, username,password, firstName, lastName, dateOfBirth, email, mobilenumber, gender, address);
+
+        }
+    }
+    private String defineUserRole(String ID) {
+        String[] role = ID.split("-");
+        String userRole;
+        if (role[0].equals("ADM")) {
+            userRole = "admin";
+        } else if (role[0].equals("LEC")) {
+            userRole = "lecturer";
+
+        } else {
+            userRole = "student";
+        }return userRole;
+    }
+    public void printCoursesTable() {
+        storeCoursesInfo();
+        String lineSeparator = new String(new char[245]).replace('\0', '-');
+        System.out.println(lineSeparator);
+        System.out.printf("| %-11s | %-11s | %-6s | %-40s | %-145s | %-13s |\n", "COURSE CODE", "LECTURER ID","CREDIT","TITLE", "DESCRIPTION", "START DATE");
+        System.out.println(lineSeparator);
+        for (String courseCode : coursesInfo.keySet()) {
+            String lecID = (coursesInfo.get(courseCode).split(";")[0]);
+            String credit = (coursesInfo.get(courseCode).split(";")[1]);
+            String title = (coursesInfo.get(courseCode).split(";")[2]);
+            String description = (coursesInfo.get(courseCode).split(";")[3]);
+            String startDate = (coursesInfo.get(courseCode).split(";")[4]);
+            System.out.printf("| %-11s | %-11s | %-6s | %-40s | %-145s | %-13s |\n", courseCode, lecID, credit ,title, description, startDate);
+
+        }
+        System.out.println(lineSeparator);
     }
 }

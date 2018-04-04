@@ -41,7 +41,20 @@ public class DataWriter {
             System.out.println(e);
         }
     }
-
+    public void updateCoursesInfo() {
+        HashMap<String, String> coursesInfo = dataStorage.getCoursesInfo();
+        File updateFile = new File("Courses.txt");
+        try (FileWriter fileWriter = new FileWriter(updateFile);
+             BufferedWriter bufferedWriter = new BufferedWriter(fileWriter)) {
+            bufferedWriter.write("CourseCode;lecID;Credit;Title;Description;StartDate;\n");
+            for (String courseCode : coursesInfo.keySet()) {
+                bufferedWriter.write(courseCode + ";" + coursesInfo.get(courseCode));
+                bufferedWriter.newLine();
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
 
 
     public void updateFiles(User user) {

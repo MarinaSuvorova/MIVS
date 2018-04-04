@@ -10,6 +10,7 @@ import java.time.format.DateTimeFormatter;
 public abstract class User {
     private String ID, userName, password, firstName, lastName, email, mobileNumber, gender, address;
     private LocalDate dateOfBirth;
+
     enum UserType {ADMIN, LECTURER, STUDENT}
 
 
@@ -26,7 +27,7 @@ public abstract class User {
     public User() {
     }
 
-    public User(String firstName, String lastName,  String dateOfBirth, String email, String mobileNumber, String gender, String address) {
+    public User(String firstName, String lastName, String dateOfBirth, String email, String mobileNumber, String gender, String address) {
         this.firstName = firstName;
         this.lastName = lastName;
         try {
@@ -38,7 +39,7 @@ public abstract class User {
         this.mobileNumber = mobileNumber;
         this.gender = gender;
         this.address = address;
-            }
+    }
 
 
     public String getID() {
@@ -60,7 +61,7 @@ public abstract class User {
             System.out.println("Wrong date format");
         }
         this.email = userProperties[3];
-        this.mobileNumber =userProperties[4];
+        this.mobileNumber = userProperties[4];
         this.gender = userProperties[5];
         this.address = userProperties[6];
     }
@@ -83,8 +84,8 @@ public abstract class User {
         this.password = password;
     }
 
-    public void setLoginData(String ID,String[] loginInfo) {
-        this.ID=ID;
+    public void setLoginData(String ID, String[] loginInfo) {
+        this.ID = ID;
         this.userName = loginInfo[0];
         this.password = loginInfo[1];
     }
@@ -125,12 +126,12 @@ public abstract class User {
         this.email = email;
     }
 
-    public String  getMobileNumber() {
+    public String getMobileNumber() {
         return mobileNumber;
     }
 
     public void setMobileNumber(String mobileNumber) {
-            this.mobileNumber=mobileNumber;
+        this.mobileNumber = mobileNumber;
     }
 
     public String getGender() {
@@ -148,35 +149,40 @@ public abstract class User {
     public void setAddress(String address) {
         this.address = address;
     }
-    public String userPropertiesToFile(){
-        return  firstName+";"+
-                lastName+";"+
-                dateOfBirth+";"+
-                email+";"+
-                mobileNumber+";"+
-                gender+";"+
-                address+";";
+
+    public String userPropertiesToFile() {
+        return firstName + ";" +
+                lastName + ";" +
+                dateOfBirth + ";" +
+                email + ";" +
+                mobileNumber + ";" +
+                gender + ";" +
+                address + ";";
     }
-    public String userLoginInfoToFile(){
-        return  userName+";"+
-                password+";";
+
+    public String userLoginInfoToFile() {
+        return userName + ";" +
+                password + ";";
     }
 
     @Override
     public String toString() {
+        System.out.format("|%10s|%10s%16s", userName, password, firstName);
 
-        return "User{" +
-                "ID: " + ID +
-                ", userName: " + userName +
-                ", password: " + password +
-                ", firstName: " + firstName +
-                ", lastName: " + lastName +
-                ", dateOfBirth: " + dateOfBirth +
-                ", email: " + email +
-                ", mobileNumber: " + mobileNumber +
-                ", gender: " + gender +
-                ", address: " + address +
-                '}';
+        System.out.println();
+        return
+                "User{" +
+                        "ID: " + ID +
+                        ", userName: " + userName +
+                        ", password: " + password +
+                        ", firstName: " + firstName +
+                        ", lastName: " + lastName +
+                        ", dateOfBirth: " + dateOfBirth +
+                        ", email: " + email +
+                        ", mobileNumber: " + mobileNumber +
+                        ", gender: " + gender +
+                        ", address: " + address +
+                        '}';
 
     }
 }
