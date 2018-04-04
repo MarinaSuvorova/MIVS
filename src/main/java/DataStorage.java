@@ -167,6 +167,7 @@ public class DataStorage {
             System.out.printf("| %-8s | %-9s | %-20s | %-10s | %-20s | %-20s | %-13s | %-30s| %-15s | %-6s | %-35s |\n", ID, userRole, username, password, firstName, lastName, dateOfBirth, email, mobilenumber, gender, address);
 
         }
+        System.out.println(lineSeparator);
     }
 
     private String defineUserRole(String ID) {
@@ -181,6 +182,9 @@ public class DataStorage {
             userRole = "student";
         }
         return userRole;
+    }
+    public void printAllLecturers(){
+
     }
 
     public void printCoursesTable() {

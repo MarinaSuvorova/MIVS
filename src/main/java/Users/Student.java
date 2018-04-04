@@ -6,16 +6,11 @@ public class Student extends User {
     UserType userType = UserType.STUDENT;
     private int TotalNumberOfCredits;
 
-    public Student(){}
-
-    public Student(String firstName, String lastName, String dateOfBirth, String email, String mobileNumber, String gender, String address) {
+    public Student(String firstName, String lastName, LocalDate dateOfBirth, String email, String mobileNumber, String gender, String address, UserType userType) {
         super(firstName, lastName, dateOfBirth, email, mobileNumber, gender, address);
+        this.userType = userType;
     }
-
-
-    public UserType getUserType() {
-        return userType;
-    }
+    public Student() {}
 
     public int getTotalNumberOfCredits() {
         return TotalNumberOfCredits;

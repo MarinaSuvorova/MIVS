@@ -13,8 +13,6 @@ public class Lecturer extends User {
 
 
 
-    public UserType getUserType() {
-        return userType;
-    }
+
 
 }

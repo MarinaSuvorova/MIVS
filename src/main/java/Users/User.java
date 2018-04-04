@@ -1,29 +1,24 @@
 package Users;
 
 
-import de.vandermeer.asciitable.AsciiTable;
-
-import javax.sql.DataSource;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 public abstract class User {
-    private String ID, userName, password, firstName, lastName, email, mobileNumber, gender, address, userRole;
+    private String ID, userName, password, firstName, lastName, email, mobileNumber, gender, address;
     private LocalDate dateOfBirth;
 
     enum UserType {ADMIN, LECTURER, STUDENT}
 
-
-    //
-//    public User(String firstName, String lastName, LocalDate dateOfBirth, String email, String mobileNumber, String gender, String address) {
-//        this.firstName = firstName;
-//        this.lastName = lastName;
-//        this.dateOfBirth = dateOfBirth;
-//        this.email = email;
-//        this.mobileNumber = mobileNumber;
-//        this.gender = gender;
-//        this.address = address;
-//    }
+    public User(String firstName, String lastName, LocalDate dateOfBirth, String email, String mobileNumber, String gender, String address) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.dateOfBirth = dateOfBirth;
+        this.email = email;
+        this.mobileNumber = mobileNumber;
+        this.gender = gender;
+        this.address = address;
+    }
     public User() {
     }
 
@@ -50,24 +45,6 @@ public abstract class User {
         this.ID = ID;
     }
 
-    public String getUserRole() {
-        return userRole;
-    }
-
-    public void setUserRole(String userRole) {
-        String[] role = ID.split("-");
-        switch (role[0]) {
-            case "ADM":
-                this.userRole = "admin";
-                break;
-            case "LEC":
-                this.userRole = "lecturer";
-            case "STU":
-                this.userRole = "student";
-            default:
-                this.userRole = "student";
-        }
-    }
 
     public void setUserProperties(String ID, String[] userProperties) {
         this.ID = ID;
@@ -183,28 +160,17 @@ public abstract class User {
                 password + ";";
     }
 
+
     @Override
     public String toString() {
-        String lineSeparator = new String(new char[218]).replace('\0', '-');
+        String lineSeparator = new String(new char[219]).replace('\0', '-');
         System.out.println(lineSeparator);
         System.out.printf("| %-8s | %-9s | %-20s | %-10s | %-20s | %-20s | %-13s | %-30s| %-15s | %-6s | %-35s |\n", "USER ID", "USER ROLE", "USERNAME", "PASSWORD", "FIRST NAME", "LAST NAME", "DATE OF BIRTH", "EMAIL", "MOBILE NUMBER", "GENDER", "ADDRESS");
         System.out.println(lineSeparator);
-        System.out.printf("| %-8s | %-9s | %-20s | %-10s | %-20s | %-20s | %-13s | %-30s| %-15s | %-6s | %-35s |\n", ID,userRole, userName, password, firstName, lastName, dateOfBirth, email, mobileNumber, gender, address);
-        System.out.println(lineSeparator);
+        System.out.printf("| %-8s | %-9s | %-20s | %-10s | %-20s | %-20s | %-13s | %-30s| %-15s | %-6s | %-35s |\n", ID, "define", userName, password, firstName, lastName, dateOfBirth, email, mobileNumber, gender, address);
         return
+                lineSeparator;
 
-                "User{" +
-                        "ID: " + ID +
-                        ", userName: " + userName +
-                        ", password: " + password +
-                        ", firstName: " + firstName +
-                        ", lastName: " + lastName +
-                        ", dateOfBirth: " + dateOfBirth +
-                        ", email: " + email +
-                        ", mobileNumber: " + mobileNumber +
-                        ", gender: " + gender +
-                        ", address: " + address +
-                        '}';
 
     }
 }
