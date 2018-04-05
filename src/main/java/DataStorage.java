@@ -223,6 +223,7 @@ public class DataStorage {
         }
         System.out.println(lineSeparator);
     }
+
     public void printStudentsCoursesTable(String ID) {
         storeCoursesInfo();
         String lineSeparator = new String(new char[245]).replace('\0', '-');

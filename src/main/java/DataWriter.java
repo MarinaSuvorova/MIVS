@@ -62,6 +62,8 @@ public class DataWriter {
         dataStorage.updateLoginInfoHashMap(user);
         updateUserProperties();
         updateLoginInfo();
+        dataStorage.getCoursesInfo();
+        updateCoursesInfo();
     }
 
 }

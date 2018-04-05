@@ -59,8 +59,8 @@ public class Menu {
         System.out.println("2. View all Courses");
         // View info / Edit / Delete
         System.out.println("3. View all Users");
-        // [firstName, lastName], [email], [role]
         System.out.println("4. Add new User");
+        // [firstName, lastName], [email], [role]
         System.out.println("5. Add new Course");
         System.out.println("6. Exit");
         try {
@@ -68,7 +68,6 @@ public class Menu {
             switch (Integer.parseInt(userInput)) {
                 case 1:
                     editProfileMenu(user);
-                    //Edit profile menu
                     break;
                 case 2:
                     dataStorage.printCoursesTable();
@@ -88,108 +87,6 @@ public class Menu {
                 case 6:
                     app.close();
                     runApp = false;
-                    break;
-                default:
-                    System.out.println("\nWrong input\n");
-//                    runUserMenu(user);
-                    break;
-            }
-        } catch (Exception e) {
-            System.out.println("\nWrong number format\n");
-        }
-    }
-
-    private void userTableMenu(User user) {
-        System.out.println("Choose User (enter USER ID)");
-        String userID = sc.next();
-        userID = userID.toUpperCase();
-        if (dataStorage.getUserProperties().containsKey(userID)) {
-            System.out.println("Chosen User: " + (dataStorage.getUserProperties().get(userID).split(";")[0]) + " " + (dataStorage.getUserProperties().get(userID).split(";")[1]));
-            System.out.println("1. Change User Properties \n2. Delete User");
-            try {
-                String userInput = sc.next();
-                switch (Integer.parseInt(userInput)) {
-                    case 1:
-                        editUserPropertiesMenu(userID);
-                        break;
-                    case 2:
-                        if (!user.getID().equals(userID)) {
-                            dataStorage.getUserProperties().remove(userID);
-                            dataStorage.getLoginInfo().remove(userID);
-                        } else {
-                            System.out.println("You cannot delete yourself!");
-                        }
-                        break;
-                    default:
-                        System.out.println("\nWrong input\n");
-                        break;
-                }
-            } catch (Exception e) {
-                System.out.println("\nWrong number format\n");
-            }
-        } else {
-            System.out.println("Course ");
-        }
-        dataWriter.updateCoursesInfo();
-    }
-
-    private void editUserPropertiesMenu(String userID) {
-    }
-
-    private void coursesMenu() {
-        System.out.println("Choose Course (enter COURSE CODE)");
-        String courseCode = sc.next();
-        courseCode = courseCode.toUpperCase();
-        if (dataStorage.getCoursesInfo().containsKey(courseCode)) {
-            System.out.println("Chosen Course: " + dataStorage.getCoursesInfo().get(courseCode).split(";")[2]);
-            System.out.println("1. Edit Course \n2. Delete Course");
-            try {
-                String userInput = sc.next();
-                switch (Integer.parseInt(userInput)) {
-                    case 1:
-                        editCourseMenu(courseCode);
-                        break;
-                    case 2:
-                        dataStorage.getCoursesInfo().remove(courseCode);
-                        break;
-                    default:
-                        System.out.println("\nWrong input\n");
-                        break;
-                }
-            } catch (Exception e) {
-                System.out.println("\nWrong number format\n");
-            }
-        } else {
-            System.out.println("Course " + courseCode + " doesn't exist");
-        }
-        dataWriter.updateCoursesInfo();
-    }
-
-    private void editCourseMenu(String courseCode) {
-        //lecID;Credit;Title;Description;StartDate;
-        System.out.println("\nChoose what you want to change:");
-        System.out.println("1. lecturer   2. credit   3. title   4. description   5. start date");
-        System.out.println("\n6. Back to main menu");
-        try {
-            String userInput = sc.next();
-            switch (Integer.parseInt(userInput)) {
-                case 1:
-dataStorage.
-                    break;
-                case 2:
-
-                    break;
-                case 3:
-
-                    break;
-                case 4:
-
-                    break;
-                case 5:
-
-                    break;
-                case 6:
-
                     break;
                 default:
                     System.out.println("\nWrong input\n");
@@ -258,7 +155,6 @@ dataStorage.
             System.out.println("\nWrong number format\n");
         }
     }
-
 
     private void editProfileMenu(User user) {
         System.out.println(user.toString());
@@ -359,6 +255,142 @@ dataStorage.
         chooseNextMenu(user, "editProfileMenu");
         dataWriter.updateFiles(user);
     }
+
+    private void userTableMenu(User user) {
+        System.out.println("Choose User (enter USER ID)");
+        String userID = sc.next();
+        userID = userID.toUpperCase();
+        if (dataStorage.getUserProperties().containsKey(userID)) {
+            System.out.println("Chosen User: " + (dataStorage.getUserProperties().get(userID).split(";")[0]) + " " + (dataStorage.getUserProperties().get(userID).split(";")[1]));
+            System.out.println("1. Change User Properties \n2. Delete User");
+            try {
+                String userInput = sc.next();
+                switch (Integer.parseInt(userInput)) {
+                    case 1:
+                        editUserPropertiesMenu(userID);
+                        break;
+                    case 2:
+                        if (!user.getID().equals(userID)) {
+                            dataStorage.getUserProperties().remove(userID);
+                            dataStorage.getLoginInfo().remove(userID);
+                        } else {
+                            System.out.println("You cannot delete yourself!");
+                        }
+                        break;
+                    default:
+                        System.out.println("\nWrong input\n");
+                        break;
+                }
+            } catch (Exception e) {
+                System.out.println("\nWrong number format\n");
+            }
+        } else {
+            System.out.println("User " + userID + "doesn't exist");
+        }
+        dataWriter.updateLoginInfo();
+        dataWriter.updateUserProperties();
+    }
+
+    private void editUserPropertiesMenu(String userID) {
+    }
+
+    private void coursesMenu() {
+        System.out.println("Choose Course (enter COURSE CODE)");
+        String courseCode = sc.next();
+        courseCode = courseCode.toUpperCase();
+        if (dataStorage.getCoursesInfo().containsKey(courseCode)) {
+            System.out.println("Chosen Course: " + dataStorage.getCoursesInfo().get(courseCode).split(";")[2]);
+            System.out.println("1. Edit Course \n2. Delete Course");
+            try {
+                String userInput = sc.next();
+                switch (Integer.parseInt(userInput)) {
+                    case 1:
+                        editCourseMenu(courseCode);
+                        break;
+                    case 2:
+                        dataStorage.getCoursesInfo().remove(courseCode);
+                        break;
+                    default:
+                        System.out.println("\nWrong input\n");
+                        break;
+                }
+            } catch (Exception e) {
+                System.out.println("\nWrong number format\n");
+            }
+        } else {
+            System.out.println("Course " + courseCode + " doesn't exist");
+        }
+        dataWriter.updateCoursesInfo();
+    }
+
+    private void coursesMenuForLecturer(User user) {
+        System.out.println("Choose Course (enter COURSE CODE)");
+        String courseCode = sc.next();
+        courseCode = courseCode.toUpperCase();
+        if (dataStorage.getCoursesInfo().containsKey(courseCode)) {
+            System.out.println("Chosen Course: " + dataStorage.getCoursesInfo().get(courseCode).split(";")[2]);
+            System.out.println("1. Edit Course \n2. Delete Course");
+            try {
+                String userInput = sc.next();
+                switch (Integer.parseInt(userInput)) {
+                    case 1:
+                        editCourseMenu(courseCode);
+                        break;
+                    case 2:
+                        if (user.getID().equals(dataStorage.getCoursesInfo().get(courseCode).split(";")[0])) {
+                            dataStorage.getCoursesInfo().remove(courseCode);
+                        } else {
+                            System.out.println("Cannot delete Course. You need Permission to perform this action");
+                        }
+                        break;
+                    default:
+                        System.out.println("\nWrong input\n");
+                        break;
+                }
+            } catch (Exception e) {
+                System.out.println("\nWrong number format\n");
+            }
+        } else {
+            System.out.println("Course " + courseCode + " doesn't exist");
+        }
+        dataWriter.updateCoursesInfo();
+    }
+
+    private void editCourseMenu(String courseCode) {
+        //lecID;Credit;Title;Description;StartDate;
+        System.out.println("\nChoose what you want to change:");
+        System.out.println("1. lecturer   2. credit   3. title   4. description   5. start date");
+        System.out.println("\n6. Back to main menu");
+        try {
+            String userInput = sc.next();
+            switch (Integer.parseInt(userInput)) {
+                case 1:
+//dataStorage.
+                    break;
+                case 2:
+
+                    break;
+                case 3:
+
+                    break;
+                case 4:
+
+                    break;
+                case 5:
+
+                    break;
+                case 6:
+
+                    break;
+                default:
+                    System.out.println("\nWrong input\n");
+                    break;
+            }
+        } catch (Exception e) {
+            System.out.println("\nWrong number format\n");
+        }
+    }
+
 
     private void chooseNextMenu(User user, String methodName) {
         System.out.println("Want to change something else? \n1.Yes   2.No");
