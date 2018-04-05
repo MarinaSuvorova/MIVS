@@ -147,7 +147,7 @@ public class DataStorage {
     }
 
     public void printUsersTable() {
-        String lineSeparator = new String(new char[218]).replace('\0', '-');
+        String lineSeparator = new String(new char[219]).replace('\0', '-');
         System.out.println(lineSeparator);
         System.out.printf("| %-8s | %-9s | %-20s | %-10s | %-20s | %-20s | %-13s | %-30s| %-15s | %-6s | %-35s |", "USER ID", "USER ROLE", "USERNAME", "PASSWORD", "FIRST NAME", "LAST NAME", "DATE OF BIRTH", "EMAIL", "MOBILE NUMBER", "GENDER", "ADDRESS");
         System.out.println();
@@ -183,8 +183,25 @@ public class DataStorage {
         }
         return userRole;
     }
-    public void printAllLecturers(){
+    public void printAllLecturers() {
+        String lineSeparator = new String(new char[143]).replace('\0', '-');
+        System.out.println(lineSeparator);
+        System.out.printf("| %-8s | %-9s | %-20s | %-20s | %-20s | %-30s| %-15s |\n", "USER ID", "USER ROLE", "USERNAME", "FIRST NAME", "LAST NAME", "EMAIL", "MOBILE NUMBER");
+        System.out.println(lineSeparator);
+        for (String ID : userProperties.keySet()) {
+            if (ID.split("-")[0].equals("LEC")) {
+                String userRole = defineUserRole(ID);
+                String username = (loginInfo.get(ID).split(";")[0]);
+                String firstName = (userProperties.get(ID).split(";")[0]);
+                String lastName = (userProperties.get(ID).split(";")[1]);
+                String email = (userProperties.get(ID).split(";")[3]);
+                String mobilenumber = (userProperties.get(ID).split(";")[4]);
+                System.out.printf("| %-8s | %-9s | %-20s | %-20s | %-20s | %-30s| %-15s |\n", ID, userRole, username, firstName, lastName, email, mobilenumber);
+                System.out.println(lineSeparator);
+            }
 
+
+        }
     }
 
     public void printCoursesTable() {

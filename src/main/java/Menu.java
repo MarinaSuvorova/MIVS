@@ -53,7 +53,6 @@ public class Menu {
 
     }
 
-
     private void runAdminMenu(User user) {
         System.out.println("1. Edit profile");
         System.out.println("2. View all Courses");
@@ -71,19 +70,41 @@ public class Menu {
                     break;
                 case 2:
                     dataStorage.printCoursesTable();
-                    coursesMenu();
+                    coursesMenu(user);
                     break;
                 case 3:
                     dataStorage.printUsersTable();
                     userTableMenu(user);
                     break;
                 case 4:
-                    System.out.println("Enter username");
-                    System.out.println("Enter password");
-                    System.out.println("Enter first name");
-                    System.out.println("Enter last name");
+                    System.out.print("Username: ");
+
+                    System.out.print("Password: ");
+                    System.out.print("First name: ");
+                    System.out.print("Last name: ");
                     dataStorage.setLastID();
                     System.out.println(dataStorage.getLastID() + 1);
+                    break;
+                case 5:
+                    // courseCode
+                    //  tittle
+                    //  desciption
+                    //  startDate
+                    //  credit
+                    //  lecturerId
+                    dataStorage.printAllLecturers();
+                    System.out.println("Chose Course lecturer (Enter ID) ");
+                    String lecID = sc.next();
+                    sc.nextLine();
+                    System.out.println("Course Title: ");
+                    String courseTitle = sc.nextLine();
+                    System.out.println("Description: ");
+                    String description =sc.nextLine();
+                    System.out.println("Start Date: ");
+                    String startDate = sc.next();
+                    System.out.println("Credit: ");
+                    int credit = sc.nextInt();
+                    System.out.println(lecID+courseTitle+description+startDate+credit);
                 case 6:
                     app.close();
                     runApp = false;
@@ -246,7 +267,6 @@ public class Menu {
                     break;
                 default:
                     System.out.println("\nWrong input\n");
-                    editProfileMenu(user);
                     break;
             }
         } catch (Exception e) {
@@ -289,12 +309,13 @@ public class Menu {
         }
         dataWriter.updateLoginInfo();
         dataWriter.updateUserProperties();
+        chooseNextMenu(user, "userTableMenu");
     }
 
     private void editUserPropertiesMenu(String userID) {
     }
 
-    private void coursesMenu() {
+    private void coursesMenu(User user) {
         System.out.println("Choose Course (enter COURSE CODE)");
         String courseCode = sc.next();
         courseCode = courseCode.toUpperCase();
@@ -321,6 +342,7 @@ public class Menu {
             System.out.println("Course " + courseCode + " doesn't exist");
         }
         dataWriter.updateCoursesInfo();
+        chooseNextMenu(user, "coursesMenu");
     }
 
     private void coursesMenuForLecturer(User user) {
@@ -397,12 +419,23 @@ public class Menu {
         try {
             switch (Integer.parseInt(sc.next())) {
                 case 1:
-                    if (methodName.equals("editProfileMenu")) {
-                        editProfileMenu(user);
-                    } else if (methodName.equals("userTableMenu")) {
-                        userTableMenu(user);
-                    } else {
-                        runUserMenu(user);
+                    try {
+                        switch (methodName) {
+                            case "editProfileMenu":
+                                editProfileMenu(user);
+                                break;
+                            case "userTableMenu":
+                                userTableMenu(user);
+                                break;
+                            case "coursesMenu":
+                                coursesMenu(user);
+                                break;
+                            default:
+                                runUserMenu(user);
+                                break;
+                        }
+                    } catch (Exception e) {
+                        System.out.println(e);
                     }
                     break;
                 case 2:
