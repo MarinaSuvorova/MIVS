@@ -56,7 +56,6 @@ public class Menu {
     private void runAdminMenu(User user) {
         System.out.println("1. Edit profile");
         System.out.println("2. View all Courses");
-        // View info / Edit / Delete
         System.out.println("3. View all Users");
         System.out.println("4. Add new User");
         // [firstName, lastName], [email], [role]
@@ -78,12 +77,34 @@ public class Menu {
                     break;
                 case 4:
                     System.out.print("Username: ");
-
+                    String username = sc.next();
                     System.out.print("Password: ");
+                    String password = sc.next();
                     System.out.print("First name: ");
+                    sc.nextLine();
+                    String firstName = sc.nextLine();
                     System.out.print("Last name: ");
+                    String lastName = sc.nextLine();
+                    System.out.println("Choose User role: \n1.admin 2. lecturer 3. student");
+                    String role = sc.next();
+                    switch (Integer.parseInt(role)) {
+                        case 1:
+                            role = "ADM";
+                            break;
+                        case 2:
+                            role = "LEC";
+                            break;
+                        case 3:
+                            role = "STU";
+                            break;
+                        default:
+                            System.out.println("\nWrong input\nDefault User role - Student");
+                            role = "STU";
+                            break;
+                    }
                     dataStorage.setLastID();
-                    System.out.println(dataStorage.getLastID() + 1);
+                    String ID = role + dataStorage.getLastID() + 1;
+                    System.out.println("ID = " + ID);
                     break;
                 case 5:
                     // courseCode
@@ -99,12 +120,12 @@ public class Menu {
                     System.out.println("Course Title: ");
                     String courseTitle = sc.nextLine();
                     System.out.println("Description: ");
-                    String description =sc.nextLine();
+                    String description = sc.nextLine();
                     System.out.println("Start Date: ");
                     String startDate = sc.next();
                     System.out.println("Credit: ");
                     int credit = sc.nextInt();
-                    System.out.println(lecID+courseTitle+description+startDate+credit);
+                    System.out.println(lecID + courseTitle + description + startDate + credit);
                 case 6:
                     app.close();
                     runApp = false;
