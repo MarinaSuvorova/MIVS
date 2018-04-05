@@ -76,46 +76,15 @@ public class Menu {
                     userTableMenu(user);
                     break;
                 case 4:
-                    System.out.print("Username: ");
-                    String username = sc.next();
-                    System.out.print("Password: ");
-                    String password = sc.next();
-                    System.out.print("First name: ");
-                    sc.nextLine();
-                    String firstName = sc.nextLine();
-                    System.out.print("Last name: ");
-                    String lastName = sc.nextLine();
-                    System.out.println("Choose User role: \n1.admin 2. lecturer 3. student");
-                    String role = sc.next();
-                    switch (Integer.parseInt(role)) {
-                        case 1:
-                            role = "ADM";
-                            break;
-                        case 2:
-                            role = "LEC";
-                            break;
-                        case 3:
-                            role = "STU";
-                            break;
-                        default:
-                            System.out.println("\nWrong input\nDefault User role - Student");
-                            role = "STU";
-                            break;
-                    }
-                    dataStorage.setLastID();
-                    String ID = role + dataStorage.getLastID() + 1;
-                    System.out.println("ID = " + ID);
+                    dataStorage.setUserAdded(false);
+                    while(!dataStorage.userAdded){
+                    addNewUser();}
                     break;
                 case 5:
-                    // courseCode
-                    //  tittle
-                    //  desciption
-                    //  startDate
-                    //  credit
-                    //  lecturerId
                     dataStorage.printAllLecturers();
                     System.out.println("Chose Course lecturer (Enter ID) ");
                     String lecID = sc.next();
+                    //Check if existing user
                     sc.nextLine();
                     System.out.println("Course Title: ");
                     String courseTitle = sc.nextLine();
@@ -139,6 +108,47 @@ public class Menu {
         }
     }
 
+    private void addNewUser() {
+        System.out.print("Username: ");
+        String username = sc.next();
+        if (!dataStorage.isUsernameUnique(username)) {
+            System.out.println("This username is already taken. Please choose another username");
+            return;
+        }
+        System.out.print("Password: ");
+        String password = sc.next();
+        System.out.print("First name: ");
+        sc.nextLine();
+        String firstName = sc.nextLine();
+        System.out.print("Last name: ");
+        String lastName = sc.nextLine();
+        System.out.println("Choose User role: \n1.admin 2. lecturer 3. student");
+        String role = sc.next();
+        try {
+            switch (Integer.parseInt(role)) {
+                case 1:
+                    role = "ADM";
+                    break;
+                case 2:
+                    role = "LEC";
+                    break;
+                case 3:
+                    role = "STU";
+                    break;
+                default:
+                    System.out.println("\nWrong input! Default User role - Student");
+                    role = "STU";
+                    break;
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        dataStorage.setLastID();
+        String ID = role + "-" + (dataStorage.getLastID() + 1);
+        System.out.println("ID = " + ID);
+        dataStorage.setUserAdded(true);
+    }
+
     private void runLecturerMenu(User user) {
         System.out.println("1. Edit profile");
         System.out.println("2. My Courses");
@@ -154,6 +164,7 @@ public class Menu {
                     break;
                 case 2:
                     dataStorage.printLecturersCoursesTable(user.getID());
+                    coursesMenuForLecturer(user);
                     break;
                 case 5:
                     app.close();
@@ -326,7 +337,7 @@ public class Menu {
                 System.out.println("\nWrong number format\n");
             }
         } else {
-            System.out.println("User " + userID + "doesn't exist");
+            System.out.println("\nUser " + userID + " doesn't exist\n");
         }
         dataWriter.updateLoginInfo();
         dataWriter.updateUserProperties();

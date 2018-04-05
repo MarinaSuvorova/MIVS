@@ -13,7 +13,11 @@ public class DataStorage {
     private static HashMap<String, String> studentCourses = new HashMap<String, String>();
     private int lastID;
     private int lastCourseCode;
+    public boolean userAdded;
 
+    public void setUserAdded(boolean userAdded) {
+        this.userAdded = userAdded;
+    }
 
     public void storeData(String fileName, HashMap mapName) {
 
@@ -40,9 +44,6 @@ public class DataStorage {
     }
 
     public HashMap<String, String> getLoginInfo() {
-//        for (String p : loginInfo.keySet()) {
-//            System.out.println(p + ";" + loginInfo.get(p));
-//        }
         return loginInfo;
     }
 
@@ -199,8 +200,6 @@ public class DataStorage {
                 System.out.printf("| %-8s | %-9s | %-20s | %-20s | %-20s | %-30s| %-15s |\n", ID, userRole, username, firstName, lastName, email, mobilenumber);
                 System.out.println(lineSeparator);
             }
-
-
         }
     }
 
@@ -223,7 +222,7 @@ public class DataStorage {
 
     public void printLecturersCoursesTable(String ID) {
         storeCoursesInfo();
-        String lineSeparator = new String(new char[245]).replace('\0', '-');
+        String lineSeparator = new String(new char[231]).replace('\0', '-');
         System.out.println(lineSeparator);
         System.out.printf("| %-11s | %-6s | %-40s | %-145s | %-13s |\n", "COURSE CODE", "CREDIT", "TITLE", "DESCRIPTION", "START DATE");
         System.out.println(lineSeparator);
@@ -235,7 +234,6 @@ public class DataStorage {
             String startDate = (coursesInfo.get(courseCode).split(";")[4]);
             if (lecID.equals(ID)) {
                 System.out.printf("| %-11s | %-6s | %-40s | %-145s | %-13s |\n", courseCode, credit, title, description, startDate);
-
             }
         }
         System.out.println(lineSeparator);
