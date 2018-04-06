@@ -90,7 +90,7 @@ public class Login {
     public void userSignedIn(String ID, String[] loginInfo) throws Exception {
         Menu menu = new Menu();
         DataStorage dataStorage = new DataStorage();
-        String[] userProperties = dataStorage.getUserPropertiesByID(ID);
+//        String[] userProperties = dataStorage.getUserPropertiesByID(ID);
         String[] userRole = ID.split("-");
         User user = null;
         switch (userRole[0]) {
@@ -107,7 +107,7 @@ public class Login {
                 return;
         }
         user.setLoginData(ID, loginInfo);
-        user.setUserProperties(ID, userProperties);
+        user.setUserProperties(ID, dataStorage.getUserPropertiesByID(ID));
 //        System.out.println(user.toString());
         System.out.println("hello, " + user.getUserName());
         menu.runUserMenu(user);

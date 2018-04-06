@@ -41,6 +41,7 @@ public class DataWriter {
             System.out.println(e);
         }
     }
+
     public void updateCoursesInfo() {
         HashMap<String, String> coursesInfo = dataStorage.getCoursesInfo();
         File updateFile = new File("Courses.txt");
@@ -57,14 +58,11 @@ public class DataWriter {
     }
 
 
-    public void updateFiles(User user) {
+    public void updateUserFiles(User user) {
         dataStorage.updateUserPropertiesHashMap(user);
         dataStorage.updateLoginInfoHashMap(user);
         updateUserProperties();
         updateLoginInfo();
-        dataStorage.storeCoursesInfo();
-        dataStorage.getCoursesInfo();
-        updateCoursesInfo();
     }
 
 }

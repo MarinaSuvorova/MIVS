@@ -35,7 +35,7 @@ public class DataStorage {
 
             }
         } catch (Exception e) {
-            System.out.println("storeData failed: " + fileName);
+            System.out.println("storeData failed at " + fileName);
         }
     }
 
@@ -95,6 +95,12 @@ public class DataStorage {
         return currentUserProperties;
     }
 
+    public String[] getCurrentCourseInfo(String courseCode) {
+        storeCoursesInfo();
+        String[] currentCourseInfo = coursesInfo.get(courseCode).split(";");
+        return currentCourseInfo;
+    }
+
     public void updateUserPropertiesHashMap(User user) {
         String key = user.getID();
         for (String hashKey : userProperties.keySet()) {
@@ -110,6 +116,15 @@ public class DataStorage {
             if (hashKey.equals(key)) {
                 loginInfo.put(key, user.userLoginInfoToFile());
             }
+        }
+    }
+
+    public void changeCourseInfoHashMap(String courseCode, String courseData) {
+        for (String key : coursesInfo.keySet()) {
+            if (key.equals(courseCode)) {
+                coursesInfo.put(courseCode, courseData);
+            }
+
         }
     }
 
@@ -184,6 +199,7 @@ public class DataStorage {
         }
         return userRole;
     }
+
     public void printAllLecturers() {
         String lineSeparator = new String(new char[143]).replace('\0', '-');
         System.out.println(lineSeparator);
@@ -218,6 +234,25 @@ public class DataStorage {
             System.out.printf("| %-11s | %-11s | %-6s | %-40s | %-145s | %-13s |\n", courseCode, lecID, credit, title, description, startDate);
         }
         System.out.println(lineSeparator);
+    }
+
+    public void printCurrentCourseTable(String courseCode) {
+        storeCoursesInfo();
+        String lineSeparator = new String(new char[245]).replace('\0', '-');
+        System.out.println(lineSeparator);
+        System.out.printf("| %-11s | %-11s | %-6s | %-40s | %-145s | %-13s |\n", "COURSE CODE", "LECTURER ID", "CREDIT", "TITLE", "DESCRIPTION", "START DATE");
+        System.out.println(lineSeparator);
+        for (String key : coursesInfo.keySet()) {
+            if (key.equals(courseCode)) {
+                String lecID = (coursesInfo.get(courseCode).split(";")[0]);
+                String credit = (coursesInfo.get(courseCode).split(";")[1]);
+                String title = (coursesInfo.get(courseCode).split(";")[2]);
+                String description = (coursesInfo.get(courseCode).split(";")[3]);
+                String startDate = (coursesInfo.get(courseCode).split(";")[4]);
+                System.out.printf("| %-11s | %-11s | %-6s | %-40s | %-145s | %-13s |\n", courseCode, lecID, credit, title, description, startDate);
+                System.out.println(lineSeparator);
+            }
+        }
     }
 
     public void printLecturersCoursesTable(String ID) {

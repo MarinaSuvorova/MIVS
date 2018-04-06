@@ -3,6 +3,8 @@ import Users.Lecturer;
 import Users.Student;
 import Users.User;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
 public class Menu {
@@ -305,8 +307,9 @@ public class Menu {
         } catch (Exception e) {
             System.out.println("\nWrong number format\n");
         }
+        dataWriter.updateUserFiles(user);
         chooseNextMenu(user, "editProfileMenu");
-        dataWriter.updateFiles(user);
+
     }
 
     private void userTableMenu(User user) {
@@ -327,7 +330,7 @@ public class Menu {
                             dataStorage.getUserProperties().remove(userID);
                             dataStorage.getLoginInfo().remove(userID);
                         } else {
-                            System.out.println("You cannot delete yourself!");
+                            System.out.println("You cannot delete yourself!\n");
                         }
                         break;
                     default:
@@ -359,13 +362,17 @@ public class Menu {
                 String userInput = sc.next();
                 switch (Integer.parseInt(userInput)) {
                     case 1:
-                        editCourseMenu(courseCode);
+                        if ((user.getID().equals(dataStorage.getCoursesInfo().get(courseCode).split(";")[0])) || (user.getID().split("-")[0].equals("ADM"))) {
+                            editCourseMenu(user, courseCode);
+                        } else {
+                            System.out.println("Cannot edit Course. You need permission to perform this action\n");
+                        }
                         break;
                     case 2:
                         if ((user.getID().equals(dataStorage.getCoursesInfo().get(courseCode).split(";")[0])) || (user.getID().split("-")[0].equals("ADM"))) {
                             dataStorage.getCoursesInfo().remove(courseCode);
                         } else {
-                            System.out.println("Cannot delete Course. You need Permission to perform this action");
+                            System.out.println("Cannot delete Course. You need permission to perform this action\n");
                         }
                         dataWriter.updateCoursesInfo();
                         break;
@@ -382,31 +389,61 @@ public class Menu {
         chooseNextMenu(user, "coursesMenu");
     }
 
-    private void editCourseMenu(String courseCode) {
-        //lecID;Credit;Title;Description;StartDate;
+    private void editCourseMenu(User user, String courseCode) {
+        dataStorage.printCurrentCourseTable(courseCode);
+        String lecID = dataStorage.getCurrentCourseInfo(courseCode)[0];
+        int credit = 2;
+        try {
+            credit = Integer.parseInt(dataStorage.getCurrentCourseInfo(courseCode)[1]);
+        } catch (Exception e) {
+            System.out.println("Wrong number format");
+        }
+        String title = dataStorage.getCurrentCourseInfo(courseCode)[2];
+        String description = dataStorage.getCurrentCourseInfo(courseCode)[3];
+        String startDate = dataStorage.getCurrentCourseInfo(courseCode)[4];
         System.out.println("\nChoose what you want to change:");
-        System.out.println("1. lecturer   2. credit   3. title   4. description   5. start date");
+        System.out.println("1. lecturer (admin-only)   2. credit   3. title   4. description   5. start date");
         System.out.println("\n6. Back to main menu");
         try {
             String userInput = sc.next();
             switch (Integer.parseInt(userInput)) {
                 case 1:
-//dataStorage.
+                    if (user.getID().split("-")[0].equals("ADM")) {
+                        dataStorage.printAllLecturers();
+                        System.out.print("Choose Lecturer (enter USER ID): ");
+                        lecID = sc.next();
+                    } else {
+                        System.out.println("Cannot change lecturer. You need permission to perform this action. ");
+                    }
                     break;
                 case 2:
-
+                    System.out.print("Enter Nubmer of Credits: ");
+                    try {
+                        credit = Integer.parseInt(sc.next());
+                    } catch (Exception e) {
+                        System.out.println("\nWrong number format\n");
+                    }
                     break;
                 case 3:
-
+                    System.out.print("Enter Course Title: ");
+                    sc.nextLine();
+                    title = sc.nextLine();
                     break;
                 case 4:
-
+                    System.out.print("Enter Course Description: ");
+                    sc.nextLine();
+                    description = sc.nextLine();
                     break;
                 case 5:
-
+                    System.out.print("Enter Start Date: ");
+                    try {
+                        LocalDate checkStartDate = LocalDate.parse(sc.next(), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+                        startDate = String.valueOf(checkStartDate);
+                    } catch (Exception e) {
+                        System.out.println("Wrong date format");
+                    }
                     break;
                 case 6:
-
                     break;
                 default:
                     System.out.println("\nWrong input\n");
@@ -415,6 +452,9 @@ public class Menu {
         } catch (Exception e) {
             System.out.println("\nWrong number format\n");
         }
+        String courseData = lecID + ";" + String.valueOf(credit) + ";" + title + ";" + description + ";" + startDate + ";";
+        dataStorage.changeCourseInfoHashMap(courseCode, courseData);
+        dataWriter.updateCoursesInfo();
     }
 
 
