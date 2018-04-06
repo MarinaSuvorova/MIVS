@@ -39,12 +39,11 @@ public class Login {
     public void login() throws Exception {
         DataStorage dataStorage = new DataStorage();
         dataStorage.storeLoginInfo();
-        HashMap<String, String> loginData = dataStorage.getLoginInfo();
         Scanner sc = new Scanner(System.in);
         System.out.println("Enter login");
         String login = sc.next();
-        for (String ID : loginData.keySet()) {
-            String[] loginInfo = loginData.get(ID).split(";");
+        for (String ID : dataStorage.getLoginInfo().keySet()) {
+            String[] loginInfo = dataStorage.getLoginInfo().get(ID).split(";");
             for (int i = 0; i < loginInfo.length; i++) {
                 if (loginInfo[0].equals(login)) {
                     foundUser = true;

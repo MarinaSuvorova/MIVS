@@ -58,9 +58,7 @@ public class DataWriter {
     }
 
 
-    public void updateUserFiles(User user) {
-        dataStorage.updateUserPropertiesHashMap(user);
-        dataStorage.updateLoginInfoHashMap(user);
+    public void updateUserFiles() {
         updateUserProperties();
         updateLoginInfo();
     }

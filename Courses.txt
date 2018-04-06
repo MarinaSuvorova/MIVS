@@ -1,5 +1,5 @@
 CourseCode;lecID;Credit;Title;Description;StartDate;
 CSF-800;LEC-1001;3;Cybersecurity Fundamentals;Learn cybersecurity fundamentals, including how to detect threats, protect systems and networks, and anticipate potential cyber attacks.;2018-04-20;
 IMS-801;LEC-1001;2;Introduction to Manufacturing Systems;Learn about manufacturing systems and ways to analyze them in terms of material flow and storage.;2018-05-08;
-EBW-802;LEC-1004;4;Effective Business Writing;Learn best practices and approaches to writing effective business letters, emails, and reports. Format, composition, and clarity are emphasized.;2018-04-10;
+EBW-802;LEC-1003;4;Effective Business Writing;Learn best practices and approaches to writing effective business letters, emails, and reports. Format, composition, and clarity are emphasized.;2018-04-10;
 SMM-803;LEC-1001;3;Social Media Marketing;Learn how to drive social media engagement by linking strategy and tactics and measuring results.;2018-05-02;

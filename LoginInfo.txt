@@ -1,4 +1,6 @@
 ID;username;password;
 STU-1002;nice;qwer;
 ADM-1000;admin;admin;
+LEC-1003;marinos;asdfg;
+ADM-1004;a;s;
 LEC-1001;maru;12345;

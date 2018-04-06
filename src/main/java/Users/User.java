@@ -5,7 +5,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 public abstract class User {
-    private String ID, userName, password, firstName, lastName, email, mobileNumber, gender, address;
+    private String ID, userName,role, password, firstName, lastName, email, mobileNumber, gender, address;
     private LocalDate dateOfBirth;
 
     enum UserType {ADMIN, LECTURER, STUDENT}
@@ -161,18 +161,32 @@ public abstract class User {
                 password + ";";
     }
 
-
-    @Override
-    public String toString() {
+    public void printUserTable() {
+        switch (getID().split("-")[0]){
+            case "ADM":
+                role="admin";
+                break;
+            case "LEC":
+                role="lecturer";
+                break;
+            case "STU":
+                role="student";
+                break;
+            default:
+                role="student";
+                break;}
         String lineSeparator = new String(new char[219]).replace('\0', '-');
         System.out.println(lineSeparator);
         System.out.printf("| %-8s | %-9s | %-20s | %-10s | %-20s | %-20s | %-13s | %-30s| %-15s | %-6s | %-35s |\n", "USER ID", "USER ROLE", "USERNAME", "PASSWORD", "FIRST NAME", "LAST NAME", "DATE OF BIRTH", "EMAIL", "MOBILE NUMBER", "GENDER", "ADDRESS");
         System.out.println(lineSeparator);
-        System.out.printf("| %-8s | %-9s | %-20s | %-10s | %-20s | %-20s | %-13s | %-30s| %-15s | %-6s | %-35s |\n", ID, "define", userName, password, firstName, lastName, dateOfBirth, email, mobileNumber, gender, address);
-        return
-                lineSeparator;
+        System.out.printf("| %-8s | %-9s | %-20s | %-10s | %-20s | %-20s | %-13s | %-30s| %-15s | %-6s | %-35s |\n", ID, role, userName, password, firstName, lastName, dateOfBirth, email, mobileNumber, gender, address);
+        System.out.println(lineSeparator);
+    }
 
-
+    @Override
+    public String toString() {
+        return super.toString();
     }
 }
+
 

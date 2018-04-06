@@ -6,7 +6,6 @@ import Users.User;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
-
 public class Menu {
     boolean runApp = true;
     Login app = new Login();
@@ -19,12 +18,13 @@ public class Menu {
         while (runApp && app.isLoginDataValid() == false) {
             System.out.println("1. Sign in");
             System.out.println("2. Exit");
-            try {
+//            try {
                 String userInput = sc.next();
                 switch (Integer.parseInt(userInput)) {
                     case 1:
                         if (!app.isLoginDataValid()) {
                             app.login();
+                            break;
                         }
                         break;
                     case 2:
@@ -33,11 +33,12 @@ public class Menu {
                         break;
                     default:
                         System.out.println("Wrong input");
+                        break;
 
                 }
-            } catch (Exception e) {
-                System.out.println("\nWrong number format\n");
-            }
+//            } catch (Exception e) {
+//                System.out.println("\nForce close\n");
+//            }
         }
     }
 
@@ -79,10 +80,10 @@ public class Menu {
                     break;
                 case 4:
                     dataStorage.setUserAdded(false);
-                    while (!dataStorage.userAdded) {
-                        addNewUser();
-                    }
+                    if(!dataStorage.userAdded){
+                    addNewUser(user);}
                     break;
+
                 case 5:
                     dataStorage.printAllLecturers();
                     System.out.println("Chose Course lecturer (Enter ID) ");
@@ -111,7 +112,7 @@ public class Menu {
         }
     }
 
-    private void addNewUser() {
+    private void addNewUser(User user) {
         System.out.print("Username: ");
         String username = sc.next();
         if (!dataStorage.isUsernameUnique(username)) {
@@ -148,14 +149,16 @@ public class Menu {
         }
         dataStorage.setLastID();
         String ID = role + "-" + (dataStorage.getLastID() + 1);
-        System.out.println("ID = " + ID);
-        dataStorage.setUserAdded(true);
+        String loginData = username + ";" + password + ";";
+        String userPropertiesData = firstName + ";" + lastName + "; ; ; ; ; ;";
+        dataStorage.addNewUserToHashMaps(ID, loginData, userPropertiesData);
+        dataWriter.updateUserFiles();
+chooseNextMenu(user,"");
     }
 
     private void runLecturerMenu(User user) {
         System.out.println("1. Edit profile");
         System.out.println("2. My Courses");
-        // View info / Edit / Delete
         System.out.println("3. My Students");
         System.out.println("4. Add new Course");
         System.out.println("5. Exit");
@@ -213,7 +216,7 @@ public class Menu {
     }
 
     private void editProfileMenu(User user) {
-        System.out.println(user.toString());
+        user.printUserTable();
         System.out.println("\nChoose what you want to change:");
         System.out.println("1. username   2. password   3. first name   4. last name   5. date of birth   6. email address   7. mobile number   8. gender  9. address");
         System.out.println("\n10. Back to main menu");
@@ -307,7 +310,9 @@ public class Menu {
         } catch (Exception e) {
             System.out.println("\nWrong number format\n");
         }
-        dataWriter.updateUserFiles(user);
+        dataStorage.updateUserPropertiesHashMap(user);
+        dataStorage.updateLoginInfoHashMap(user);
+        dataWriter.updateUserFiles();
         chooseNextMenu(user, "editProfileMenu");
 
     }

@@ -109,6 +109,11 @@ public class DataStorage {
             }
         }
     }
+    public void addNewUserToHashMaps(String ID, String loginData, String userPropertiesData){
+        loginInfo.put(ID,loginData);
+        userProperties.put(ID,userPropertiesData);
+        setUserAdded(true);
+    }
 
     public void updateLoginInfoHashMap(User user) {
         String key = user.getID();
@@ -118,6 +123,7 @@ public class DataStorage {
             }
         }
     }
+
 
     public void changeCourseInfoHashMap(String courseCode, String courseData) {
         for (String key : coursesInfo.keySet()) {

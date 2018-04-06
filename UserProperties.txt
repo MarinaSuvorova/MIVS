@@ -1,4 +1,6 @@
 ID;firstName;lastName;dateOfBirth;email;mobileNumber;gender;address;
 STU-1002;Mykolas;Klepaitis;2000-03-28;mykkle@mivs.com;8 203 46857;male;Inzinieuru 4-40,Daugavpils;
 ADM-1000;Adminas;Adminaitis;1987-05-12;admin@mivs.lt;+450 456 95434;;Mokyklos 34-98, Moletai;
+LEC-1003;Marinos;Fonsales;1934-06-08;marinos@mivs.com;+12 656 5874;male;Kretio 45-9, Larnaca;
+ADM-1004;s;s; ; ; ; ; ;
 LEC-1001;Marina;Suvorova;1994-03-11;maru@mivs.com;+370 600 51416;female;Architektu 67-34,Vilnius;
