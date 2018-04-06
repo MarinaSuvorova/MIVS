@@ -8,6 +8,7 @@ public class DataStorage {
     boolean uniqueUsername;
 
     private static HashMap<String, String> loginInfo = new HashMap<String, String>();
+    private static HashMap<String, String> loginInfoForLogin = new HashMap<String, String>();
     private static HashMap<String, String> userProperties = new HashMap<String, String>();
     private static HashMap<String, String> coursesInfo = new HashMap<String, String>();
     private static HashMap<String, String> studentCourses = new HashMap<String, String>();
@@ -17,6 +18,15 @@ public class DataStorage {
 
     public void setUserAdded(boolean userAdded) {
         this.userAdded = userAdded;
+    }
+
+    public static HashMap<String, String> getLoginInfoForLogin() {
+        return loginInfoForLogin;
+    }
+
+
+    public void storeLoginInfoForLogin() {
+        storeData("LoginInfo.txt", loginInfoForLogin);
     }
 
     public void storeData(String fileName, HashMap mapName) {

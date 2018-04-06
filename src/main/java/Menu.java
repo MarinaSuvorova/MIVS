@@ -117,7 +117,7 @@ public class Menu {
         String username = sc.next();
         if (!dataStorage.isUsernameUnique(username)) {
             System.out.println("This username is already taken. Please choose another username");
-            return;
+            addNewUser(user);return;
         }
         System.out.print("Password: ");
         String password = sc.next();
@@ -145,6 +145,7 @@ public class Menu {
                     break;
             }
         } catch (Exception e) {
+            role="STU";
             System.out.println(e);
         }
         dataStorage.setLastID();
@@ -348,8 +349,8 @@ chooseNextMenu(user,"");
         } else {
             System.out.println("\nUser " + userID + " doesn't exist\n");
         }
-        dataWriter.updateLoginInfo();
-        dataWriter.updateUserProperties();
+        dataWriter.updateUserFiles();
+
         chooseNextMenu(user, "userTableMenu");
     }
 
@@ -496,6 +497,7 @@ chooseNextMenu(user,"");
             }
         } catch (Exception e) {
             System.out.println(e);
+            chooseNextMenu(user,methodName);
         }
     }
 }

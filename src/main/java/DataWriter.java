@@ -9,9 +9,6 @@ import java.util.Properties;
 public class DataWriter {
     DataStorage dataStorage = new DataStorage();
 
-    DataWriter() {
-    }
-
     public void updateUserProperties() {
         HashMap<String, String> userProperties = dataStorage.getUserProperties();
         File updateFile = new File("UserProperties.txt");
