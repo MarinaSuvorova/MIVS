@@ -175,6 +175,7 @@ public class DataStorage {
     }
 
     public int getLastCourseCode() {
+        setLastCourseCode();
         return lastCourseCode;
     }
 
@@ -230,9 +231,9 @@ public class DataStorage {
                 String email = (userProperties.get(ID).split(";")[3]);
                 String mobilenumber = (userProperties.get(ID).split(";")[4]);
                 System.out.printf("| %-8s | %-9s | %-20s | %-20s | %-20s | %-30s| %-15s |\n", ID, userRole, username, firstName, lastName, email, mobilenumber);
-                System.out.println(lineSeparator);
+
             }
-        }
+        }System.out.println(lineSeparator);
     }
 
     public void printCoursesTable() {
@@ -291,7 +292,6 @@ public class DataStorage {
     }
 
     public void printStudentsCoursesTable(String ID) {
-        storeCoursesInfo();
         String lineSeparator = new String(new char[245]).replace('\0', '-');
         System.out.println(lineSeparator);
         System.out.printf("| %-11s | %-6s | %-40s | %-145s | %-13s |\n", "COURSE CODE", "CREDIT", "TITLE", "DESCRIPTION", "START DATE");
@@ -308,5 +308,10 @@ public class DataStorage {
             }
         }
         System.out.println(lineSeparator);
+    }
+
+    public void addNewCourseToHashMaps(String courseCode, String courseData) {
+        storeCoursesInfo();
+        coursesInfo.put(courseCode,courseData);
     }
 }

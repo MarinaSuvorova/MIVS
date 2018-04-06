@@ -6,6 +6,7 @@ import Users.User;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
+
 public class Menu {
     boolean runApp = true;
     Login app = new Login();
@@ -18,7 +19,7 @@ public class Menu {
         while (runApp && app.isLoginDataValid() == false) {
             System.out.println("1. Sign in");
             System.out.println("2. Exit");
-//            try {
+            try {
                 String userInput = sc.next();
                 switch (Integer.parseInt(userInput)) {
                     case 1:
@@ -36,9 +37,9 @@ public class Menu {
                         break;
 
                 }
-//            } catch (Exception e) {
-//                System.out.println("\nForce close\n");
-//            }
+            } catch (Exception e) {
+                System.out.println("\nForce close\n");
+            }
         }
     }
 
@@ -61,7 +62,6 @@ public class Menu {
         System.out.println("2. View all Courses");
         System.out.println("3. View all Users");
         System.out.println("4. Add new User");
-        // [firstName, lastName], [email], [role]
         System.out.println("5. Add new Course");
         System.out.println("6. Exit");
         try {
@@ -80,25 +80,24 @@ public class Menu {
                     break;
                 case 4:
                     dataStorage.setUserAdded(false);
-                    if(!dataStorage.userAdded){
-                    addNewUser(user);}
+                    if (!dataStorage.userAdded) {
+                        addNewUser(user);
+                    }
                     break;
 
                 case 5:
                     dataStorage.printAllLecturers();
                     System.out.println("Chose Course lecturer (Enter ID) ");
                     String lecID = sc.next();
-                    //Check if existing user
-                    sc.nextLine();
-                    System.out.println("Course Title: ");
-                    String courseTitle = sc.nextLine();
-                    System.out.println("Description: ");
-                    String description = sc.nextLine();
-                    System.out.println("Start Date: ");
-                    String startDate = sc.next();
-                    System.out.println("Credit: ");
-                    int credit = sc.nextInt();
-                    System.out.println(lecID + courseTitle + description + startDate + credit);
+                    lecID = lecID.toUpperCase();
+                    if ((lecID.split("-")[0].equals("LEC")) && dataStorage.getUserProperties().containsKey(lecID)) {
+                        addNewCourse(user, lecID);
+                    } else if ((!lecID.split("-")[0].equals("LEC")) && (dataStorage.getUserProperties().containsKey(lecID))) {
+                        System.out.println("User is not a lecturer");
+                    } else if (!dataStorage.getUserProperties().containsKey(lecID)) {
+                        System.out.println("User doesn't exist");
+                    }
+                    break;
                 case 6:
                     app.close();
                     runApp = false;
@@ -112,12 +111,42 @@ public class Menu {
         }
     }
 
+    private void addNewCourse(User user, String lecID) {
+        dataStorage.storeCoursesInfo();
+        sc.nextLine();
+        System.out.println("Course Title: ");
+        String courseTitle = sc.nextLine();
+        System.out.println("Description: ");
+        String description = sc.nextLine();
+        System.out.println("Start Date: ");
+        String startDate=String.valueOf(LocalDate.now());
+        try {
+            LocalDate checkStartDate = LocalDate.parse(sc.next(), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+            startDate = String.valueOf(checkStartDate);
+        } catch (Exception e) {
+            System.out.println("Wrong date format. Default Start date is Today");
+        }
+        System.out.println("Credit: ");
+        int credit = 2;
+        try{
+        credit = sc.nextInt();}catch (Exception e){
+            System.out.println("Wrong number format. Default Course Credit is 2");
+        }
+        //lecID;Credit;Title;Description;StartDate;
+        String courseData= lecID+";"+ credit+";"+ courseTitle+";" + description +";"+ startDate+";";
+        String courseCode = "CRS-"+(dataStorage.getLastCourseCode()+1);
+        dataStorage.addNewCourseToHashMaps(courseCode, courseData);
+        dataWriter.updateCoursesInfo();
+        chooseNextMenu(user, "");
+    }
+
     private void addNewUser(User user) {
         System.out.print("Username: ");
         String username = sc.next();
         if (!dataStorage.isUsernameUnique(username)) {
             System.out.println("This username is already taken. Please choose another username");
-            addNewUser(user);return;
+            addNewUser(user);
+            return;
         }
         System.out.print("Password: ");
         String password = sc.next();
@@ -145,7 +174,7 @@ public class Menu {
                     break;
             }
         } catch (Exception e) {
-            role="STU";
+            role = "STU";
             System.out.println(e);
         }
         dataStorage.setLastID();
@@ -154,7 +183,7 @@ public class Menu {
         String userPropertiesData = firstName + ";" + lastName + "; ; ; ; ; ;";
         dataStorage.addNewUserToHashMaps(ID, loginData, userPropertiesData);
         dataWriter.updateUserFiles();
-chooseNextMenu(user,"");
+        chooseNextMenu(user, "");
     }
 
     private void runLecturerMenu(User user) {
@@ -172,6 +201,9 @@ chooseNextMenu(user,"");
                 case 2:
                     dataStorage.printLecturersCoursesTable(user.getID());
                     coursesMenu(user);
+                    break;
+                case 4:
+                    addNewCourse(user,user.getID());
                     break;
                 case 5:
                     app.close();
@@ -497,7 +529,7 @@ chooseNextMenu(user,"");
             }
         } catch (Exception e) {
             System.out.println(e);
-            chooseNextMenu(user,methodName);
+            chooseNextMenu(user, methodName);
         }
     }
 }
