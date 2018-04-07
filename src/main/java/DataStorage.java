@@ -2,7 +2,10 @@ import Users.User;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
 
 public class DataStorage {
     boolean uniqueUsername;
@@ -10,7 +13,7 @@ public class DataStorage {
     private static HashMap<String, String> loginInfo = new HashMap<String, String>();
     private static HashMap<String, String> userProperties = new HashMap<String, String>();
     private static HashMap<String, String> coursesInfo = new HashMap<String, String>();
-    private static HashMap<String, String> studentCourses = new HashMap<String, String>();
+    private static ArrayList<String> studentCourses = new ArrayList<>();
     private int lastID;
     private int lastCourseCode;
     public boolean userAdded;
@@ -23,13 +26,13 @@ public class DataStorage {
 
         try (FileReader fileReader = new FileReader(fileName);
              BufferedReader bufferedReader = new BufferedReader(fileReader)) {
-            String loginLine = bufferedReader.readLine();
-            while ((loginLine = bufferedReader.readLine()) != null) {
-                String[] loginData = loginLine.split("[;]");
-                String key = loginData[0];
+            String fileLine = bufferedReader.readLine();
+            while ((fileLine = bufferedReader.readLine()) != null) {
+                String[] fileData = fileLine.split("[;]");
+                String key = fileData[0];
                 String data = "";
-                for (int i = 1; i < loginData.length; i++) {
-                    data = data + loginData[i] + ";";
+                for (int i = 1; i < fileData.length; i++) {
+                    data = data + fileData[i] + ";";
                 }
                 mapName.put(key, data);
 
@@ -48,13 +51,21 @@ public class DataStorage {
     }
 
     public void storeStudentCourses() {
-        storeData("StudentCourses.txt", studentCourses);
+
+        try (FileReader fileReader = new FileReader("StudentCourses.txt");
+             BufferedReader bufferedReader = new BufferedReader(fileReader)) {
+            String fileLine = bufferedReader.readLine();
+            while ((fileLine = bufferedReader.readLine()) != null) {
+                if (!studentCourses.contains(fileLine)) {
+                    studentCourses.add(fileLine);
+                }
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
     }
 
-    public HashMap<String, String> getStudentCourses() {
-//        for (String p : studentCourses.keySet()) {
-//            System.out.println(p + ";" + loginInfo.get(p));
-//        }
+    public ArrayList<String> getStudentCourses() {
         return studentCourses;
     }
 
@@ -326,5 +337,32 @@ public class DataStorage {
     public void addNewCourseToHashMaps(String courseCode, String courseData) {
         storeCoursesInfo();
         coursesInfo.put(courseCode, courseData);
+    }
+
+    public void showLecturersStudents(String userID) {
+        storeStudentCourses();
+        storeCoursesInfo();
+        String lineSeparator = new String(new char[141]).replace('\0', '-');
+        System.out.println(lineSeparator);
+        System.out.printf("| %-40s | %-20s | %-20s | %-30s | %-15s |\n", "COURSE TITLE", "FIRST NAME", "LAST NAME", "EMAIL", "MOBILE NUMBER");
+        System.out.println(lineSeparator);
+        for (String courseCode : coursesInfo.keySet()) {
+            if (coursesInfo.get(courseCode).split(";")[0].equals(userID)) {
+                for (String data : studentCourses) {
+                    if (courseCode.equals(data.split(";")[1])) {
+                        String stuID = data.split(";")[0];
+                        String courseTitle = coursesInfo.get(courseCode).split(";")[2];
+                        String firstName = userProperties.get(stuID).split(";")[0];
+                        String lastName = userProperties.get(stuID).split(";")[1];
+                        String email = userProperties.get(stuID).split(";")[3];
+                        String mobileNumber = userProperties.get(stuID).split(";")[4];
+                        System.out.printf("| %-40s | %-20s | %-20s | %-30s | %-15s |\n", courseTitle, firstName, lastName, email, mobileNumber);
+                    }
+                }
+
+            }
+
+        }
+        System.out.println(lineSeparator);
     }
 }

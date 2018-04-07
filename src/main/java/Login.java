@@ -35,7 +35,7 @@ public class Login {
         this.loginDataValid = false;
     }
 
-    public String login() {
+    public void login() {
         String userID = "";
         dataStorage.storeLoginInfo();
         dataStorage.storeLoginInfo();
@@ -90,8 +90,7 @@ public class Login {
         if (loginDataValid) {
             loggedUser(userID);
         }
-        return userID;
-    }
+            }
 
 
     private void loggedUser(String userID) {
