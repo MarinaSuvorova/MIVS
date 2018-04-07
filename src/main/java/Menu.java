@@ -38,7 +38,7 @@ public class Menu {
 
                 }
             } catch (Exception e) {
-                System.out.println("\nForce close\n");
+                System.out.println("\nWrong number format\n");
             }
         }
     }
@@ -93,8 +93,7 @@ public class Menu {
                         }
                     } catch (Exception e) {
                         System.out.println("\nWrong number format\n");
-                        runUserMenu(user);
-                        return;
+                        break;
                     }
                     break;
                 case 4:
@@ -135,6 +134,7 @@ public class Menu {
             }
         } catch (Exception e) {
             System.out.println("\nWrong number format\n");
+            runUserMenu(user);
         }
     }
 

@@ -18,6 +18,8 @@ public class AppMIVS {
 
         Menu menu = new Menu();
         menu.runWelcomeMenu();
-
+//int allowedCredits = 12-dataStorage.countStudentsCredits("STU-1005");
+//        System.out.println(dataStorage.countAllowedCourses("STU-1005",allowedCredits));
+//        dataStorage.printStudentsCoursesTable("STU-1005");
     }
 }

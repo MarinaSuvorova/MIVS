@@ -327,22 +327,23 @@ public class DataStorage {
         for (String data : studentCourses) {
             if (stuID.equals(data.split(";")[0])) {
                 String courseCode = data.split(";")[1];
-                String lecID = (coursesInfo.get(courseCode).split(";")[0]);
+                if(coursesInfo.containsKey(courseCode)){
+                String lecID = coursesInfo.get(courseCode).split(";")[0];
                 String lecturer = (getUserProperties().get(lecID).split(";")[0]) + " " + (getUserProperties().get(lecID).split(";")[1]);
-                String credit = (coursesInfo.get(courseCode).split(";")[1]);
-                try {
+                try {String credit = (coursesInfo.get(courseCode).split(";")[1]);
+
                     totalNumberOfCredits = totalNumberOfCredits + Integer.parseInt(credit);
-                } catch (Exception e) {
-                }
+
                 String title = (coursesInfo.get(courseCode).split(";")[2]);
                 String description = (coursesInfo.get(courseCode).split(";")[3]);
                 String startDate = (coursesInfo.get(courseCode).split(";")[4]);
                 System.out.printf("| %-11s | %-20s | %-40s | %-145s | %-6s | %-13s |\n", courseCode, lecturer, title, description, credit, startDate);
+            } catch (Exception e) {
             }
-        }
-        System.out.println(lineSeparator);
-        System.out.println("\nTotal Number of Credits: " + totalNumberOfCredits);
-    }
+        }}
+
+    }System.out.println(lineSeparator);
+        System.out.println("\nTotal Number of Credits: " + totalNumberOfCredits);}
 
 
     public void addNewCourseToHashMaps(String courseCode, String courseData) {
@@ -391,8 +392,7 @@ public class DataStorage {
         for (String data : studentCourses) {
             if (stuID.equals(data.split(";")[0])) {
                 String courseCode = data.split(";")[1];
-                String credit = (coursesInfo.get(courseCode).split(";")[1]);
-                try {
+                try {String credit = (coursesInfo.get(courseCode).split(";")[1]);
                     totalNumberOfCredits = totalNumberOfCredits + Integer.parseInt(credit);
                 } catch (Exception e) {
                 }
@@ -426,6 +426,7 @@ public class DataStorage {
     }
 
     public int countAllowedCourses(String stuID, int allowedCredits) {
+        allowedCourses.clear();
         for (String courseCode : coursesInfo.keySet()) {
             try {
                 int credit = Integer.parseInt(coursesInfo.get(courseCode).split(";")[1]);
