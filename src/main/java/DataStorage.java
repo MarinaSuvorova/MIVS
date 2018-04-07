@@ -8,7 +8,6 @@ public class DataStorage {
     boolean uniqueUsername;
 
     private static HashMap<String, String> loginInfo = new HashMap<String, String>();
-    private static HashMap<String, String> loginInfoForLogin = new HashMap<String, String>();
     private static HashMap<String, String> userProperties = new HashMap<String, String>();
     private static HashMap<String, String> coursesInfo = new HashMap<String, String>();
     private static HashMap<String, String> studentCourses = new HashMap<String, String>();
@@ -18,15 +17,6 @@ public class DataStorage {
 
     public void setUserAdded(boolean userAdded) {
         this.userAdded = userAdded;
-    }
-
-    public static HashMap<String, String> getLoginInfoForLogin() {
-        return loginInfoForLogin;
-    }
-
-
-    public void storeLoginInfoForLogin() {
-        storeData("LoginInfo.txt", loginInfoForLogin);
     }
 
     public void storeData(String fileName, HashMap mapName) {
@@ -99,9 +89,9 @@ public class DataStorage {
         return userProperties;
     }
 
-    public String[] getUserPropertiesByID(String ID) {
+    public String[][] getUserInfoByID(String ID) {
         storeUserProperties();
-        String[] currentUserProperties = userProperties.get(ID).split(";");
+        String[][] currentUserProperties = {(loginInfo.get(ID).split(";")), (userProperties.get(ID).split(";"))};
         return currentUserProperties;
     }
 
@@ -111,29 +101,24 @@ public class DataStorage {
         return currentCourseInfo;
     }
 
-    public void updateUserPropertiesHashMap(User user) {
-        String key = user.getID();
+    public void updateUserInfoHashMap(String userID, String userPropertiesToFile, String userLoginInfoToFile) {
         for (String hashKey : userProperties.keySet()) {
-            if (hashKey.equals(key)) {
-                userProperties.put(key, user.userPropertiesToFile());
+            if (hashKey.equals(userID)) {
+                userProperties.put(userID, userPropertiesToFile);
+            }
+        }
+        for (String hashKey : loginInfo.keySet()) {
+            if (hashKey.equals(userID)) {
+                loginInfo.put(userID, userLoginInfoToFile);
             }
         }
     }
-    public void addNewUserToHashMaps(String ID, String loginData, String userPropertiesData){
-        loginInfo.put(ID,loginData);
-        userProperties.put(ID,userPropertiesData);
+
+    public void addNewUserToHashMaps(String ID, String loginData, String userPropertiesData) {
+        loginInfo.put(ID, loginData);
+        userProperties.put(ID, userPropertiesData);
         setUserAdded(true);
     }
-
-    public void updateLoginInfoHashMap(User user) {
-        String key = user.getID();
-        for (String hashKey : loginInfo.keySet()) {
-            if (hashKey.equals(key)) {
-                loginInfo.put(key, user.userLoginInfoToFile());
-            }
-        }
-    }
-
 
     public void changeCourseInfoHashMap(String courseCode, String courseData) {
         for (String key : coursesInfo.keySet()) {
@@ -203,7 +188,33 @@ public class DataStorage {
         System.out.println(lineSeparator);
     }
 
-    private String defineUserRole(String ID) {
+    public void printCurrentUsersTable(String userID) {
+        String lineSeparator = new String(new char[219]).replace('\0', '-');
+        System.out.println(lineSeparator);
+        System.out.printf("| %-8s | %-9s | %-20s | %-10s | %-20s | %-20s | %-13s | %-30s| %-15s | %-6s | %-35s |", "USER ID", "USER ROLE", "USERNAME", "PASSWORD", "FIRST NAME", "LAST NAME", "DATE OF BIRTH", "EMAIL", "MOBILE NUMBER", "GENDER", "ADDRESS");
+        System.out.println();
+        System.out.println(lineSeparator);
+        for (String ID : userProperties.keySet()) {
+            if (ID.equals(userID)) {
+                String userRole = defineUserRole(ID);
+                String username = (loginInfo.get(ID).split(";")[0]);
+                int passwordLength = loginInfo.get(ID).split(";")[1].length();
+                String password = new String(new char[passwordLength]).replace('\0', '*');
+                String firstName = (userProperties.get(ID).split(";")[0]);
+                String lastName = (userProperties.get(ID).split(";")[1]);
+                String dateOfBirth = (userProperties.get(ID).split(";")[2]);
+                String email = (userProperties.get(ID).split(";")[3]);
+                String mobilenumber = (userProperties.get(ID).split(";")[4]);
+                String gender = (userProperties.get(ID).split(";")[5]);
+                String address = (userProperties.get(ID).split(";")[6]);
+                System.out.printf("| %-8s | %-9s | %-20s | %-10s | %-20s | %-20s | %-13s | %-30s| %-15s | %-6s | %-35s |\n", ID, userRole, username, password, firstName, lastName, dateOfBirth, email, mobilenumber, gender, address);
+
+            }
+        }
+        System.out.println(lineSeparator);
+    }
+
+    public String defineUserRole(String ID) {
         String[] role = ID.split("-");
         String userRole;
         if (role[0].equals("ADM")) {
@@ -233,7 +244,8 @@ public class DataStorage {
                 System.out.printf("| %-8s | %-9s | %-20s | %-20s | %-20s | %-30s| %-15s |\n", ID, userRole, username, firstName, lastName, email, mobilenumber);
 
             }
-        }System.out.println(lineSeparator);
+        }
+        System.out.println(lineSeparator);
     }
 
     public void printCoursesTable() {
@@ -255,18 +267,19 @@ public class DataStorage {
 
     public void printCurrentCourseTable(String courseCode) {
         storeCoursesInfo();
-        String lineSeparator = new String(new char[245]).replace('\0', '-');
+        String lineSeparator = new String(new char[254]).replace('\0', '-');
         System.out.println(lineSeparator);
-        System.out.printf("| %-11s | %-11s | %-6s | %-40s | %-145s | %-13s |\n", "COURSE CODE", "LECTURER ID", "CREDIT", "TITLE", "DESCRIPTION", "START DATE");
+        System.out.printf("| %-11s | %-20s | %-6s | %-40s | %-145s | %-13s |\n", "COURSE CODE", "LECTURER", "CREDIT", "TITLE", "DESCRIPTION", "START DATE");
         System.out.println(lineSeparator);
         for (String key : coursesInfo.keySet()) {
             if (key.equals(courseCode)) {
                 String lecID = (coursesInfo.get(courseCode).split(";")[0]);
+                String lecturer = (getUserProperties().get(lecID).split(";")[0]) + " " + (getUserProperties().get(lecID).split(";")[1]);
                 String credit = (coursesInfo.get(courseCode).split(";")[1]);
                 String title = (coursesInfo.get(courseCode).split(";")[2]);
                 String description = (coursesInfo.get(courseCode).split(";")[3]);
                 String startDate = (coursesInfo.get(courseCode).split(";")[4]);
-                System.out.printf("| %-11s | %-11s | %-6s | %-40s | %-145s | %-13s |\n", courseCode, lecID, credit, title, description, startDate);
+                System.out.printf("| %-11s | %-20s | %-6s | %-40s | %-145s | %-13s |\n", courseCode, lecturer, credit, title, description, startDate);
                 System.out.println(lineSeparator);
             }
         }
@@ -312,6 +325,6 @@ public class DataStorage {
 
     public void addNewCourseToHashMaps(String courseCode, String courseData) {
         storeCoursesInfo();
-        coursesInfo.put(courseCode,courseData);
+        coursesInfo.put(courseCode, courseData);
     }
 }

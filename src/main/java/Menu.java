@@ -72,11 +72,42 @@ public class Menu {
                     break;
                 case 2:
                     dataStorage.printCoursesTable();
-                    coursesMenu(user);
+                    System.out.println("Do you want to make changes? \n1. yes   2. no");
+                    try {
+                        switch (Integer.parseInt(sc.next())) {
+                            case 1:
+                                coursesMenu(user);
+                                break;
+                            case 2:
+                                runUserMenu(user);
+                                break;
+                            default:
+                                System.out.println("\nWrong input\n");
+                                break;
+                        }
+                    } catch (Exception e) {
+                        System.out.println("\nWrong number format\n");
+                    }
                     break;
                 case 3:
                     dataStorage.printUsersTable();
-                    userTableMenu(user);
+                    System.out.println("Do you want to make changes? \n1. yes   2. no");
+                    try {
+                        switch (Integer.parseInt(sc.next())) {
+                            case 1:
+                                userTableMenu(user);
+                                break;
+                            case 2:
+                                runUserMenu(user);
+                                break;
+                            default:
+                                System.out.println("\nWrong input\n");
+                                runUserMenu(user);
+                                break;
+                        }
+                    } catch (Exception e) {
+                        System.out.println("\nWrong number format\n");
+                    }
                     break;
                 case 4:
                     dataStorage.setUserAdded(false);
@@ -87,16 +118,8 @@ public class Menu {
 
                 case 5:
                     dataStorage.printAllLecturers();
-                    System.out.println("Chose Course lecturer (Enter ID) ");
-                    String lecID = sc.next();
-                    lecID = lecID.toUpperCase();
-                    if ((lecID.split("-")[0].equals("LEC")) && dataStorage.getUserProperties().containsKey(lecID)) {
-                        addNewCourse(user, lecID);
-                    } else if ((!lecID.split("-")[0].equals("LEC")) && (dataStorage.getUserProperties().containsKey(lecID))) {
-                        System.out.println("User is not a lecturer");
-                    } else if (!dataStorage.getUserProperties().containsKey(lecID)) {
-                        System.out.println("User doesn't exist");
-                    }
+                    String lecID = chooseCourseLecturer(user);
+                    addNewCourse(user, lecID);
                     break;
                 case 6:
                     app.close();
@@ -104,11 +127,28 @@ public class Menu {
                     break;
                 default:
                     System.out.println("\nWrong input\n");
+                    runUserMenu(user);
                     break;
             }
         } catch (Exception e) {
             System.out.println("\nWrong number format\n");
         }
+    }
+
+    private String chooseCourseLecturer(User user) {
+        System.out.println("Chose Course lecturer (Enter ID) ");
+        String lecID = sc.next();
+        lecID = lecID.toUpperCase();
+        if ((lecID.split("-")[0].equals("LEC")) && dataStorage.getUserProperties().containsKey(lecID)) {
+            return lecID;
+        } else if ((!lecID.split("-")[0].equals("LEC")) && (dataStorage.getUserProperties().containsKey(lecID))) {
+            System.out.println("User is not a lecturer");
+            chooseCourseLecturer(user);
+        } else if (!dataStorage.getUserProperties().containsKey(lecID)) {
+            System.out.println("User doesn't exist");
+            chooseCourseLecturer(user);
+        }
+        return lecID;
     }
 
     private void addNewCourse(User user, String lecID) {
@@ -118,8 +158,8 @@ public class Menu {
         String courseTitle = sc.nextLine();
         System.out.println("Description: ");
         String description = sc.nextLine();
-        System.out.println("Start Date: ");
-        String startDate=String.valueOf(LocalDate.now());
+        System.out.println("Start Date (yyyy-mm-dd): ");
+        String startDate = String.valueOf(LocalDate.now());
         try {
             LocalDate checkStartDate = LocalDate.parse(sc.next(), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
             startDate = String.valueOf(checkStartDate);
@@ -128,15 +168,17 @@ public class Menu {
         }
         System.out.println("Credit: ");
         int credit = 2;
-        try{
-        credit = sc.nextInt();}catch (Exception e){
+        try {
+            credit = sc.nextInt();
+        } catch (Exception e) {
             System.out.println("Wrong number format. Default Course Credit is 2");
         }
-        //lecID;Credit;Title;Description;StartDate;
-        String courseData= lecID+";"+ credit+";"+ courseTitle+";" + description +";"+ startDate+";";
-        String courseCode = "CRS-"+(dataStorage.getLastCourseCode()+1);
+        String courseData = lecID + ";" + credit + ";" + courseTitle + ";" + description + ";" + startDate + ";";
+        String courseCode = "CRS-" + (dataStorage.getLastCourseCode() + 1);
         dataStorage.addNewCourseToHashMaps(courseCode, courseData);
         dataWriter.updateCoursesInfo();
+        System.out.println("New Course has been added");
+        dataStorage.printCurrentCourseTable(courseCode);
         chooseNextMenu(user, "");
     }
 
@@ -203,7 +245,7 @@ public class Menu {
                     coursesMenu(user);
                     break;
                 case 4:
-                    addNewCourse(user,user.getID());
+                    addNewCourse(user, user.getID());
                     break;
                 case 5:
                     app.close();
@@ -335,7 +377,8 @@ public class Menu {
                     System.out.println("Your address has been changed successfully! Thank you.");
                     break;
                 case 10:
-                    break;
+                    runUserMenu(user);
+                    return;
                 default:
                     System.out.println("\nWrong input\n");
                     break;
@@ -343,8 +386,7 @@ public class Menu {
         } catch (Exception e) {
             System.out.println("\nWrong number format\n");
         }
-        dataStorage.updateUserPropertiesHashMap(user);
-        dataStorage.updateLoginInfoHashMap(user);
+        dataStorage.updateUserInfoHashMap(user.getID(), user.userPropertiesToFile(), user.userLoginInfoToFile());
         dataWriter.updateUserFiles();
         chooseNextMenu(user, "editProfileMenu");
 
@@ -367,6 +409,7 @@ public class Menu {
                         if (!user.getID().equals(userID)) {
                             dataStorage.getUserProperties().remove(userID);
                             dataStorage.getLoginInfo().remove(userID);
+                            System.out.println("User has been deleted");
                         } else {
                             System.out.println("You cannot delete yourself!\n");
                         }
@@ -382,19 +425,158 @@ public class Menu {
             System.out.println("\nUser " + userID + " doesn't exist\n");
         }
         dataWriter.updateUserFiles();
-
-        chooseNextMenu(user, "userTableMenu");
+        runUserMenu(user);
     }
 
     private void editUserPropertiesMenu(String userID) {
+        // "USERNAME", "PASSWORD", "FIRST NAME", "LAST NAME", "DATE OF BIRTH", "EMAIL", "MOBILE NUMBER", "GENDER", "ADDRESS"
+        dataStorage.printCurrentUsersTable(userID);
+        String username = dataStorage.getUserInfoByID(userID)[0][0];
+        String password = dataStorage.getUserInfoByID(userID)[0][0];
+        String firstName = dataStorage.getUserInfoByID(userID)[1][0];
+        String lastName = dataStorage.getUserInfoByID(userID)[1][1];
+        String dateOfBirth = dataStorage.getUserInfoByID(userID)[1][2];
+        String email = dataStorage.getUserInfoByID(userID)[1][3];
+        String mobileNumber = dataStorage.getUserInfoByID(userID)[1][4];
+        String gender = dataStorage.getUserInfoByID(userID)[1][5];
+        String address = dataStorage.getUserInfoByID(userID)[1][6];
+
+        System.out.println("\nChoose what you want to change:");
+        System.out.println("1. username   2. password   3. first name   4. last name   5. date of birth   6. email address   7. mobile number   8. gender  9. address");
+        System.out.println("\n10. Back to main menu");
+        try {
+            String userInput = sc.next();
+            switch (Integer.parseInt(userInput)) {
+                case 1:
+                    System.out.println("Username: " + username);
+                    System.out.print("Enter new username ");
+                    String newUsername = sc.next();
+                    if (dataStorage.isUsernameUnique(newUsername)) {
+                        username = newUsername;
+                        System.out.println("Username has been changed successfully.");
+                    } else {
+                        System.out.println("This username is already taken. Please choose another username.");
+                    }
+                    break;
+                case 2:
+                    System.out.print("Enter new password ");
+                    String newPassword = sc.next();
+                    System.out.print("Confirm new password ");
+                    String confirmedPassword = sc.next();
+                    if (newPassword.equals(confirmedPassword)) {
+                        password = newPassword;
+                        System.out.println("Password has been changed successfully.");
+                    } else {
+                        System.out.println("Password confirmation doesn't match Password. Please try again");
+                    }
+                    break;
+                case 3:
+                    System.out.println("First name: " + firstName);
+                    System.out.println("Enter first name ");
+                    sc.nextLine();
+                    firstName = sc.nextLine().replaceAll(";", "");
+                    System.out.println("User's first name has been changed successfully.");
+                    break;
+                case 4:
+                    System.out.println("Last name: " + lastName);
+                    System.out.println("Enter last name");
+                    sc.nextLine();
+                    lastName = sc.nextLine().replaceAll(";", "");
+                    System.out.println("Last name has been changed successfully.");
+                    break;
+                case 5:
+                    System.out.println("Date of Birth: " + dateOfBirth);
+                    System.out.println("Enter date of birth (yyyy-mm-dd");
+                    try {
+                        LocalDate checkDate = LocalDate.parse(sc.next(), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+                        dateOfBirth = String.valueOf(checkDate);
+                    } catch (Exception e) {
+                        System.out.println("\nWrong date format. Please try again\n");
+                    }
+                    System.out.println("Date of birth has been changed successfully.");
+                    break;
+                case 6:
+                    System.out.println("Email address: " + email);
+                    System.out.println("Enter email address");
+                    sc.nextLine();
+                    email = sc.nextLine().replaceAll(";", "");
+                    System.out.println("Email address has been changed successfully.");
+                    break;
+                case 7:
+                    System.out.println("Mobile number: " + mobileNumber);
+                    System.out.println("Enter mobile number");
+                    sc.nextLine();
+                    mobileNumber = sc.nextLine().replaceAll(";", "");
+                    break;
+                case 8:
+                    System.out.println("Gender: " + gender);
+                    System.out.println("Choose gender: \n0. -- \n1. male\n2. female");
+                    try {
+                        switch (sc.nextInt()) {
+                            case 0:
+                                gender = "";
+                                break;
+                            case 1:
+                                gender = "male";
+                                break;
+                            case 2:
+                                gender = "female";
+                                break;
+                            default:
+                                System.out.println("\nWrong input\n");
+                                break;
+                        }
+
+                    } catch (Exception e) {
+                        System.out.println("\nWrong number format\n");
+                    }
+                    System.out.println("Gender has been changed successfully.");
+                    break;
+                case 9:
+                    System.out.println("Address: " + address);
+                    System.out.println("Enter your address");
+                    sc.nextLine();
+                    address = sc.nextLine().replaceAll(";", "");
+                    System.out.println("Address has been changed successfully! Thank you.");
+                    break;
+                case 10:
+                    return;
+                default:
+                    System.out.println("\nWrong input\n");
+                    break;
+            }
+        } catch (Exception e) {
+            System.out.println("\nWrong number format\n");
+        }
+        String userPropertiesToFile = (firstName + ";" + lastName + ";" + dateOfBirth + ";" + email + ";" + mobileNumber + ";" + gender + ";" + address + ";");
+        String userLoginInfoToFile = (username + ";" + password + ";");
+        dataStorage.updateUserInfoHashMap(userID,userPropertiesToFile,userLoginInfoToFile);
+        dataWriter.updateUserFiles();
+        System.out.println("\nDo you want to make more changes for "+firstName+" "+lastName+"'s account? \n1. yes   2. no");
+        try {
+            switch (Integer.parseInt(sc.next())) {
+                case 1:
+                    editUserPropertiesMenu(userID);
+                    break;
+                case 2:
+                    break;
+                default:
+                    System.out.println("\nWrong input\n");
+                    break;
+            }
+        } catch (Exception e) {
+            System.out.println("\nWrong number format\n");
+        }
     }
+
 
     private void coursesMenu(User user) {
         System.out.println("Choose Course (enter COURSE CODE)");
         String courseCode = sc.next();
         courseCode = courseCode.toUpperCase();
         if (dataStorage.getCoursesInfo().containsKey(courseCode)) {
-            System.out.println("Chosen Course: " + dataStorage.getCoursesInfo().get(courseCode).split(";")[2]);
+            String courseTitle = dataStorage.getCoursesInfo().get(courseCode).split(";")[2];
+            System.out.println("Chosen Course: " + courseTitle);
             System.out.println("1. Edit Course \n2. Delete Course");
             try {
                 String userInput = sc.next();
@@ -409,6 +591,8 @@ public class Menu {
                     case 2:
                         if ((user.getID().equals(dataStorage.getCoursesInfo().get(courseCode).split(";")[0])) || (user.getID().split("-")[0].equals("ADM"))) {
                             dataStorage.getCoursesInfo().remove(courseCode);
+                            System.out.println("Course " + courseTitle + " has been deleted");
+
                         } else {
                             System.out.println("Cannot delete Course. You need permission to perform this action\n");
                         }
@@ -424,7 +608,7 @@ public class Menu {
         } else {
             System.out.println("Course " + courseCode + " doesn't exist");
         }
-        chooseNextMenu(user, "coursesMenu");
+        runUserMenu(user);
     }
 
     private void editCourseMenu(User user, String courseCode) {
@@ -446,6 +630,7 @@ public class Menu {
             String userInput = sc.next();
             switch (Integer.parseInt(userInput)) {
                 case 1:
+                    System.out.println("Lecturer: " + (dataStorage.getUserProperties().get(lecID).split(";")[0]) + " " + (dataStorage.getUserProperties().get(lecID).split(";")[1]));
                     if (user.getID().split("-")[0].equals("ADM")) {
                         dataStorage.printAllLecturers();
                         System.out.print("Choose Lecturer (enter USER ID): ");
@@ -455,6 +640,7 @@ public class Menu {
                     }
                     break;
                 case 2:
+                    System.out.println("Number of credints: " + credit);
                     System.out.print("Enter Nubmer of Credits: ");
                     try {
                         credit = Integer.parseInt(sc.next());
@@ -463,17 +649,20 @@ public class Menu {
                     }
                     break;
                 case 3:
+                    System.out.println("Course Title: " + title);
                     System.out.print("Enter Course Title: ");
                     sc.nextLine();
                     title = sc.nextLine();
                     break;
                 case 4:
+                    System.out.println("Course Description: " + description);
                     System.out.print("Enter Course Description: ");
                     sc.nextLine();
                     description = sc.nextLine();
                     break;
                 case 5:
-                    System.out.print("Enter Start Date: ");
+                    System.out.println("Start date: " + startDate);
+                    System.out.print("Enter Start Date (yyyy-mm-dd): ");
                     try {
                         LocalDate checkStartDate = LocalDate.parse(sc.next(), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
                         startDate = String.valueOf(checkStartDate);
@@ -482,7 +671,8 @@ public class Menu {
                     }
                     break;
                 case 6:
-                    break;
+                    runUserMenu(user);
+                    return;
                 default:
                     System.out.println("\nWrong input\n");
                     break;
@@ -493,11 +683,28 @@ public class Menu {
         String courseData = lecID + ";" + String.valueOf(credit) + ";" + title + ";" + description + ";" + startDate + ";";
         dataStorage.changeCourseInfoHashMap(courseCode, courseData);
         dataWriter.updateCoursesInfo();
+        System.out.println("Do you want to change something else?\n1. yes   2. no");
+        try {
+            switch (Integer.parseInt(sc.next())) {
+                case 1:
+                    editCourseMenu(user, courseCode);
+                    break;
+                case 2:
+                    runUserMenu(user);
+                    break;
+                default:
+                    System.out.println("\nWrong input\n");
+                    break;
+            }
+        } catch (Exception e) {
+            System.out.println("\nWrong number format\n");
+        }
+
     }
 
 
     private void chooseNextMenu(User user, String methodName) {
-        System.out.println("Want to change something else? \n1.Yes   2.No");
+        System.out.println("Do you want to change something else? \n1.Yes   2.No");
         try {
             switch (Integer.parseInt(sc.next())) {
                 case 1:
@@ -505,9 +712,6 @@ public class Menu {
                         switch (methodName) {
                             case "editProfileMenu":
                                 editProfileMenu(user);
-                                break;
-                            case "userTableMenu":
-                                userTableMenu(user);
                                 break;
                             case "coursesMenu":
                                 coursesMenu(user);

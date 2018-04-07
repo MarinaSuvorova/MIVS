@@ -47,19 +47,21 @@ public abstract class User {
     }
 
 
-    public void setUserProperties(String ID, String[] userProperties) {
+    public void setUserProperties(String ID,String[][]userInfo) {
         this.ID = ID;
-        this.firstName = userProperties[0];
-        this.lastName = userProperties[1];
+        this.userName = userInfo[0][0];
+        this.password = userInfo[0][1];
+        this.firstName = userInfo[1][0];
+        this.lastName = userInfo[1][1];
         try {
-            this.dateOfBirth = LocalDate.parse(userProperties[2], DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+            this.dateOfBirth = LocalDate.parse(userInfo[1][2], DateTimeFormatter.ofPattern("yyyy-MM-dd"));
         } catch (Exception e) {
             System.out.println("Wrong date format");
         }
-        this.email = userProperties[3];
-        this.mobileNumber = userProperties[4];
-        this.gender = userProperties[5];
-        this.address = userProperties[6];
+        this.email = userInfo[1][3];
+        this.mobileNumber = userInfo[1][4];
+        this.gender = userInfo[1][5];
+        this.address = userInfo[1][6];
     }
 
     public String getUserName() {
@@ -110,7 +112,7 @@ public abstract class User {
         try {
             this.dateOfBirth = LocalDate.parse(dateOfBirth, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
         } catch (Exception e) {
-            System.out.println("Wrong date format");
+            System.out.println("\nWrong date format\n");
         }
     }
 

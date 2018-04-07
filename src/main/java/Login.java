@@ -35,14 +35,15 @@ public class Login {
         this.loginDataValid = false;
     }
 
-    public void login() {
+    public String login() {
+        String userID = "";
         dataStorage.storeLoginInfo();
-        dataStorage.storeLoginInfoForLogin();
+        dataStorage.storeLoginInfo();
         Scanner sc = new Scanner(System.in);
         System.out.println("Enter login");
         String login = sc.next();
-        for (String ID : dataStorage.getLoginInfoForLogin().keySet()) {
-            String[] loginInfo = dataStorage.getLoginInfoForLogin().get(ID).split(";");
+        for (String ID : dataStorage.getLoginInfo().keySet()) {
+            String[] loginInfo = dataStorage.getLoginInfo().get(ID).split(";");
             for (int i = 0; i < loginInfo.length; i++) {
                 if (loginInfo[0].equals(login)) {
                     foundUser = true;
@@ -50,11 +51,7 @@ public class Login {
                     String password = sc.next();
                     if (loginInfo[1].equals(password)) {
                         setLoginDataValid(true);
-                        try {
-                            userSignedIn(ID, loginInfo);
-                        } catch (Exception e) {
-                            System.out.println("login crashed");
-                        }
+                        userID = ID;
                         break;
                     } else {
                         int wrongInput = 1;
@@ -63,11 +60,7 @@ public class Login {
                             System.out.println("\nIncorrect password. \nPlease try again.");
                             if (loginInfo[1].equals(sc.next())) {
                                 setLoginDataValid(true);
-                                try {
-                                    userSignedIn(ID, loginInfo);
-                                } catch (Exception e) {
-                                    System.out.println("login crashed");
-                                }
+                                userID = ID;
                                 break;
                             } else {
                                 wrongInput++;
@@ -94,14 +87,15 @@ public class Login {
             System.out.println("\nWrong username. \nPlease try again.\n");
             login();
         }
+        if (loginDataValid) {
+            loggedUser(userID);
+        }
+        return userID;
     }
 
 
-    public void userSignedIn(String ID, String[] loginInfo) throws Exception {
-        Menu menu = new Menu();
-        DataStorage dataStorage = new DataStorage();
-//        String[] userProperties = dataStorage.getUserPropertiesByID(ID);
-        String[] userRole = ID.split("-");
+    private void loggedUser(String userID) {
+        String[] userRole = userID.split("-");
         User user = null;
         switch (userRole[0]) {
             case "ADM":
@@ -114,12 +108,27 @@ public class Login {
                 user = new Student();
                 break;
             default:
-                return;
+                break;
         }
-        user.setLoginData(ID, loginInfo);
-        user.setUserProperties(ID, dataStorage.getUserPropertiesByID(ID));
-        System.out.println("hello, " + user.getUserName());
+        dataStorage.getUserInfoByID(userID);
+        user.setUserProperties(userID, dataStorage.getUserInfoByID(userID));
+        user.printUserTable();
+        Menu menu = new Menu();
         menu.runUserMenu(user);
+
     }
+
+
+//    public void userSignedIn(String ID, String[] loginInfo) throws Exception {
+//
+//        DataStorage dataStorage = new DataStorage();
+//        String[] userProperties = dataStorage.getUserPropertiesByID(ID);
+//
+//        }
+//        user.setLoginData(ID, loginInfo);
+//        user.setUserProperties(ID, dataStorage.getUserPropertiesByID(ID));
+//        System.out.println("hello, " + user.getUserName());
+//        menu.runUserMenu(user);
+//    }
 
 }
