@@ -110,7 +110,7 @@ public class Menu {
                     while (wrongInput < 3) {
                         System.out.print("\nChose Course lecturer (Enter ID): ");
                         String lecID = sc.next();
-                        lecID=lecID.toUpperCase();
+                        lecID = lecID.toUpperCase();
                         if ((lecID.split("-")[0].equals("LEC")) && dataStorage.getUserProperties().containsKey(lecID)) {
                             addNewCourse(user, lecID);
                             return;
@@ -121,7 +121,8 @@ public class Menu {
                             System.out.println("\nUser doesn't exist");
                             wrongInput++;
                         }
-                    }runUserMenu(user);
+                    }
+                    runUserMenu(user);
                     break;
                 case 6:
                     app.close();
@@ -166,7 +167,7 @@ public class Menu {
         dataWriter.updateCoursesInfo();
         System.out.println("\nNew Course has been added");
         dataStorage.printCurrentCourseTable(courseCode);
-       runUserMenu(user);
+        runUserMenu(user);
     }
 
     private void makeChangesToCourseTable(User user) {
@@ -282,8 +283,7 @@ public class Menu {
         System.out.println("2. My Courses");
         System.out.println("3. View all Courses");
         System.out.println("4. Enroll in a New Course");
-        //Check TotalNumberOfCredits
-        //Print only those Courses with right StartDate
+
         System.out.println("5. Exit");
         try {
             String userInput = sc.next();
@@ -291,6 +291,46 @@ public class Menu {
                 case 1:
                     editUserPropertiesMenu(user, user.getID());
                     user.setUserProperties(user.getID(), dataStorage.getUserInfoByID(user.getID()));
+                    runUserMenu(user);
+                    break;
+                case 2:
+                    dataStorage.printStudentsCoursesTable(user.getID());
+                    runUserMenu(user);
+                    break;
+                case 3:
+                    dataStorage.printCoursesTable();
+                    runUserMenu(user);
+                    break;
+                case 4:
+                    int totalNumberOfCredits = dataStorage.countStudentsCredits(user.getID());
+                    int allowedCredits = 12 - totalNumberOfCredits;
+                    if (allowedCredits <= 0) {
+                        System.out.println("You can't enroll in any Course. You have " + allowedCredits + " Credits left.");
+                        leaveCourse(user);
+                    } else {
+                        if (dataStorage.countAllowedCourses(user.getID(), allowedCredits) > 0) {
+                            dataStorage.printAllowedCoursesTable();
+                            System.out.println("\nYou have " + allowedCredits + " Credits left.\nChoose course (Enter COURSE CODE): ");
+                            String courseCode = sc.next();
+                            courseCode = courseCode.toUpperCase();
+                            if (dataStorage.getCoursesInfo().containsKey(courseCode)) {
+                                int courseCredits = Integer.parseInt(dataStorage.getCoursesInfo().get(courseCode).split(";")[1]);
+                                if (allowedCredits >= courseCredits) {
+                                    String studentCourse = user.getID() + ";" + courseCode + ";";
+                                    dataStorage.addStudentsCourse(studentCourse);
+                                    dataWriter.updateStudentCourses();
+                                } else {
+                                    System.out.println("\nYou don't have enough Credits to enroll in this Course");
+                                    leaveCourse(user);
+                                }
+                            } else {
+                                System.out.println("Course " + courseCode + " doesn't exist");
+                            }
+                        } else {
+                            System.out.println("There are no Courses for you right now");
+                        }
+                    }
+                    runUserMenu(user);
                     break;
                 case 5:
                     app.close();
@@ -299,6 +339,38 @@ public class Menu {
                 default:
                     System.out.println("\nWrong input\n");
                     runUserMenu(user);
+                    break;
+            }
+        } catch (Exception e) {
+            System.out.println("\nWrong number format\n");
+            runUserMenu(user);
+        }
+    }
+
+    private void leaveCourse(User user) {
+        System.out.println("Do you want to leave any of your Courses?\n1. yes   2. no");
+        try {
+            String userInput = sc.next();
+            switch (Integer.parseInt(userInput)) {
+                case 1:
+                    dataStorage.printStudentsCoursesTable(user.getID());
+                    System.out.print("Choose course (enter COURSE CODE): ");
+                    String courseCode = sc.next();
+                    courseCode = courseCode.toUpperCase();
+                    if (dataStorage.getCoursesInfo().containsKey(courseCode)) {
+                        String studentsCourse = user.getID() + ";" + courseCode + ";";
+                        dataStorage.deleteStudentsCourse(studentsCourse);
+                        dataWriter.updateStudentCourses();
+                        String courseTitle = dataStorage.getCoursesInfo().get(courseCode).split(";")[2];
+                        System.out.println("You left " + courseTitle + " Course");
+                    } else {
+                        System.out.println("Course " + courseCode + " doesn't exist");
+                    }
+                    break;
+                case 2:
+                    break;
+                default:
+                    System.out.println("\nWrong input\n");
                     break;
             }
         } catch (Exception e) {
@@ -410,10 +482,10 @@ public class Menu {
                     try {
                         LocalDate checkDate = LocalDate.parse(sc.next(), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
                         dateOfBirth = String.valueOf(checkDate);
+                        System.out.println("\nDate of Birth has been changed successfully.");
                     } catch (Exception e) {
                         System.out.println("\nWrong date format. Please try again\n");
                     }
-                    System.out.println("\nDate of Birth has been changed successfully.");
                     break;
                 case 6:
                     System.out.println("Email address: " + email);
@@ -436,12 +508,15 @@ public class Menu {
                         switch (sc.nextInt()) {
                             case 0:
                                 gender = "";
+                                System.out.println("\nGender has been changed successfully.");
                                 break;
                             case 1:
                                 gender = "male";
+                                System.out.println("\nGender has been changed successfully.");
                                 break;
                             case 2:
                                 gender = "female";
+                                System.out.println("\nGender has been changed successfully.");
                                 break;
                             default:
                                 System.out.println("\nWrong input\n");
@@ -451,7 +526,7 @@ public class Menu {
                     } catch (Exception e) {
                         System.out.println("\nWrong number format\n");
                     }
-                    System.out.println("\nGender has been changed successfully.");
+
                     break;
                 case 9:
                     System.out.println("Address: " + address);
@@ -470,6 +545,7 @@ public class Menu {
             }
         } catch (Exception e) {
             System.out.println("\nWrong number format\n");
+            return;
         }
         String userPropertiesToFile = (firstName + ";" + lastName + ";" + dateOfBirth + ";" + email + ";" + mobileNumber + ";" + gender + ";" + address + ";");
         String userLoginInfoToFile = (username + ";" + password + ";");

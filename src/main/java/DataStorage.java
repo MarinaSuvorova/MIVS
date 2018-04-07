@@ -2,10 +2,9 @@ import Users.User;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 
 public class DataStorage {
     boolean uniqueUsername;
@@ -13,7 +12,8 @@ public class DataStorage {
     private static HashMap<String, String> loginInfo = new HashMap<String, String>();
     private static HashMap<String, String> userProperties = new HashMap<String, String>();
     private static HashMap<String, String> coursesInfo = new HashMap<String, String>();
-    private static ArrayList<String> studentCourses = new ArrayList<>();
+    private static List<String> studentCourses = new ArrayList<>();
+    private static List<String> allowedCourses = new ArrayList<>();
     private int lastID;
     private int lastCourseCode;
     public boolean userAdded;
@@ -65,7 +65,7 @@ public class DataStorage {
         }
     }
 
-    public ArrayList<String> getStudentCourses() {
+    public List<String> getStudentCourses() {
         return studentCourses;
     }
 
@@ -261,17 +261,18 @@ public class DataStorage {
 
     public void printCoursesTable() {
         storeCoursesInfo();
-        String lineSeparator = new String(new char[245]).replace('\0', '-');
+        String lineSeparator = new String(new char[254]).replace('\0', '-');
         System.out.println(lineSeparator);
-        System.out.printf("| %-11s | %-11s | %-6s | %-40s | %-145s | %-13s |\n", "COURSE CODE", "LECTURER ID", "CREDIT", "TITLE", "DESCRIPTION", "START DATE");
+        System.out.printf("| %-11s | %-20s | %-6s | %-40s | %-145s | %-13s |\n", "COURSE CODE", "LECTURER", "CREDIT", "TITLE", "DESCRIPTION", "START DATE");
         System.out.println(lineSeparator);
         for (String courseCode : coursesInfo.keySet()) {
             String lecID = (coursesInfo.get(courseCode).split(";")[0]);
+            String lecturer = (getUserProperties().get(lecID).split(";")[0]) + " " + (getUserProperties().get(lecID).split(";")[1]);
             String credit = (coursesInfo.get(courseCode).split(";")[1]);
             String title = (coursesInfo.get(courseCode).split(";")[2]);
             String description = (coursesInfo.get(courseCode).split(";")[3]);
             String startDate = (coursesInfo.get(courseCode).split(";")[4]);
-            System.out.printf("| %-11s | %-11s | %-6s | %-40s | %-145s | %-13s |\n", courseCode, lecID, credit, title, description, startDate);
+            System.out.printf("| %-11s | %-20s | %-6s | %-40s | %-145s | %-13s |\n", courseCode, lecturer, credit, title, description, startDate);
         }
         System.out.println(lineSeparator);
     }
@@ -315,24 +316,34 @@ public class DataStorage {
         System.out.println(lineSeparator);
     }
 
-    public void printStudentsCoursesTable(String ID) {
-        String lineSeparator = new String(new char[245]).replace('\0', '-');
+    public void printStudentsCoursesTable(String stuID) {
+        storeCoursesInfo();
+        storeStudentCourses();
+        int totalNumberOfCredits = 0;
+        String lineSeparator = new String(new char[254]).replace('\0', '-');
         System.out.println(lineSeparator);
-        System.out.printf("| %-11s | %-6s | %-40s | %-145s | %-13s |\n", "COURSE CODE", "CREDIT", "TITLE", "DESCRIPTION", "START DATE");
+        System.out.printf("| %-11s | %-20s | %-40s | %-145s | %-6s | %-13s |\n", "COURSE CODE", "LECTURER", "TITLE", "DESCRIPTION", "CREDIT", "START DATE");
         System.out.println(lineSeparator);
-        for (String courseCode : coursesInfo.keySet()) {
-            String lecID = (coursesInfo.get(courseCode).split(";")[0]);
-            String credit = (coursesInfo.get(courseCode).split(";")[1]);
-            String title = (coursesInfo.get(courseCode).split(";")[2]);
-            String description = (coursesInfo.get(courseCode).split(";")[3]);
-            String startDate = (coursesInfo.get(courseCode).split(";")[4]);
-            if (lecID.equals(ID)) {
-                System.out.printf("| %-11s | %-6s | %-40s | %-145s | %-13s |\n", courseCode, credit, title, description, startDate);
-
+        for (String data : studentCourses) {
+            if (stuID.equals(data.split(";")[0])) {
+                String courseCode = data.split(";")[1];
+                String lecID = (coursesInfo.get(courseCode).split(";")[0]);
+                String lecturer = (getUserProperties().get(lecID).split(";")[0]) + " " + (getUserProperties().get(lecID).split(";")[1]);
+                String credit = (coursesInfo.get(courseCode).split(";")[1]);
+                try {
+                    totalNumberOfCredits = totalNumberOfCredits + Integer.parseInt(credit);
+                } catch (Exception e) {
+                }
+                String title = (coursesInfo.get(courseCode).split(";")[2]);
+                String description = (coursesInfo.get(courseCode).split(";")[3]);
+                String startDate = (coursesInfo.get(courseCode).split(";")[4]);
+                System.out.printf("| %-11s | %-20s | %-40s | %-145s | %-6s | %-13s |\n", courseCode, lecturer, title, description, credit, startDate);
             }
         }
         System.out.println(lineSeparator);
+        System.out.println("\nTotal Number of Credits: " + totalNumberOfCredits);
     }
+
 
     public void addNewCourseToHashMaps(String courseCode, String courseData) {
         storeCoursesInfo();
@@ -365,4 +376,75 @@ public class DataStorage {
         }
         System.out.println(lineSeparator);
     }
+
+    public void addStudentsCourse(String studentsCourse) {
+        storeStudentCourses();
+        if (!studentCourses.contains(studentsCourse)) {
+            studentCourses.add(studentsCourse);
+        }
+    }
+
+    public int countStudentsCredits(String stuID) {
+        storeStudentCourses();
+        storeCoursesInfo();
+        int totalNumberOfCredits = 0;
+        for (String data : studentCourses) {
+            if (stuID.equals(data.split(";")[0])) {
+                String courseCode = data.split(";")[1];
+                String credit = (coursesInfo.get(courseCode).split(";")[1]);
+                try {
+                    totalNumberOfCredits = totalNumberOfCredits + Integer.parseInt(credit);
+                } catch (Exception e) {
+                }
+            }
+        }
+        return totalNumberOfCredits;
+    }
+
+    public void deleteStudentsCourse(String studentsCourse) {
+        if (studentCourses.contains(studentsCourse)) {
+            studentCourses.remove(studentsCourse);
+        }
+    }
+
+    public void printAllowedCoursesTable() {
+        String lineSeparator = new String(new char[254]).replace('\0', '-');
+        System.out.println(lineSeparator);
+        System.out.printf("| %-11s | %-20s | %-6s | %-40s | %-145s | %-13s |\n", "COURSE CODE", "LECTURER", "CREDIT", "TITLE", "DESCRIPTION", "START DATE");
+        System.out.println(lineSeparator);
+        for (String courseCode : allowedCourses) {
+            String lecID = (coursesInfo.get(courseCode).split(";")[0]);
+            String lecturer = (getUserProperties().get(lecID).split(";")[0]) + " " + (getUserProperties().get(lecID).split(";")[1]);
+            String credit = coursesInfo.get(courseCode).split(";")[1];
+            String startDate = coursesInfo.get(courseCode).split(";")[4];
+            String title = (coursesInfo.get(courseCode).split(";")[2]);
+            String description = (coursesInfo.get(courseCode).split(";")[3]);
+            System.out.printf("| %-11s | %-20s | %-6s | %-40s | %-145s | %-13s |\n", courseCode, lecturer, credit, title, description, startDate);
+
+        }
+        System.out.println(lineSeparator);
+    }
+
+    public int countAllowedCourses(String stuID, int allowedCredits) {
+        for (String courseCode : coursesInfo.keySet()) {
+            try {
+                int credit = Integer.parseInt(coursesInfo.get(courseCode).split(";")[1]);
+                LocalDate startDate = LocalDate.parse((coursesInfo.get(courseCode).split(";")[4]), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+                if ((credit <= allowedCredits) && (startDate.isAfter(LocalDate.now()))) {
+                    allowedCourses.add(courseCode);
+                }
+                for (String data : studentCourses) {
+                    if (stuID.equals(data.split(";")[0])) {
+                        allowedCourses.remove(data.split(";")[1]);
+                    }
+                }
+            } catch (Exception e) {
+                System.out.println(e);
+            }
+
+
+        }
+        return allowedCourses.size();
+    }
 }
+

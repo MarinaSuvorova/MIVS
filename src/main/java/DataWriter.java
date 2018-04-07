@@ -4,6 +4,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Properties;
 
 public class DataWriter {
@@ -60,4 +61,19 @@ public class DataWriter {
         updateLoginInfo();
     }
 
+    public void updateStudentCourses() {
+        List<String> studentCourses = dataStorage.getStudentCourses();
+        File updateFile = new File("StudentCourses.txt");
+        try (FileWriter fileWriter = new FileWriter(updateFile);
+             BufferedWriter bufferedWriter = new BufferedWriter(fileWriter)) {
+            bufferedWriter.write("STU-ID;CourseCode;\n");
+            for (String dataLine : studentCourses) {
+                bufferedWriter.write(dataLine);
+                bufferedWriter.newLine();
+            }
+
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
 }

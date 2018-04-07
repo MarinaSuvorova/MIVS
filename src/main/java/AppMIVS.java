@@ -18,5 +18,6 @@ public class AppMIVS {
 
         Menu menu = new Menu();
         menu.runWelcomeMenu();
+
     }
 }
