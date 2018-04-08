@@ -3,5 +3,4 @@ STU-1002;Mykolas;Klepaitis;2000-03-28;mykkle@mivs.com;8 203 46857;male;Inzinieur
 STU-1004;sckrub;bsd; ; ; ; ; ;
 STU-1005;rf;tr; ; ; ; ; ;
 ADM-1000;Adminas;Adminaitis;1998-09-30;admin@mivs.com;8 675 34528;male;Draugystės 12-15, Ignalina;
-LEC-1003;Marinos;Gonzalez;1934-06-08;marinos@mivs.com;+12 656 5874;male;Kretio 45-9, Larnaca;
 LEC-1001;Marina;Suvorova;1994-03-11;maru@mivs.com;+370 600 51416;female;Architektu 67-34,Vilnius;

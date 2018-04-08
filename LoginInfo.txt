@@ -3,5 +3,4 @@ STU-1002;nice;qwer;
 STU-1004;as;krab;
 STU-1005;hg;fd;
 ADM-1000;admin;admin;
-LEC-1003;marinos;marinos;
 LEC-1001;maru;12345;

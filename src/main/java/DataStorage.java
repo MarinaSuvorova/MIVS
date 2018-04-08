@@ -50,19 +50,22 @@ public class DataStorage {
         return loginInfo;
     }
 
-    public void storeStudentCourses() {
-
-        try (FileReader fileReader = new FileReader("StudentCourses.txt");
+    public void storeList(String fileName, List list) {
+        try (FileReader fileReader = new FileReader(fileName);
              BufferedReader bufferedReader = new BufferedReader(fileReader)) {
             String fileLine = bufferedReader.readLine();
             while ((fileLine = bufferedReader.readLine()) != null) {
-                if (!studentCourses.contains(fileLine)) {
-                    studentCourses.add(fileLine);
+                if (!list.contains(fileLine)) {
+                    list.add(fileLine);
                 }
             }
         } catch (Exception e) {
             System.out.println(e);
         }
+    }
+
+    public void storeStudentCourses() {
+        storeList("StudentCourses.txt", studentCourses);
     }
 
     public List<String> getStudentCourses() {
@@ -327,23 +330,27 @@ public class DataStorage {
         for (String data : studentCourses) {
             if (stuID.equals(data.split(";")[0])) {
                 String courseCode = data.split(";")[1];
-                if(coursesInfo.containsKey(courseCode)){
-                String lecID = coursesInfo.get(courseCode).split(";")[0];
-                String lecturer = (getUserProperties().get(lecID).split(";")[0]) + " " + (getUserProperties().get(lecID).split(";")[1]);
-                try {String credit = (coursesInfo.get(courseCode).split(";")[1]);
+                if (coursesInfo.containsKey(courseCode)) {
+                    String lecID = coursesInfo.get(courseCode).split(";")[0];
+                    String lecturer = (getUserProperties().get(lecID).split(";")[0]) + " " + (getUserProperties().get(lecID).split(";")[1]);
+                    try {
+                        String credit = (coursesInfo.get(courseCode).split(";")[1]);
 
-                    totalNumberOfCredits = totalNumberOfCredits + Integer.parseInt(credit);
+                        totalNumberOfCredits = totalNumberOfCredits + Integer.parseInt(credit);
 
-                String title = (coursesInfo.get(courseCode).split(";")[2]);
-                String description = (coursesInfo.get(courseCode).split(";")[3]);
-                String startDate = (coursesInfo.get(courseCode).split(";")[4]);
-                System.out.printf("| %-11s | %-20s | %-40s | %-145s | %-6s | %-13s |\n", courseCode, lecturer, title, description, credit, startDate);
-            } catch (Exception e) {
+                        String title = (coursesInfo.get(courseCode).split(";")[2]);
+                        String description = (coursesInfo.get(courseCode).split(";")[3]);
+                        String startDate = (coursesInfo.get(courseCode).split(";")[4]);
+                        System.out.printf("| %-11s | %-20s | %-40s | %-145s | %-6s | %-13s |\n", courseCode, lecturer, title, description, credit, startDate);
+                    } catch (Exception e) {
+                    }
+                }
             }
-        }}
 
-    }System.out.println(lineSeparator);
-        System.out.println("\nTotal Number of Credits: " + totalNumberOfCredits);}
+        }
+        System.out.println(lineSeparator);
+        System.out.println("\nTotal Number of Credits: " + totalNumberOfCredits);
+    }
 
 
     public void addNewCourseToHashMaps(String courseCode, String courseData) {
@@ -392,7 +399,8 @@ public class DataStorage {
         for (String data : studentCourses) {
             if (stuID.equals(data.split(";")[0])) {
                 String courseCode = data.split(";")[1];
-                try {String credit = (coursesInfo.get(courseCode).split(";")[1]);
+                try {
+                    String credit = (coursesInfo.get(courseCode).split(";")[1]);
                     totalNumberOfCredits = totalNumberOfCredits + Integer.parseInt(credit);
                 } catch (Exception e) {
                 }
@@ -447,5 +455,41 @@ public class DataStorage {
         }
         return allowedCourses.size();
     }
+
+    public void deleteUser(String userID) {
+        userProperties.remove(userID);
+        loginInfo.remove(userID);
+        if (userID.split("-")[0].equals("LEC")) {
+            List<String> coursesToRemove = new ArrayList<>();
+            for (String courseCode : coursesInfo.keySet()) {
+                if (coursesInfo.get(courseCode).split(";")[0].equals(userID)) {
+                    coursesToRemove.add(courseCode);
+                }
+            }
+            removeLecturersCourses(coursesToRemove);
+        }
+    }
+
+    private void removeLecturersCourses(List<String> coursesToRemove) {
+        List<String> studentCoursesToRemove = new ArrayList<>();
+        for (String code : coursesToRemove) {
+            for (String data : studentCourses) {
+                if (data.split(";")[1].equals(code)) {
+                    studentCoursesToRemove.add(data);
+                }
+            }
+            coursesInfo.remove(code);
+        }
+        removeStunedntsFromCOurse(studentCoursesToRemove);
+
+    }
+
+    private void removeStunedntsFromCOurse(List<String> studentCoursesToRemove) {
+        for (String data : studentCoursesToRemove) {
+            studentCourses.remove(data);
+        }
+    }
+
+
 }
 

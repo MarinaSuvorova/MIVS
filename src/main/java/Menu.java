@@ -93,6 +93,7 @@ public class Menu {
                         }
                     } catch (Exception e) {
                         System.out.println("\nWrong number format\n");
+                        runUserMenu(user);
                         break;
                     }
                     break;
@@ -393,9 +394,10 @@ public class Menu {
                         break;
                     case 2:
                         if (!user.getID().equals(userID)) {
-                            dataStorage.getUserProperties().remove(userID);
-                            dataStorage.getLoginInfo().remove(userID);
+                            dataStorage.deleteUser(userID);
                             System.out.println("\nUser has been deleted\n");
+                            dataWriter.updateStudentCourses();
+                            dataWriter.updateCoursesInfo();
                         } else {
                             System.out.println("\nYou cannot delete yourself!\n");
                         }
