@@ -40,61 +40,63 @@ public class Login {
         dataStorage.storeLoginInfo();
         dataStorage.storeLoginInfo();
         Scanner sc = new Scanner(System.in);
-        int wrongUsername=0;
+        int wrongUsername = 0;
         //
-        while(!foundUser&&wrongUsername<3) {
-        //
-        System.out.println("Enter login");
-        String login = sc.next();
-        for (String ID : dataStorage.getLoginInfo().keySet()) {
-            String[] loginInfo = dataStorage.getLoginInfo().get(ID).split(";");
-            for (int i = 0; i < loginInfo.length; i++) {
-                if (loginInfo[0].equals(login)) {
-                    foundUser = true;
-                    System.out.println("Enter password");
-                    String password = sc.next();
-                    if (loginInfo[1].equals(password)) {
-                        setLoginDataValid(true);
-                        userID = ID;
-                        break;
-                    } else {
-                        int wrongInput = 1;
-                        while ((wrongInput < 3) || (loginDataValid)) {
-                            System.out.println("\nIncorrect password. \nPlease try again.");
-                            if (loginInfo[1].equals(sc.next())) {
-                                setLoginDataValid(true);
-                                userID = ID;
-                                break;
-                            } else {
-                                wrongInput++;
-                            }
-                        }
-                        if (!loginDataValid) {
-                            System.out.println("Please try again after 5 sec.");
-                            Thread sleep = new Thread();
-                            try {
-                                sleep.sleep(5000);
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
+        while (!foundUser && wrongUsername < 3) {
+            //
+            System.out.println("Enter login");
+            String login = sc.next();
+            for (String ID : dataStorage.getLoginInfo().keySet()) {
+                String[] loginInfo = dataStorage.getLoginInfo().get(ID).split(";");
+                for (int i = 0; i < loginInfo.length; i++) {
+                    if (loginInfo[0].equals(login)) {
+                        foundUser = true;
+                        System.out.println("Enter password");
+                        String password = sc.next();
+                        if (loginInfo[1].equals(password)) {
+                            setLoginDataValid(true);
+                            userID = ID;
                             break;
                         } else {
+                            int wrongInput = 1;
+                            while ((wrongInput < 3) || (loginDataValid)) {
+                                System.out.println("\nIncorrect password. \nPlease try again.");
+                                if (loginInfo[1].equals(sc.next())) {
+                                    setLoginDataValid(true);
+                                    userID = ID;
+                                    break;
+                                } else {
+                                    wrongInput++;
+                                }
+                            }
+                            if (!loginDataValid) {
+                                System.out.println("Please try again after 5 sec.");
+                                Thread sleep = new Thread();
+                                try {
+                                    sleep.sleep(5000);
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                                break;
+                            } else {
 
-                            break;
-                        }}
+                                break;
+                            }
+                        }
                     }
                 }
             }
 
-        if (!foundUser) {
-            System.out.println("\nWrong username. \nPlease try again.\n");
-            wrongUsername++;
+            if (!foundUser) {
+                System.out.println("\nWrong username. \nPlease try again.\n");
+                wrongUsername++;
 //            login();
-        }
-        if (loginDataValid) {
-            loggedUser(userID);
-        }}
             }
+            if (loginDataValid) {
+                loggedUser(userID);
+            }
+        }
+    }
 
 
     private void loggedUser(String userID) {
@@ -118,20 +120,6 @@ public class Login {
         user.printUserTable();
         Menu menu = new Menu();
         menu.runUserMenu(user);
-
     }
-
-
-//    public void userSignedIn(String ID, String[] loginInfo) throws Exception {
-//
-//        DataStorage dataStorage = new DataStorage();
-//        String[] userProperties = dataStorage.getUserPropertiesByID(ID);
-//
-//        }
-//        user.setLoginData(ID, loginInfo);
-//        user.setUserProperties(ID, dataStorage.getUserPropertiesByID(ID));
-//        System.out.println("hello, " + user.getUserName());
-//        menu.runUserMenu(user);
-//    }
 
 }
