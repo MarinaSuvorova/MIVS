@@ -57,6 +57,7 @@ public class Menu {
             }
         }
     }
+
     private void runAdminMenu(User user) {
         System.out.println("1. Edit profile");
         System.out.println("2. View all Courses");
@@ -84,16 +85,13 @@ public class Menu {
                                 userTableMenu(user);
                                 break;
                             case 2:
-//                                runUserMenu(user);
                                 break;
                             default:
                                 System.out.println("\nWrong input\n");
-//                                runUserMenu(user);
                                 break;
                         }
                     } catch (Exception e) {
                         System.out.println("\nWrong number format\n");
-//                        runUserMenu(user);
                         break;
                     }
                     break;
@@ -112,7 +110,7 @@ public class Menu {
                         String lecID = sc.next();
                         lecID = lecID.toUpperCase();
                         if ((lecID.split("-")[0].equals("LEC")) && dataStorage.getUserProperties().containsKey(lecID)) {
-                            addNewCourse(user, lecID);
+                            addNewCourse(lecID);
                             return;
                         } else if ((!lecID.split("-")[0].equals("LEC")) && (dataStorage.getUserProperties().containsKey(lecID))) {
                             System.out.println("\nUser is not a lecturer.");
@@ -122,7 +120,6 @@ public class Menu {
                             wrongInput++;
                         }
                     }
-//                    runUserMenu(user);
                     break;
                 case 6:
                     app.close();
@@ -130,17 +127,15 @@ public class Menu {
                     break;
                 default:
                     System.out.println("\nWrong input\n");
-//                    runUserMenu(user);
                     break;
             }
         } catch (Exception e) {
             System.out.println("\nWrong number format\n");
-//            runUserMenu(user);
         }
     }
 
 
-    private void addNewCourse(User user, String lecID) {
+    private void addNewCourse(String lecID) {
         dataStorage.storeCoursesInfo();
         sc.nextLine();
         System.out.print("Course Title: ");
@@ -168,7 +163,6 @@ public class Menu {
         dataWriter.updateCoursesInfo();
         System.out.println("\nNew Course has been added");
         dataStorage.printCurrentCourseTable(courseCode);
-//        runUserMenu(user);
     }
 
     private void makeChangesToCourseTable(User user) {
@@ -179,16 +173,13 @@ public class Menu {
                     coursesMenu(user);
                     break;
                 case 2:
-//                    runUserMenu(user);
                     break;
                 default:
                     System.out.println("\nWrong input\n");
-//                    runUserMenu(user);
                     break;
             }
         } catch (Exception e) {
             System.out.println("\nWrong number format\n");
-//            runUserMenu(user);
         }
     }
 
@@ -258,10 +249,9 @@ public class Menu {
                     break;
                 case 3:
                     dataStorage.showLecturersStudents(user.getID());
-//                    runUserMenu(user);
                     break;
                 case 4:
-                    addNewCourse(user, user.getID());
+                    addNewCourse(user.getID());
                     break;
                 case 5:
                     app.close();
@@ -269,7 +259,6 @@ public class Menu {
                     break;
                 default:
                     System.out.println("\nWrong input\n");
-//                    runUserMenu(user);
                     break;
             }
         } catch (Exception e) {
@@ -298,7 +287,6 @@ public class Menu {
                     break;
                 case 3:
                     dataStorage.printCoursesTable();
-//                    runUserMenu(user);
                     break;
                 case 4:
                     int totalNumberOfCredits = dataStorage.countStudentsCredits(user.getID());
@@ -406,7 +394,6 @@ public class Menu {
             System.out.println("\nUser " + userID + " doesn't exist\n");
         }
         dataWriter.updateUserFiles();
-//        runUserMenu(user);
     }
 
     private void editUserPropertiesMenu(User user, String userID) {
@@ -531,11 +518,9 @@ public class Menu {
                     System.out.println("\nAddress has been changed successfully.");
                     break;
                 case 10:
-//                    runUserMenu(user);
                     return;
                 default:
                     System.out.println("\nWrong input\n");
-//                    runUserMenu(user);
                     return;
             }
         } catch (Exception e) {
@@ -557,11 +542,9 @@ public class Menu {
                     editUserPropertiesMenu(user, userID);
                     break;
                 case 2:
-//                    runUserMenu(user);
                     break;
                 default:
                     System.out.println("\nWrong input\n");
-//                    runUserMenu(user);
                     break;
             }
         } catch (Exception e) {
@@ -599,7 +582,6 @@ public class Menu {
                         break;
                     default:
                         System.out.println("\nWrong input\n");
-//                        runUserMenu(user);
                         break;
                 }
             } catch (Exception e) {
@@ -608,7 +590,6 @@ public class Menu {
         } else {
             System.out.println("Course " + courseCode + " doesn't exist");
         }
-//        runUserMenu(user);
     }
 
     private void editCourseMenu(User user, String courseCode) {
@@ -676,11 +657,9 @@ public class Menu {
                     }
                     break;
                 case 6:
-//                    runUserMenu(user);
                     return;
                 default:
                     System.out.println("\nWrong input\n");
-//                    runUserMenu(user);
                     return;
             }
         } catch (Exception e) {
@@ -696,7 +675,6 @@ public class Menu {
                     editCourseMenu(user, courseCode);
                     break;
                 case 2:
-//                    runUserMenu(user);
                     break;
                 default:
                     System.out.println("\nWrong input\n");
@@ -704,37 +682,6 @@ public class Menu {
             }
         } catch (Exception e) {
             System.out.println("\nWrong number format\n");
-        }
-    }
-
-    private void chooseNextMenu(User user, String methodName) {
-        System.out.println("Do you want to change something else? \n1.Yes   2.No");
-        try {
-            switch (Integer.parseInt(sc.next())) {
-                case 1:
-                    try {
-                        switch (methodName) {
-                            case "coursesMenu":
-                                coursesMenu(user);
-                                break;
-                            default:
-//                                runUserMenu(user);
-                                break;
-                        }
-                    } catch (Exception e) {
-                        System.out.println(e);
-                    }
-                    break;
-                case 2:
-//                    runUserMenu(user);
-                    break;
-                default:
-                    System.out.println("\nWrong input\n");
-                    break;
-            }
-        } catch (Exception e) {
-            System.out.println(e);
-            chooseNextMenu(user, methodName);
         }
     }
 }
