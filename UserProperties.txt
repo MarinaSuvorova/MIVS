@@ -3,4 +3,5 @@ STU-1003;Rudent;Student; ; ; ; ; ;
 STU-1004;Student;Rudent; ; ; ; ; ;
 ADM-1000;Adminas;Adminaitis;1998-09-30;admin@mivs.com;8 675 34528;male;Draugystės 12-15, Ignalina;
 LEC-1002;Lector;Hector; ; ; ; ; ;
-LEC-1001;Hector;Lector; ; ; ; ; ;
+ADM-1005;Mon;Day; ; ; ; ; ;
+LEC-1001;Hector;Lector;2000-04-06; ; ; ; ;

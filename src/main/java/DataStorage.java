@@ -1,5 +1,3 @@
-import Users.User;
-
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.time.LocalDate;
@@ -8,7 +6,6 @@ import java.util.*;
 
 public class DataStorage {
     boolean uniqueUsername;
-
     private static HashMap<String, String> loginInfo = new HashMap<String, String>();
     private static HashMap<String, String> userProperties = new HashMap<String, String>();
     private static HashMap<String, String> coursesInfo = new HashMap<String, String>();
@@ -23,7 +20,6 @@ public class DataStorage {
     }
 
     public void storeData(String fileName, HashMap mapName) {
-
         try (FileReader fileReader = new FileReader(fileName);
              BufferedReader bufferedReader = new BufferedReader(fileReader)) {
             String fileLine = bufferedReader.readLine();
@@ -35,7 +31,6 @@ public class DataStorage {
                     data = data + fileData[i] + ";";
                 }
                 mapName.put(key, data);
-
             }
         } catch (Exception e) {
             System.out.println("storeData failed at " + fileName);
@@ -93,13 +88,11 @@ public class DataStorage {
         return uniqueUsername;
     }
 
-
     public void storeUserProperties() {
         storeData("UserProperties.txt", userProperties);
     }
 
     public HashMap<String, String> getUserProperties() {
-
         return userProperties;
     }
 
@@ -139,7 +132,6 @@ public class DataStorage {
             if (key.equals(courseCode)) {
                 coursesInfo.put(courseCode, courseData);
             }
-
         }
     }
 
@@ -185,21 +177,25 @@ public class DataStorage {
         System.out.println();
         System.out.println(lineSeparator);
         for (String ID : userProperties.keySet()) {
-            String userRole = defineUserRole(ID);
-            String username = (loginInfo.get(ID).split(";")[0]);
-            int passwordLength = loginInfo.get(ID).split(";")[1].length();
-            String password = new String(new char[passwordLength]).replace('\0', '*');
-            String firstName = (userProperties.get(ID).split(";")[0]);
-            String lastName = (userProperties.get(ID).split(";")[1]);
-            String dateOfBirth = (userProperties.get(ID).split(";")[2]);
-            String email = (userProperties.get(ID).split(";")[3]);
-            String mobilenumber = (userProperties.get(ID).split(";")[4]);
-            String gender = (userProperties.get(ID).split(";")[5]);
-            String address = (userProperties.get(ID).split(";")[6]);
-            System.out.printf("| %-8s | %-9s | %-20s | %-10s | %-20s | %-20s | %-13s | %-30s| %-15s | %-6s | %-35s |\n", ID, userRole, username, password, firstName, lastName, dateOfBirth, email, mobilenumber, gender, address);
-
+            printUserLine(ID);
         }
         System.out.println(lineSeparator);
+    }
+
+    private void printUserLine(String ID) {
+        String userRole = defineUserRole(ID);
+        String username = (loginInfo.get(ID).split(";")[0]);
+        int passwordLength = loginInfo.get(ID).split(";")[1].length();
+        String password = new String(new char[passwordLength]).replace('\0', '*');
+        String firstName = (userProperties.get(ID).split(";")[0]);
+        String lastName = (userProperties.get(ID).split(";")[1]);
+        String dateOfBirth = (userProperties.get(ID).split(";")[2]);
+        String email = (userProperties.get(ID).split(";")[3]);
+        String mobilenumber = (userProperties.get(ID).split(";")[4]);
+        String gender = (userProperties.get(ID).split(";")[5]);
+        String address = (userProperties.get(ID).split(";")[6]);
+        System.out.printf("| %-8s | %-9s | %-20s | %-10s | %-20s | %-20s | %-13s | %-30s| %-15s | %-6s | %-35s |\n", ID, userRole, username, password, firstName, lastName, dateOfBirth, email, mobilenumber, gender, address);
+
     }
 
     public void printCurrentUsersTable(String userID) {
@@ -210,19 +206,7 @@ public class DataStorage {
         System.out.println(lineSeparator);
         for (String ID : userProperties.keySet()) {
             if (ID.equals(userID)) {
-                String userRole = defineUserRole(ID);
-                String username = (loginInfo.get(ID).split(";")[0]);
-                int passwordLength = loginInfo.get(ID).split(";")[1].length();
-                String password = new String(new char[passwordLength]).replace('\0', '*');
-                String firstName = (userProperties.get(ID).split(";")[0]);
-                String lastName = (userProperties.get(ID).split(";")[1]);
-                String dateOfBirth = (userProperties.get(ID).split(";")[2]);
-                String email = (userProperties.get(ID).split(";")[3]);
-                String mobilenumber = (userProperties.get(ID).split(";")[4]);
-                String gender = (userProperties.get(ID).split(";")[5]);
-                String address = (userProperties.get(ID).split(";")[6]);
-                System.out.printf("| %-8s | %-9s | %-20s | %-10s | %-20s | %-20s | %-13s | %-30s| %-15s | %-6s | %-35s |\n", ID, userRole, username, password, firstName, lastName, dateOfBirth, email, mobilenumber, gender, address);
-
+                printUserLine(ID);
             }
         }
         System.out.println(lineSeparator);
@@ -450,8 +434,6 @@ public class DataStorage {
             } catch (Exception e) {
                 System.out.println(e);
             }
-
-
         }
         return allowedCourses.size();
     }
@@ -493,7 +475,5 @@ public class DataStorage {
             studentCourses.remove(data);
         }
     }
-
-
 }
 

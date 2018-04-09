@@ -3,4 +3,5 @@ STU-1003;rud;stu;
 STU-1004;stu;rud;
 ADM-1000;admin;admin;
 LEC-1002;lec;hec;
+ADM-1005;wet;tew;
 LEC-1001;hec;lec;

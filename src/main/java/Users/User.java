@@ -8,15 +8,9 @@ public abstract class User {
     private String ID, userName, role, password, firstName, lastName, email, mobileNumber, gender, address;
     private LocalDate dateOfBirth;
 
-
     public String getID() {
         return ID;
     }
-
-    public void setID(String ID) {
-        this.ID = ID;
-    }
-
 
     public void setUserProperties(String ID, String[][] userInfo) {
         this.ID = ID;
@@ -27,7 +21,7 @@ public abstract class User {
         try {
             this.dateOfBirth = LocalDate.parse(userInfo[1][2], DateTimeFormatter.ofPattern("yyyy-MM-dd"));
         } catch (Exception e) {
-            System.out.println("Wrong date format");
+            System.out.println();
         }
         this.email = userInfo[1][3];
         this.mobileNumber = userInfo[1][4];
@@ -54,9 +48,13 @@ public abstract class User {
         System.out.println(lineSeparator);
         System.out.printf("| %-8s | %-9s | %-20s | %-10s | %-20s | %-20s | %-13s | %-30s| %-15s | %-6s | %-35s |\n", "USER ID", "USER ROLE", "USERNAME", "PASSWORD", "FIRST NAME", "LAST NAME", "DATE OF BIRTH", "EMAIL", "MOBILE NUMBER", "GENDER", "ADDRESS");
         System.out.println(lineSeparator);
-        int passwordLength =password.length();
+        int passwordLength = password.length();
+        String birthDate="";
+        if (dateOfBirth != null) {
+            birthDate=String.valueOf(dateOfBirth);
+        }
         String hiddenPassword = new String(new char[passwordLength]).replace('\0', '*');
-        System.out.printf("| %-8s | %-9s | %-20s | %-10s | %-20s | %-20s | %-13s | %-30s| %-15s | %-6s | %-35s |\n", ID, role, userName, hiddenPassword, firstName, lastName, dateOfBirth, email, mobileNumber, gender, address);
+        System.out.printf("| %-8s | %-9s | %-20s | %-10s | %-20s | %-20s | %-13s | %-30s| %-15s | %-6s | %-35s |\n", ID, role, userName, hiddenPassword, firstName, lastName, birthDate, email, mobileNumber, gender, address);
         System.out.println(lineSeparator);
     }
 
