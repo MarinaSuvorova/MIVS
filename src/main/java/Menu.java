@@ -111,7 +111,7 @@ public class Menu {
                         String lecID = sc.next();
                         lecID = lecID.toUpperCase();
                         if ((lecID.split("-")[0].equals("LEC")) && dataStorage.getUserProperties().containsKey(lecID)) {
-                            addNewCourse(lecID);
+                            addNewCourse(user,lecID);
                             return;
                         } else if ((!lecID.split("-")[0].equals("LEC")) && (dataStorage.getUserProperties().containsKey(lecID))) {
                             System.out.println("\nUser is not a lecturer.");
@@ -136,13 +136,15 @@ public class Menu {
     }
 
 
-    private void addNewCourse(String lecID) {
+    private void addNewCourse(User user, String lecID) {
         dataStorage.storeCoursesInfo();
         sc.nextLine();
         System.out.print("Course Title: ");
         String courseTitle = sc.nextLine();
+        courseTitle = courseTitle.replace(";",",");
         System.out.print("Description: ");
         String description = sc.nextLine();
+        description = description.replace(";",",");
         System.out.print("Start Date (yyyy-mm-dd): ");
         String startDate = String.valueOf(LocalDate.now());
         try {
@@ -163,6 +165,7 @@ public class Menu {
         dataStorage.addNewCourseToHashMaps(courseCode, courseData);
         dataWriter.updateCoursesInfo();
         System.out.println("\nNew Course has been added");
+        logger.addMessageToLogFile("User "+user.getName()+" added Course "+courseTitle+" lecturer");
         dataStorage.printCurrentCourseTable(courseCode);
     }
 
@@ -197,8 +200,10 @@ public class Menu {
         System.out.print("First name: ");
         sc.nextLine();
         String firstName = sc.nextLine();
+        firstName=firstName.replace(";",",");
         System.out.print("Last name: ");
         String lastName = sc.nextLine();
+        lastName=lastName.replace(";",",");
         System.out.println("Choose User role: \n1.admin 2. lecturer 3. student");
         String role = sc.next();
         try {
@@ -252,7 +257,7 @@ public class Menu {
                     dataStorage.printLecturersStudents(user.getID());
                     break;
                 case 4:
-                    addNewCourse(user.getID());
+                    addNewCourse(user, user.getID());
                     break;
                 case 5:
                     app.close();
@@ -346,6 +351,7 @@ public class Menu {
                         dataWriter.updateStudentCourses();
                         String courseTitle = dataStorage.getCoursesInfo().get(courseCode).split(";")[2];
                         System.out.println("You left " + courseTitle + " Course");
+                        logger.addMessageToLogFile("User "+user.getName()+" left Course "+courseTitle);
                     } else {
                         System.out.println("Course " + courseCode + " doesn't exist");
                     }
@@ -451,7 +457,7 @@ public class Menu {
                     System.out.println("First name: " + firstName);
                     System.out.print("Enter first name: ");
                     sc.nextLine();
-                    firstName = sc.nextLine().replaceAll(";", "");
+                    firstName = sc.nextLine().replaceAll(";", ",");
                     System.out.println("\nFirst name has been changed successfully.");
                     logger.addMessageToLogFile("User "+user.getName()+" changed User's "+firstName+" "+lastName+" first name");
                     break;
@@ -459,7 +465,7 @@ public class Menu {
                     System.out.println("Last name: " + lastName);
                     System.out.print("Enter last name: ");
                     sc.nextLine();
-                    lastName = sc.nextLine().replaceAll(";", "");
+                    lastName = sc.nextLine().replaceAll(";", ",");
                     System.out.println("\nLast name has been changed successfully.");
                     logger.addMessageToLogFile("User "+user.getName()+" changed User's "+firstName+" "+lastName+" last name");
                     break;
@@ -479,7 +485,7 @@ public class Menu {
                     System.out.println("Email address: " + email);
                     System.out.print("Enter email address: ");
                     sc.nextLine();
-                    email = sc.nextLine().replaceAll(";", "");
+                    email = sc.nextLine().replaceAll(";", ",");
                     System.out.println("\nEmail address has been changed successfully.");
                     logger.addMessageToLogFile("User "+user.getName()+" changed User's "+firstName+" "+lastName+" email address");
                     break;
@@ -487,7 +493,7 @@ public class Menu {
                     System.out.println("Mobile number: " + mobileNumber);
                     System.out.print("Enter mobile number: ");
                     sc.nextLine();
-                    mobileNumber = sc.nextLine().replaceAll(";", "");
+                    mobileNumber = sc.nextLine().replaceAll(";", ",");
                     System.out.println("\nMobile number has been changed successfully.");
                     logger.addMessageToLogFile("User "+user.getName()+" changed User's "+firstName+" "+lastName+" mobile number");
                     break;
@@ -499,16 +505,17 @@ public class Menu {
                             case 0:
                                 gender = "";
                                 System.out.println("\nGender has been changed successfully.");
-                                logger.addMessageToLogFile("User "+user.getName()+" changed User's "+firstName+" "+lastName+" gender");
+                                logger.addMessageToLogFile("User "+user.getName()+" removed User's "+firstName+" "+lastName+" gender");
                                 break;
                             case 1:
                                 gender = "male";
                                 System.out.println("\nGender has been changed successfully.");
-                                logger.addMessageToLogFile("User "+user.getName()+" changed User's "+firstName+" "+lastName+" last name");
+                                logger.addMessageToLogFile("User "+user.getName()+" changed User's "+firstName+" "+lastName+" gender");
                                 break;
                             case 2:
                                 gender = "female";
                                 System.out.println("\nGender has been changed successfully.");
+                                logger.addMessageToLogFile("User "+user.getName()+" changed User's "+firstName+" "+lastName+" gender");
                                 break;
                             default:
                                 System.out.println("\nWrong input\n");
@@ -524,8 +531,9 @@ public class Menu {
                     System.out.println("Address: " + address);
                     System.out.println("Enter address: ");
                     sc.nextLine();
-                    address = sc.nextLine().replaceAll(";", "");
+                    address = sc.nextLine().replaceAll(";", ",");
                     System.out.println("\nAddress has been changed successfully.");
+                    logger.addMessageToLogFile("User "+user.getName()+" changed User's "+firstName+" "+lastName+" address");
                     break;
                 case 10:
                     return;
@@ -584,6 +592,7 @@ public class Menu {
                         if ((user.getID().equals(dataStorage.getCoursesInfo().get(courseCode).split(";")[0])) || (user.getID().split("-")[0].equals("ADM"))) {
                             dataStorage.getCoursesInfo().remove(courseCode);
                             System.out.println("Course \"" + courseTitle + "\" has been deleted");
+                            logger.addMessageToLogFile("User "+user.getName()+" deleted Course "+courseTitle);
 
                         } else {
                             System.out.println("\nCannot delete Course. You need permission to perform this action\n");
@@ -611,7 +620,7 @@ public class Menu {
         } catch (Exception e) {
             System.out.println("Wrong number format");
         }
-        String title = dataStorage.getCurrentCourseInfo(courseCode)[2];
+        String courseTitle = dataStorage.getCurrentCourseInfo(courseCode)[2];
         String description = dataStorage.getCurrentCourseInfo(courseCode)[3];
         String startDate = dataStorage.getCurrentCourseInfo(courseCode)[4];
         System.out.println("\nChoose what you want to change:");
@@ -627,6 +636,7 @@ public class Menu {
                         System.out.print("Choose Lecturer (enter USER ID): ");
                         lecID = sc.next();
                         System.out.println("\nLecturer has been changed successfully.\n");
+                        logger.addMessageToLogFile("User "+user.getName()+" changed Course "+courseTitle+" lecturer");
                     } else {
                         System.out.println("Cannot change Lecturer. You need permission to perform this action. ");
                     }
@@ -637,23 +647,28 @@ public class Menu {
                     try {
                         credit = Integer.parseInt(sc.next());
                         System.out.println("\nNumber of Credits has been changed successfully.\n");
+                        logger.addMessageToLogFile("User "+user.getName()+" changed Course "+courseTitle+" credits");
                     } catch (Exception e) {
                         System.out.println("\nWrong number format\n");
                     }
                     break;
                 case 3:
-                    System.out.println("Course Title: " + title);
+                    System.out.println("Course Title: " + courseTitle);
                     System.out.print("Enter Course Title: ");
                     sc.nextLine();
-                    title = sc.nextLine();
+                    courseTitle = sc.nextLine();
+                    courseTitle=courseTitle.replace(";",",");
                     System.out.println("\nCourse Title has been changed successfully.\n");
+                    logger.addMessageToLogFile("User "+user.getName()+" changed Course "+courseTitle+" title");
                     break;
                 case 4:
                     System.out.println("Course Description: " + description);
                     System.out.print("Enter Course Description: ");
                     sc.nextLine();
                     description = sc.nextLine();
+                    description=description.replace(";",",");
                     System.out.println("\nDescription has been changed successfully.\n");
+                    logger.addMessageToLogFile("User "+user.getName()+" changed Course "+courseTitle+" description");
                     break;
                 case 5:
                     System.out.println("Start date: " + startDate);
@@ -662,6 +677,7 @@ public class Menu {
                         LocalDate checkStartDate = LocalDate.parse(sc.next(), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
                         startDate = String.valueOf(checkStartDate);
                         System.out.println("\nStart Date has been changed successfully.\n");
+                        logger.addMessageToLogFile("User "+user.getName()+" changed Course "+courseTitle+" start date");
                     } catch (Exception e) {
                         System.out.println("Wrong date format");
                     }
@@ -675,7 +691,7 @@ public class Menu {
         } catch (Exception e) {
             System.out.println("\nWrong number format\n");
         }
-        String courseData = lecID + ";" + String.valueOf(credit) + ";" + title + ";" + description + ";" + startDate + ";";
+        String courseData = lecID + ";" + String.valueOf(credit) + ";" + courseTitle + ";" + description + ";" + startDate + ";";
         dataStorage.changeCourseInfoHashMap(courseCode, courseData);
         dataWriter.updateCoursesInfo();
         System.out.println("Do you want to change something else?\n1. yes   2. no");
