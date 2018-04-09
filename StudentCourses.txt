@@ -1,1 +1,3 @@
 STU-ID;CourseCode;
+STU-1003;CRS-3;
+STU-1003;CRS-1;

@@ -439,7 +439,7 @@ public class DataStorage {
             try {
                 int credit = Integer.parseInt(coursesInfo.get(courseCode).split(";")[1]);
                 LocalDate startDate = LocalDate.parse((coursesInfo.get(courseCode).split(";")[4]), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-                if ((credit <= allowedCredits) && (startDate.isAfter(LocalDate.now()))) {
+                if ((credit <= allowedCredits) && (startDate.isBefore(LocalDate.now()))) {
                     allowedCourses.add(courseCode);
                 }
                 for (String data : studentCourses) {
@@ -454,6 +454,10 @@ public class DataStorage {
 
         }
         return allowedCourses.size();
+    }
+
+    public static List<String> getAllowedCourses() {
+        return allowedCourses;
     }
 
     public void deleteUser(String userID) {

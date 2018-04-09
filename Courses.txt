@@ -1,3 +1,6 @@
 CourseCode;lecID;Credit;Title;Description;StartDate;
-CRS-801;LEC-1001;2;Introduction to Manufacturing Systems;Learn about manufacturing systems and ways to analyze them in terms of material flow and storage.;2018-05-08;
-CRS-803;LEC-1001;2;Social Media Marketing;Learn how to drive social media engagement by linking strategy and tactics and measuring results.;2018-05-02;
+CRS-5;LEC-1002;6;Fifth Course;Description 5;2018-03-05;
+CRS-3;LEC-1002;2;Third Course;Description for the Third Course;2018-04-09;
+CRS-4;LEC-1001;5;Fourth Course;Description for the Fourth Course;2018-12-09;
+CRS-1;LEC-1001;3;First Course;Description for the First Course;2018-06-15;
+CRS-2;LEC-1002;2;Second Course;Description for the Second Course;2017-01-27;

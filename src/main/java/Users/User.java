@@ -8,6 +8,7 @@ public abstract class User {
     private String ID, userName, role, password, firstName, lastName, email, mobileNumber, gender, address;
     private LocalDate dateOfBirth;
 
+
     public String getID() {
         return ID;
     }
@@ -53,7 +54,9 @@ public abstract class User {
         System.out.println(lineSeparator);
         System.out.printf("| %-8s | %-9s | %-20s | %-10s | %-20s | %-20s | %-13s | %-30s| %-15s | %-6s | %-35s |\n", "USER ID", "USER ROLE", "USERNAME", "PASSWORD", "FIRST NAME", "LAST NAME", "DATE OF BIRTH", "EMAIL", "MOBILE NUMBER", "GENDER", "ADDRESS");
         System.out.println(lineSeparator);
-        System.out.printf("| %-8s | %-9s | %-20s | %-10s | %-20s | %-20s | %-13s | %-30s| %-15s | %-6s | %-35s |\n", ID, role, userName, password, firstName, lastName, dateOfBirth, email, mobileNumber, gender, address);
+        int passwordLength =password.length();
+        String hiddenPassword = new String(new char[passwordLength]).replace('\0', '*');
+        System.out.printf("| %-8s | %-9s | %-20s | %-10s | %-20s | %-20s | %-13s | %-30s| %-15s | %-6s | %-35s |\n", ID, role, userName, hiddenPassword, firstName, lastName, dateOfBirth, email, mobileNumber, gender, address);
         System.out.println(lineSeparator);
     }
 

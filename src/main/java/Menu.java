@@ -16,7 +16,7 @@ public class Menu {
 
     public void runWelcomeMenu() throws Exception {
         System.out.println("Welcome to MIVS");
-        while (runApp && app.isLoginDataValid() == false) {
+        while (runApp && !app.isLoginDataValid()) {
             System.out.println("1. Sign in");
             System.out.println("2. Exit");
             try {
@@ -33,7 +33,7 @@ public class Menu {
                         runApp = false;
                         break;
                     default:
-                        System.out.println("Wrong input");
+                        System.out.println("\nWrong input\n");
                         break;
 
                 }
@@ -44,15 +44,20 @@ public class Menu {
     }
 
     public void runUserMenu(User user) {
-        System.out.println();
-        if (user instanceof Admin) {
-            runAdminMenu(user);
-        } else if (user instanceof Lecturer) {
-            runLecturerMenu(user);
-        } else if (user instanceof Student) {
-            runStudentMenu(user);
-        } else {
-            return;
+        //
+        while (runApp) {
+
+            System.out.println();
+            if (user instanceof Admin) {
+                runAdminMenu(user);
+            } else if (user instanceof Lecturer) {
+                runLecturerMenu(user);
+            } else if (user instanceof Student) {
+                runStudentMenu(user);
+            } else {
+                return;
+                //
+            }
         }
 
     }
@@ -315,14 +320,19 @@ public class Menu {
                             String courseCode = sc.next();
                             courseCode = courseCode.toUpperCase();
                             if (dataStorage.getCoursesInfo().containsKey(courseCode)) {
-                                int courseCredits = Integer.parseInt(dataStorage.getCoursesInfo().get(courseCode).split(";")[1]);
-                                if (allowedCredits >= courseCredits) {
+                                //
+                                if (dataStorage.getAllowedCourses().contains(courseCode)) {
+//                                int courseCredits = Integer.parseInt(dataStorage.getCoursesInfo().get(courseCode).split(";")[1]);
+//                                if (allowedCredits >= courseCredits) {
                                     String studentCourse = user.getID() + ";" + courseCode + ";";
                                     dataStorage.addStudentsCourse(studentCourse);
                                     dataWriter.updateStudentCourses();
+                                    //
                                 } else {
-                                    System.out.println("\nYou don't have enough Credits to enroll in this Course");
-                                    leaveCourse(user);
+                                    System.out.println("You can't enroll in this course");
+//                                } else {
+//                                    System.out.println("\nYou don't have enough Credits to enroll in this Course");
+//                                    leaveCourse(user);
                                 }
                             } else {
                                 System.out.println("Course " + courseCode + " doesn't exist");

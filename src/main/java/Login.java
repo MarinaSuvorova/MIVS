@@ -14,11 +14,6 @@ public class Login {
     private boolean foundUser;
     private boolean loginDataValid;
 
-
-    public boolean isFoundUser() {
-        return foundUser;
-    }
-
     public void setFoundUser(boolean foundUser) {
         this.foundUser = foundUser;
     }
@@ -38,10 +33,12 @@ public class Login {
     public void login() {
         String userID = "";
         dataStorage.storeLoginInfo();
-        dataStorage.storeLoginInfo();
+
         Scanner sc = new Scanner(System.in);
         int wrongUsername = 0;
-        while (!foundUser && wrongUsername < 3)
+        //
+        int wrongPassword = 0;
+        while (!foundUser && wrongUsername < 3) {
             System.out.println("Enter login");
             String login = sc.next();
             for (String ID : dataStorage.getLoginInfo().keySet()) {
@@ -56,19 +53,20 @@ public class Login {
                             userID = ID;
                             break;
                         } else {
-                            int wrongInput = 1;
+                            int wrongInput = 0;
                             while ((wrongInput < 3) || (loginDataValid)) {
-                                System.out.println("\nIncorrect password. \nPlease try again.");
+                                System.out.println("Incorrect password. \n\nPlease try again.");
                                 if (loginInfo[1].equals(sc.next())) {
                                     setLoginDataValid(true);
                                     userID = ID;
                                     break;
                                 } else {
                                     wrongInput++;
+                                    break;
                                 }
                             }
                             if (!loginDataValid) {
-                                System.out.println("Please try again after 5 sec.");
+                                System.out.println("Wrong username. \n\nPlease try again after 5 sec.");
                                 setFoundUser(false);
                                 Thread sleep = new Thread();
                                 try {
@@ -80,16 +78,14 @@ public class Login {
                             }
                         }
                     }
-                }
-            }
-
-            if (!foundUser) {
-                System.out.println("\nWrong username. \nPlease try again.\n");
-                wrongUsername++;
-            }
-            if (loginDataValid) {
-                loggedUser(userID);
-            }
+                }}
+        }
+         if (!foundUser) {
+            System.out.println("Wrong username. \n\nPlease try again.\n");
+            wrongUsername++;
+        }
+        if (loginDataValid) {
+            loggedUser(userID);
         }
     }
 

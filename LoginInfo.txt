@@ -1,6 +1,6 @@
 ID;username;password;
-STU-1002;nice;qwer;
-STU-1004;as;krab;
-STU-1005;hg;fd;
+STU-1003;rud;stu;
+STU-1004;stu;rud;
 ADM-1000;admin;admin;
-LEC-1001;maru;12345;
+LEC-1002;lec;hec;
+LEC-1001;hec;lec;
