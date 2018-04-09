@@ -13,6 +13,7 @@ public class Menu {
     DataWriter dataWriter = new DataWriter();
     DataStorage dataStorage = new DataStorage();
     Scanner sc = new Scanner(System.in);
+    LoggerMIVS logger = new LoggerMIVS();
 
     public void runWelcomeMenu() throws Exception {
         System.out.println("Welcome to MIVS");

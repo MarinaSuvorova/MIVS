@@ -7,6 +7,9 @@ import java.time.format.DateTimeFormatter;
 public abstract class User {
     private String ID, userName, role, password, firstName, lastName, email, mobileNumber, gender, address;
     private LocalDate dateOfBirth;
+    public String getName(){
+       return  firstName+" "+lastName;
+    }
 
     public String getID() {
         return ID;

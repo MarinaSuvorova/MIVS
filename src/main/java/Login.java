@@ -13,6 +13,7 @@ public class Login {
     DataStorage dataStorage = new DataStorage();
     private boolean foundUser;
     private boolean loginDataValid;
+    LoggerMIVS logger = new LoggerMIVS();
 
     public void setFoundUser(boolean foundUser) {
         this.foundUser = foundUser;
@@ -108,6 +109,7 @@ public class Login {
         }
         dataStorage.getUserInfoByID(userID);
         user.setUserProperties(userID, dataStorage.getUserInfoByID(userID));
+        logger.addMessageToLogFile("User "+user.getName()+" logged in");
         user.printUserTable();
         Menu menu = new Menu();
         menu.runUserMenu(user);
