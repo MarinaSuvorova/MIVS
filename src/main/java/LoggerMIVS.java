@@ -4,7 +4,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.logging.*;
 
 public class LoggerMIVS {
-    private static final Logger LOGGER = Logger.getLogger("myLogger");
+    private static final Logger LOGGER = Logger.getLogger("mivsLogger");
         public void addMessageToLogFile(String msg)  {
             FileHandler fileHandler = null;
             try {

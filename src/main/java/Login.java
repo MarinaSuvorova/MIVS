@@ -54,6 +54,7 @@ public class Login {
                             userID = ID;
                             break;
                         } else {
+//                            wrongUsername++;
                             int wrongInput = 0;
                             while ((wrongInput < 3) || (loginDataValid)) {
                                 System.out.println("Incorrect password. \n\nPlease try again.");
@@ -69,9 +70,9 @@ public class Login {
                             if (!loginDataValid) {
                                 System.out.println("Wrong username. \n\nPlease try again after 5 sec.");
                                 setFoundUser(false);
-                                Thread sleep = new Thread();
+
                                 try {
-                                    sleep.sleep(5000);
+                                    Thread.sleep(5000);
                                 } catch (InterruptedException e) {
                                     e.printStackTrace();
                                 }

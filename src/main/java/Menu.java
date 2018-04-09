@@ -423,6 +423,7 @@ public class Menu {
                     if (dataStorage.isUsernameUnique(newUsername)) {
                         username = newUsername;
                         System.out.println("\nUsername has been changed successfully.");
+                        logger.addMessageToLogFile("User "+user.getName()+" changed User's "+firstName+" "+lastName+" username");
                     } else {
                         System.out.println("\nThis username is already taken. Please choose another username.");
                     }
@@ -439,6 +440,7 @@ public class Menu {
                     if ((oldPassword.equals(password)) && (newPassword.equals(confirmedPassword))) {
                         password = newPassword;
                         System.out.println("Password has been changed successfully.");
+                        logger.addMessageToLogFile("User "+user.getName()+" changed User's "+firstName+" "+lastName+" password");
                     } else if ((oldPassword.equals(password)) && (!newPassword.equals(confirmedPassword))) {
                         System.out.println("\nPassword confirmation doesn't match Password. Please try again. ");
                     } else {
@@ -451,6 +453,7 @@ public class Menu {
                     sc.nextLine();
                     firstName = sc.nextLine().replaceAll(";", "");
                     System.out.println("\nFirst name has been changed successfully.");
+                    logger.addMessageToLogFile("User "+user.getName()+" changed User's "+firstName+" "+lastName+" first name");
                     break;
                 case 4:
                     System.out.println("Last name: " + lastName);
@@ -458,6 +461,7 @@ public class Menu {
                     sc.nextLine();
                     lastName = sc.nextLine().replaceAll(";", "");
                     System.out.println("\nLast name has been changed successfully.");
+                    logger.addMessageToLogFile("User "+user.getName()+" changed User's "+firstName+" "+lastName+" last name");
                     break;
                 case 5:
                     System.out.println("Date of Birth: " + dateOfBirth);
@@ -466,6 +470,7 @@ public class Menu {
                         LocalDate checkDate = LocalDate.parse(sc.next(), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
                         dateOfBirth = String.valueOf(checkDate);
                         System.out.println("\nDate of Birth has been changed successfully.");
+                        logger.addMessageToLogFile("User "+user.getName()+" changed User's "+firstName+" "+lastName+" date of birth");
                     } catch (Exception e) {
                         System.out.println("\nWrong date format. Please try again\n");
                     }
@@ -476,6 +481,7 @@ public class Menu {
                     sc.nextLine();
                     email = sc.nextLine().replaceAll(";", "");
                     System.out.println("\nEmail address has been changed successfully.");
+                    logger.addMessageToLogFile("User "+user.getName()+" changed User's "+firstName+" "+lastName+" email address");
                     break;
                 case 7:
                     System.out.println("Mobile number: " + mobileNumber);
@@ -483,6 +489,7 @@ public class Menu {
                     sc.nextLine();
                     mobileNumber = sc.nextLine().replaceAll(";", "");
                     System.out.println("\nMobile number has been changed successfully.");
+                    logger.addMessageToLogFile("User "+user.getName()+" changed User's "+firstName+" "+lastName+" mobile number");
                     break;
                 case 8:
                     System.out.println("Gender: " + gender);
@@ -492,10 +499,12 @@ public class Menu {
                             case 0:
                                 gender = "";
                                 System.out.println("\nGender has been changed successfully.");
+                                logger.addMessageToLogFile("User "+user.getName()+" changed User's "+firstName+" "+lastName+" gender");
                                 break;
                             case 1:
                                 gender = "male";
                                 System.out.println("\nGender has been changed successfully.");
+                                logger.addMessageToLogFile("User "+user.getName()+" changed User's "+firstName+" "+lastName+" last name");
                                 break;
                             case 2:
                                 gender = "female";
