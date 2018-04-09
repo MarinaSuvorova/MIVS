@@ -41,9 +41,7 @@ public class Login {
         dataStorage.storeLoginInfo();
         Scanner sc = new Scanner(System.in);
         int wrongUsername = 0;
-        //
-        while (!foundUser && wrongUsername < 3) {
-            //
+        while (!foundUser && wrongUsername < 3)
             System.out.println("Enter login");
             String login = sc.next();
             for (String ID : dataStorage.getLoginInfo().keySet()) {
@@ -79,9 +77,6 @@ public class Login {
                                     e.printStackTrace();
                                 }
                                 return;
-//                            } else {
-//
-//                                break;
                             }
                         }
                     }
@@ -91,12 +86,11 @@ public class Login {
             if (!foundUser) {
                 System.out.println("\nWrong username. \nPlease try again.\n");
                 wrongUsername++;
-//            login();
             }
             if (loginDataValid) {
                 loggedUser(userID);
             }
-        } //wrongUsername=0;
+        }
     }
 
 
