@@ -71,16 +71,17 @@ public class Login {
                             }
                             if (!loginDataValid) {
                                 System.out.println("Please try again after 5 sec.");
+                                setFoundUser(false);
                                 Thread sleep = new Thread();
                                 try {
                                     sleep.sleep(5000);
                                 } catch (InterruptedException e) {
                                     e.printStackTrace();
                                 }
-                                break;
-                            } else {
-
-                                break;
+                                return;
+//                            } else {
+//
+//                                break;
                             }
                         }
                     }
@@ -95,7 +96,7 @@ public class Login {
             if (loginDataValid) {
                 loggedUser(userID);
             }
-        }
+        } //wrongUsername=0;
     }
 
 
