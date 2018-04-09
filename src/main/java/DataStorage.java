@@ -342,8 +342,9 @@ public class DataStorage {
         coursesInfo.put(courseCode, courseData);
     }
 
-    public void showLecturersStudents(String userID) {
+    public void printLecturersStudents(String userID) {
         storeStudentCourses();
+        storeUserProperties();
         storeCoursesInfo();
         String lineSeparator = new String(new char[141]).replace('\0', '-');
         System.out.println(lineSeparator);
@@ -354,15 +355,16 @@ public class DataStorage {
                 for (String data : studentCourses) {
                     if (courseCode.equals(data.split(";")[1])) {
                         String stuID = data.split(";")[0];
-                        String courseTitle = coursesInfo.get(courseCode).split(";")[2];
-                        String firstName = userProperties.get(stuID).split(";")[0];
-                        String lastName = userProperties.get(stuID).split(";")[1];
-                        String email = userProperties.get(stuID).split(";")[3];
-                        String mobileNumber = userProperties.get(stuID).split(";")[4];
-                        System.out.printf("| %-40s | %-20s | %-20s | %-30s | %-15s |\n", courseTitle, firstName, lastName, email, mobileNumber);
+                        if (userProperties.containsKey(stuID)) {
+                            String courseTitle = coursesInfo.get(courseCode).split(";")[2];
+                            String firstName = userProperties.get(stuID).split(";")[0];
+                            String lastName = userProperties.get(stuID).split(";")[1];
+                            String email = userProperties.get(stuID).split(";")[3];
+                            String mobileNumber = userProperties.get(stuID).split(";")[4];
+                            System.out.printf("| %-40s | %-20s | %-20s | %-30s | %-15s |\n", courseTitle, firstName, lastName, email, mobileNumber);
+                        }
                     }
                 }
-
             }
 
         }
@@ -445,6 +447,7 @@ public class DataStorage {
     public void deleteUser(String userID) {
         userProperties.remove(userID);
         loginInfo.remove(userID);
+        storeCoursesInfo();
         if (userID.split("-")[0].equals("LEC")) {
             List<String> coursesToRemove = new ArrayList<>();
             for (String courseCode : coursesInfo.keySet()) {
@@ -453,6 +456,22 @@ public class DataStorage {
                 }
             }
             removeLecturersCourses(coursesToRemove);
+        }
+        if (userID.split("-")[0].equals("STU")) {
+            storeStudentCourses();
+            List<String> studentCoursesToRemove = new ArrayList<>();
+            for (String data : studentCourses) {
+                if (data.split(";")[0].equals(userID)) {
+                    studentCoursesToRemove.add(data);
+                }
+            }
+            removeStudentsCourses(studentCoursesToRemove);
+        }
+    }
+
+    private void removeStudentsCourses(List<String> studentCoursesToRemove) {
+        for (String data : studentCoursesToRemove) {
+            studentCourses.remove(data);
         }
     }
 

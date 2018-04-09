@@ -248,7 +248,7 @@ public class Menu {
                     makeChangesToCourseTable(user);
                     break;
                 case 3:
-                    dataStorage.showLecturersStudents(user.getID());
+                    dataStorage.printLecturersStudents(user.getID());
                     break;
                 case 4:
                     addNewCourse(user.getID());

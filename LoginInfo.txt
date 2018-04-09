@@ -1,5 +1,5 @@
 ID;username;password;
-STU-1003;rud;stu;
+STU-1006;ber;cer;
 STU-1004;stu;rud;
 ADM-1000;admin;admin;
 LEC-1002;lec;hec;

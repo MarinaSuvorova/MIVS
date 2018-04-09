@@ -1,5 +1,6 @@
 CourseCode;lecID;Credit;Title;Description;StartDate;
-CRS-5;LEC-1002;6;Fifth Course;Description 5;2018-03-05;
+CRS-5;lec-1001;6;Fifth Course;Description 5;2018-03-05;
+CRS-6;LEC-1002;2;Cur;Sur;2018-04-09;
 CRS-3;LEC-1002;2;Third Course;Description for the Third Course;2018-04-09;
 CRS-4;LEC-1001;5;Fourth Course;Description for the Fourth Course;2018-12-09;
 CRS-1;LEC-1001;3;First Course;Description for the First Course;2018-06-15;
