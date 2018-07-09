@@ -1,4 +1,7 @@
 CourseCode;lecID;Credit;Title;Description;StartDate;
+CRS-9;LEC-1002;-500;c#;c;1992-02-04;
+CRS-7;LEC-1001;34;Java;Java;2018-04-09;
+CRS-8;LEC-1001;34;Java;Java;2018-04-09;
 CRS-5;lec-1001;6;Fifth Course;Description 5;2018-03-05;
 CRS-6;LEC-1002;2;Cur;Sur;2018-04-09;
 CRS-3;LEC-1002;2;Third Course;Description for the Third Course;2018-04-09;

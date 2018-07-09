@@ -1,6 +1,6 @@
 ID;firstName;lastName;dateOfBirth;email;mobileNumber;gender;address;
 STU-1006;qwer;ty; ;bercer@mivs.lt; ; ; ;
-STU-1004;Student;Rudent; ; ; ; ; ;
+STU-1004;Pirmas vardas /n/n;Rudent; ; ; ; ; ;
 ADM-1000;Adminas;Adminaitis;1998-09-30;admin@mivs.com;8 675 34528;male;Draugystės 12-15, Ignalina;
 LEC-1002;Lector;Hector; ; ; ; ; ;
 ADM-1005;Mon;Day; ; ; ; ; ;

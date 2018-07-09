@@ -157,6 +157,11 @@ public class Menu {
         int credit = 2;
         try {
             credit = Integer.parseInt(sc.next());
+            if(credit>0&&credit<5){
+                }else {
+                System.out.println(credit+" is not allowed Amount of Credit. Default Course Credit is 2");
+            }
+
         } catch (Exception e) {
             System.out.println("Wrong number format. Default Course Credit is 2");
         }
@@ -165,7 +170,7 @@ public class Menu {
         dataStorage.addNewCourseToHashMaps(courseCode, courseData);
         dataWriter.updateCoursesInfo();
         System.out.println("\nNew Course has been added");
-        logger.addMessageToLogFile("User "+user.getName()+" added Course "+courseTitle+" lecturer");
+        logger.addMessageToLogFile("User "+user.getName()+" added Course "+courseTitle);
         dataStorage.printCurrentCourseTable(courseCode);
     }
 
@@ -643,11 +648,16 @@ public class Menu {
                     break;
                 case 2:
                     System.out.println("Number of credints: " + credit);
-                    System.out.print("Enter Nubmer of Credits: ");
+                    System.out.print("Enter Nubmer of Credits (1-5): ");
                     try {
                         credit = Integer.parseInt(sc.next());
+                        if(credit>0&&credit<5){
+
+
                         System.out.println("\nNumber of Credits has been changed successfully.\n");
-                        logger.addMessageToLogFile("User "+user.getName()+" changed Course "+courseTitle+" credits");
+                        logger.addMessageToLogFile("User "+user.getName()+" changed Course "+courseTitle+" credits");}else {
+                            System.out.println(credit+" is not allowed Amount of Credit");
+                        }
                     } catch (Exception e) {
                         System.out.println("\nWrong number format\n");
                     }
